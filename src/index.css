@@ -1,0 +1,221 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Montserrat", "Open Sans", "Lato", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  /* Blues */
+  --color-gov-blue-50:  #f2f7fc;
+  --color-gov-blue-100: #e4eef8;
+  --color-gov-blue-200: #c7def1;
+  --color-gov-blue-300: #9ec6e6;
+  --color-gov-blue-400: #6ea8d8;
+  --color-gov-blue-500: #3d8ac7;
+  --color-gov-blue-600: #2d6fa5;
+  --color-gov-blue-700: #23577f;
+  --color-gov-blue-800: #1b425f;
+  --color-gov-blue-900: #142d40;
+
+  /* Greens */
+  --color-gov-green-50:  #f3faf5;
+  --color-gov-green-100: #e2f4e8;
+  --color-gov-green-200: #c5e7d1;
+  --color-gov-green-300: #9dd8b3;
+  --color-gov-green-400: #6fc589;
+  --color-gov-green-500: #46ae66;
+  --color-gov-green-600: #358a50;
+  --color-gov-green-700: #28683d;
+  --color-gov-green-800: #1d4b2c;
+  --color-gov-green-900: #12301c;
+
+  /* Cyan Accent */
+  --color-gov-cyan-100: #e0f7fa;
+  --color-gov-cyan-300: #80deea;
+  --color-gov-cyan-500: #26c6da;
+  --color-gov-cyan-600: #0097a7;
+
+  /* Gray scale (UI neutrals) */
+  --color-gov-gray-50:  #f8f9fa;
+  --color-gov-gray-100: #f1f3f5;
+  --color-gov-gray-200: #e5e7eb;
+  --color-gov-gray-300: #d0d5db;
+  --color-gov-gray-400: #9aa1ac;
+  --color-gov-gray-500: #6b7280;
+  --color-gov-gray-600: #4b5563;
+  --color-gov-gray-700: #374151;
+  --color-gov-gray-800: #1f2937;
+  --color-gov-gray-900: #111827;
+
+  --color-gov-focus: #26c6da;
+}
+
+:root {
+  color-scheme: light;
+}
+
+@layer base {
+  html { 
+    font-family: var(--font-sans); 
+    scroll-behavior: smooth;
+  }
+  body { 
+    @apply bg-gov-gray-50 text-gov-gray-800 antialiased; 
+  }
+  a { 
+    @apply text-gov-blue-600 hover:text-gov-blue-700 transition-colors; 
+  }
+  ::selection { 
+    @apply bg-gov-blue-600 text-white; 
+  }
+  #main {
+    @apply outline-none;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md font-medium transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-gov-focus disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply bg-gov-blue-600 text-white hover:bg-gov-blue-700 focus-visible:ring-offset-2 shadow-sm;
+  }
+  .btn-secondary {
+    @apply bg-gov-green-600 text-white hover:bg-gov-green-700 focus-visible:ring-offset-2 shadow-sm;
+  }
+  .btn-outline {
+    @apply border border-gov-blue-600 text-gov-blue-700 hover:bg-gov-blue-50;
+  }
+  .btn-ghost {
+    @apply text-gov-gray-700 hover:bg-gov-gray-100;
+  }
+  .btn-sm {
+    @apply px-3 py-1.5 text-sm;
+  }
+  .btn-md {
+    @apply px-4 py-2 text-sm;
+  }
+  .btn-lg {
+    @apply px-6 py-3 text-base;
+  }
+  
+  .card {
+    @apply bg-white shadow-sm rounded-lg border border-gov-gray-200 overflow-hidden;
+  }
+  
+  .glass {
+    @apply bg-white/40 backdrop-blur-md ring-1 ring-white/30 shadow-lg;
+  }
+  
+  .input {
+    @apply w-full rounded-md border border-gov-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gov-gray-400 focus:border-gov-blue-500 focus:ring-2 focus:ring-gov-blue-200 outline-none transition-colors disabled:bg-gov-gray-100 disabled:cursor-not-allowed;
+  }
+  
+  .textarea {
+    @apply w-full rounded-md border border-gov-gray-300 bg-white px-3 py-2 text-sm placeholder:text-gov-gray-400 focus:border-gov-blue-500 focus:ring-2 focus:ring-gov-blue-200 outline-none transition-colors resize-y min-h-[100px];
+  }
+  
+  .select {
+    @apply w-full rounded-md border border-gov-gray-300 bg-white px-3 py-2 text-sm focus:border-gov-blue-500 focus:ring-2 focus:ring-gov-blue-200 outline-none transition-colors;
+  }
+  
+  .badge {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+  }
+  .badge-blue {
+    @apply bg-gov-blue-100 text-gov-blue-700;
+  }
+  .badge-green {
+    @apply bg-gov-green-100 text-gov-green-700;
+  }
+  .badge-yellow {
+    @apply bg-yellow-100 text-yellow-700;
+  }
+  .badge-red {
+    @apply bg-red-100 text-red-700;
+  }
+  .badge-gray {
+    @apply bg-gov-gray-100 text-gov-gray-700;
+  }
+  
+  .table-head {
+    @apply text-left text-xs font-semibold uppercase tracking-wide text-gov-gray-600 bg-gov-gray-50 px-4 py-3;
+  }
+  
+  .table-cell {
+    @apply px-4 py-3 text-sm text-gov-gray-700;
+  }
+  
+  .panel {
+    @apply bg-white rounded-xl shadow-sm border border-gov-gray-200 p-6;
+  }
+  
+  .alert {
+    @apply rounded-md p-4 flex items-start gap-3;
+  }
+  .alert-info {
+    @apply bg-gov-blue-50 text-gov-blue-800 border border-gov-blue-200;
+  }
+  .alert-success {
+    @apply bg-gov-green-50 text-gov-green-800 border border-gov-green-200;
+  }
+  .alert-warning {
+    @apply bg-yellow-50 text-yellow-800 border border-yellow-200;
+  }
+  .alert-error {
+    @apply bg-red-50 text-red-800 border border-red-200;
+  }
+  
+  /* Swiper custom styling */
+  .swiper {
+    @apply w-full h-full;
+  }
+  .swiper-pagination-bullet {
+    @apply bg-white/60 w-2.5 h-2.5;
+  }
+  .swiper-pagination-bullet-active {
+    @apply bg-white w-8 rounded-full;
+  }
+}
+
+@layer utilities {
+  .heading-xl { 
+    @apply text-4xl md:text-5xl font-semibold tracking-tight text-gov-blue-800; 
+  }
+  .heading-lg { 
+    @apply text-3xl md:text-4xl font-semibold text-gov-blue-800; 
+  }
+  .heading-md { 
+    @apply text-2xl md:text-3xl font-semibold text-gov-blue-800; 
+  }
+  .heading-sm { 
+    @apply text-xl md:text-2xl font-semibold text-gov-blue-800; 
+  }
+  .heading-xs { 
+    @apply text-lg md:text-xl font-semibold text-gov-blue-800; 
+  }
+  
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .scrollbar-gov {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-gov-blue-300) transparent;
+  }
+  .scrollbar-gov::-webkit-scrollbar {
+    height: 6px;
+  }
+  .scrollbar-gov::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-gov::-webkit-scrollbar-thumb {
+    background-color: var(--color-gov-blue-300);
+    border-radius: 9999px;
+  }
+  .scrollbar-gov:hover::-webkit-scrollbar-thumb {
+    background-color: var(--color-gov-blue-500);
+  }
+}
