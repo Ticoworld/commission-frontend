@@ -2,7 +2,8 @@ import { formatDistanceToNow } from 'date-fns';
 import Table from '../../ui/Table';
 import Badge from '../../ui/Badge';
 import Button from '../../ui/Button';
-import Loader from '../../ui/Loader';
+import EmptyState from '../../ui/EmptyState';
+import Skeleton from '../../ui/Skeleton';
 import { AUDIT_STATUS } from '../../../lib/constants';
 
 const entityLabels = {
@@ -19,19 +20,16 @@ const statusVariantMap = {
 const AuditQueueTable = ({ items = [], onReview, isLoading }) => {
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <Loader size="md" label="Loading approvals" />
+      <div className="p-4">
+        <Skeleton rows={4} />
       </div>
     );
   }
 
   if (!items.length) {
     return (
-      <div className="text-center py-12">
-        <h3 className="text-lg font-semibold text-gov-gray-900">No pending approvals</h3>
-        <p className="text-sm text-gov-gray-600 mt-2">
-          You&apos;re all caught up. New submissions will appear here for review.
-        </p>
+      <div className="p-4">
+        <EmptyState title="No pending approvals" description="You're all caught up. New submissions will appear here for review." />
       </div>
     );
   }

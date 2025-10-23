@@ -7,6 +7,8 @@ import Badge from '../../../components/ui/Badge';
 import Modal from '../../../components/ui/Modal';
 import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
+import EmptyState from '../../../components/ui/EmptyState';
+import Skeleton from '../../../components/ui/Skeleton';
 import { useForm } from 'react-hook-form';
 import { formatDate } from '../../../lib/utils';
 import { useRetirement } from '../../../hooks/useRetirement';
@@ -33,7 +35,6 @@ const Employees = () => {
   });
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
-
   useEffect(() => {
     if (editingEmployee) {
       reset(editingEmployee);
@@ -58,7 +59,7 @@ const Employees = () => {
   });
 
   const updateMutation = useMutation({
-    mutationFn: (payload) => updateEmployee(editingEmployee.id, payload, user),
+    mutationFn: (payload) => updateEmployee(editingEmployee?.id, payload, user),
     onSuccess: () => {
       toast.success('Employee updated');
       invalidateEmployees();
@@ -101,6 +102,88 @@ const Employees = () => {
     reset({});
   };
 
+  // Row component for desktop table
+  const EmployeeRow = ({ employee }) => {
+    const retirement = useRetirement(employee.retirementDate);
+    return (
+      <Table.Row key={employee.id}>
+        <Table.Cell className="font-medium">{employee.name}</Table.Cell>
+        <Table.Cell>{employee.email}</Table.Cell>
+        <Table.Cell>{employee.position}</Table.Cell>
+        <Table.Cell>{employee.department}</Table.Cell>
+        <Table.Cell>
+          <div>
+            <div className="text-sm">{formatDate(employee.retirementDate)}</div>
+            {retirement.daysRemaining !== null && retirement.daysRemaining > 0 && (
+              <div className="text-xs text-gov-gray-500 mt-0.5">
+                {retirement.daysRemaining} days remaining
+              </div>
+            )}
+          </div>
+        </Table.Cell>
+        <Table.Cell>
+          <Badge variant={
+            retirement.priority === 'critical' ? 'red' :
+            retirement.priority === 'warning' ? 'yellow' :
+            retirement.priority === 'retired' ? 'gray' : 'green'
+          }>
+            {retirement.priority || 'active'}
+          </Badge>
+        </Table.Cell>
+        <Table.Cell>
+          <div className="flex items-center justify-center space-x-2">
+            <button
+              onClick={() => handleEdit(employee)}
+              className="text-gov-blue-600 hover:text-gov-blue-700 p-1"
+              title={`Edit ${employee.name}`}
+              aria-label={`Edit ${employee.name}`}
+            >
+              <PencilIcon className="w-4 h-4" />
+            </button>
+            <button
+              onClick={() => handleDelete(employee.id)}
+              className="text-red-600 hover:text-red-700 p-1"
+              title={`Delete ${employee.name}`}
+              aria-label={`Delete ${employee.name}`}
+              disabled={deleteMutation.isPending}
+            >
+              <TrashIcon className="w-4 h-4" />
+            </button>
+          </div>
+        </Table.Cell>
+      </Table.Row>
+    );
+  };
+
+  // Mobile card component so hooks can be used at top-level
+  const MobileEmployeeCard = ({ employee }) => {
+    const retirement = useRetirement(employee.retirementDate);
+    return (
+      <div className="p-4 border rounded-lg bg-white">
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="font-medium">{employee.name}</div>
+            <div className="text-sm text-gov-gray-600">{employee.position} • {employee.department}</div>
+          </div>
+          <div className="text-right">
+            <div className="text-sm">{formatDate(employee.retirementDate)}</div>
+            <Badge variant={retirement.priority === 'critical' ? 'red' : retirement.priority === 'warning' ? 'yellow' : 'green'}>
+              {retirement.priority || 'active'}
+            </Badge>
+          </div>
+        </div>
+        <div className="mt-3 flex items-center justify-end space-x-2">
+          <button onClick={() => handleEdit(employee)} aria-label={`Edit ${employee.name}`} className="text-gov-blue-600 hover:text-gov-blue-700 p-1">
+            <PencilIcon className="w-4 h-4" />
+          </button>
+          <button onClick={() => handleDelete(employee.id)} aria-label={`Delete ${employee.name}`} className="text-red-600 hover:text-red-700 p-1">
+            <TrashIcon className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -117,79 +200,56 @@ const Employees = () => {
       </div>
 
       <Card>
-        <Table>
-          <Table.Head>
-            <Table.Row>
-              <Table.HeaderCell>Name</Table.HeaderCell>
-              <Table.HeaderCell>Email</Table.HeaderCell>
-              <Table.HeaderCell>Position</Table.HeaderCell>
-              <Table.HeaderCell>Department</Table.HeaderCell>
-              <Table.HeaderCell>Retirement Date</Table.HeaderCell>
-              <Table.HeaderCell>Status</Table.HeaderCell>
-              <Table.HeaderCell className="text-center">Actions</Table.HeaderCell>
-            </Table.Row>
-          </Table.Head>
-          <Table.Body>
-            {isLoading ? (
+        {/* Table for desktop */}
+        <div className="hidden sm:block">
+          <Table>
+            <Table.Head>
               <Table.Row>
-                <Table.Cell colSpan={7} className="py-6 text-center text-sm text-gov-gray-600">
-                  Loading employees…
-                </Table.Cell>
+                <Table.HeaderCell>Name</Table.HeaderCell>
+                <Table.HeaderCell>Email</Table.HeaderCell>
+                <Table.HeaderCell>Position</Table.HeaderCell>
+                <Table.HeaderCell>Department</Table.HeaderCell>
+                <Table.HeaderCell>Retirement Date</Table.HeaderCell>
+                <Table.HeaderCell>Status</Table.HeaderCell>
+                <Table.HeaderCell className="text-center">Actions</Table.HeaderCell>
               </Table.Row>
-            ) : employees.map((employee) => {
-              const EmployeeRow = () => {
-                const retirement = useRetirement(employee.retirementDate);
-                return (
-                  <Table.Row key={employee.id}>
-                    <Table.Cell className="font-medium">{employee.name}</Table.Cell>
-                    <Table.Cell>{employee.email}</Table.Cell>
-                    <Table.Cell>{employee.position}</Table.Cell>
-                    <Table.Cell>{employee.department}</Table.Cell>
-                    <Table.Cell>
-                      <div>
-                        <div className="text-sm">{formatDate(employee.retirementDate)}</div>
-                        {retirement.daysRemaining !== null && retirement.daysRemaining > 0 && (
-                          <div className="text-xs text-gov-gray-500 mt-0.5">
-                            {retirement.daysRemaining} days remaining
-                          </div>
-                        )}
-                      </div>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <Badge variant={
-                        retirement.priority === 'critical' ? 'red' :
-                        retirement.priority === 'warning' ? 'yellow' :
-                        retirement.priority === 'retired' ? 'gray' : 'green'
-                      }>
-                        {retirement.priority || 'active'}
-                      </Badge>
-                    </Table.Cell>
-                    <Table.Cell>
-                      <div className="flex items-center justify-center space-x-2">
-                        <button
-                          onClick={() => handleEdit(employee)}
-                          className="text-gov-blue-600 hover:text-gov-blue-700 p-1"
-                          title="Edit"
-                        >
-                          <PencilIcon className="w-4 h-4" />
-                        </button>
-                        <button
-                          onClick={() => handleDelete(employee.id)}
-                          className="text-red-600 hover:text-red-700 p-1"
-                          title="Delete"
-                          disabled={deleteMutation.isPending}
-                        >
-                          <TrashIcon className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </Table.Cell>
-                  </Table.Row>
-                );
-              };
-              return <EmployeeRow key={employee.id} />;
-            })}
-          </Table.Body>
-        </Table>
+            </Table.Head>
+            <Table.Body>
+              {isLoading ? (
+                <Table.Row>
+                  <Table.Cell colSpan={7} className="py-6 text-center">
+                    <Skeleton rows={4} />
+                  </Table.Cell>
+                </Table.Row>
+              ) : employees.length === 0 ? (
+                <Table.Row>
+                  <Table.Cell colSpan={7} className="py-6 text-center">
+                    <EmptyState title="No employees" description="No employee records found." />
+                  </Table.Cell>
+                </Table.Row>
+              ) : (
+                employees.map((employee) => (
+                  <EmployeeRow key={employee.id} employee={employee} />
+                ))
+              )}
+            </Table.Body>
+          </Table>
+        </div>
+
+        {/* Card list for small screens */}
+        <div className="block sm:hidden">
+          {isLoading ? (
+            <Skeleton rows={4} />
+          ) : employees.length === 0 ? (
+            <EmptyState title="No employees" description="No employee records found." />
+          ) : (
+            <div className="space-y-4">
+              {employees.map((employee) => (
+                <MobileEmployeeCard key={employee.id} employee={employee} />
+              ))}
+            </div>
+          )}
+        </div>
       </Card>
 
       {/* Add/Edit Modal */}

@@ -6,6 +6,8 @@ import Table from '../../../components/ui/Table';
 import Button from '../../../components/ui/Button';
 import Badge from '../../../components/ui/Badge';
 import Loader from '../../../components/ui/Loader';
+import EmptyState from '../../../components/ui/EmptyState';
+import Skeleton from '../../../components/ui/Skeleton';
 import useAuth from '../../../context/useAuth';
 import {
   fetchNews,
@@ -58,8 +60,8 @@ const Drafts = () => {
       </div>
 
       {tablesLoading ? (
-        <div className="flex items-center justify-center py-20">
-          <Loader size="md" label="Fetching your drafts" />
+        <div className="p-4">
+          <Skeleton rows={6} />
         </div>
       ) : (
         <div className="grid gap-6 lg:grid-cols-2">
@@ -82,12 +84,12 @@ const Drafts = () => {
                 </Table.Head>
                 <Table.Body>
                   {drafts.length === 0 ? (
-                    <Table.Row>
-                      <Table.Cell colSpan={3} className="py-6 text-center text-sm text-gov-gray-600">
-                        No drafts yet. Start a new article to see it here.
-                      </Table.Cell>
-                    </Table.Row>
-                  ) : (
+                      <Table.Row>
+                        <Table.Cell colSpan={3} className="py-6">
+                          <EmptyState title="No drafts" description="No drafts yet. Start a new article to see it here." />
+                        </Table.Cell>
+                      </Table.Row>
+                    ) : (
                     drafts.map((draft) => (
                       <Table.Row key={draft.id}>
                         <Table.Cell>
@@ -149,8 +151,8 @@ const Drafts = () => {
                 <Table.Body>
                   {pending.length === 0 ? (
                     <Table.Row>
-                      <Table.Cell colSpan={3} className="py-6 text-center text-sm text-gov-gray-600">
-                        You have no items awaiting approval.
+                      <Table.Cell colSpan={3} className="py-6">
+                        <EmptyState title="No pending submissions" description="You have no items awaiting approval." />
                       </Table.Cell>
                     </Table.Row>
                   ) : (

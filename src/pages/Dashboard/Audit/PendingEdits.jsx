@@ -4,6 +4,8 @@ import Card from '../../../components/ui/Card';
 import Table from '../../../components/ui/Table';
 import Badge from '../../../components/ui/Badge';
 import Button from '../../../components/ui/Button';
+import EmptyState from '../../../components/ui/EmptyState';
+import Skeleton from '../../../components/ui/Skeleton';
 import Modal from '../../../components/ui/Modal';
 import useAuth from '../../../context/useAuth';
 import { fetchEmployeeEdits } from '../../../services/dataService';
@@ -57,19 +59,19 @@ const PendingEdits = () => {
               </Table.Row>
             </Table.Head>
             <Table.Body>
-              {isLoading ? (
-                <Table.Row>
-                  <Table.Cell colSpan={4} className="py-6 text-center text-sm text-gov-gray-600">
-                    Loading submissions…
-                  </Table.Cell>
-                </Table.Row>
-              ) : submissions.length === 0 ? (
-                <Table.Row>
-                  <Table.Cell colSpan={4} className="py-6 text-center text-sm text-gov-gray-600">
-                    You haven&apos;t submitted any corrections yet.
-                  </Table.Cell>
-                </Table.Row>
-              ) : (
+                {isLoading ? (
+                  <Table.Row>
+                    <Table.Cell colSpan={4}>
+                      <Skeleton rows={4} />
+                    </Table.Cell>
+                  </Table.Row>
+                ) : submissions.length === 0 ? (
+                  <Table.Row>
+                    <Table.Cell colSpan={4} className="py-6">
+                      <EmptyState title="No submissions" description="You haven't submitted any corrections yet." />
+                    </Table.Cell>
+                  </Table.Row>
+                ) : (
                 submissions.map((submission) => (
                   <Table.Row key={submission.id}>
                     <Table.Cell>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../services/api';
 import { toast } from 'react-toastify';
+import EmptyState from '../ui/EmptyState';
+import Skeleton from '../ui/Skeleton';
 
 const DocumentList = () => {
   const [documents, setDocuments] = useState([]);
@@ -27,9 +29,12 @@ const DocumentList = () => {
     <div className="mt-10">
       <h3 className="text-lg font-semibold mb-4">Uploaded Documents</h3>
       {loading ? (
-        <p>Loading documents...</p>
+        <Skeleton rows={4} />
       ) : documents.length === 0 ? (
-        <p>No documents uploaded yet.</p>
+        <EmptyState
+          title="No documents uploaded"
+          description="You haven't uploaded any documents yet. Use the upload form to add files that can be shared with your LGA."
+        />
       ) : (
         <ul className="space-y-3">
           {documents.map((doc) => (

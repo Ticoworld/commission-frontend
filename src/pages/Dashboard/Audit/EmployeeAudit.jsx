@@ -6,6 +6,8 @@ import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
 import Badge from '../../../components/ui/Badge';
+import EmptyState from '../../../components/ui/EmptyState';
+import Skeleton from '../../../components/ui/Skeleton';
 import SuggestEditModal from '../../../components/dashboard/employees/SuggestEditModal';
 import useAuth from '../../../context/useAuth';
 import { fetchEmployees, suggestEmployeeEdit } from '../../../services/dataService';
@@ -100,19 +102,19 @@ const EmployeeAudit = () => {
               </Table.Row>
             </Table.Head>
             <Table.Body>
-              {isLoading ? (
-                <Table.Row>
-                  <Table.Cell colSpan={5} className="py-6 text-center text-sm text-gov-gray-600">
-                    Loading employee records…
-                  </Table.Cell>
-                </Table.Row>
-              ) : filteredEmployees.length === 0 ? (
-                <Table.Row>
-                  <Table.Cell colSpan={5} className="py-6 text-center text-sm text-gov-gray-600">
-                    No employees match your filters.
-                  </Table.Cell>
-                </Table.Row>
-              ) : (
+                {isLoading ? (
+                  <Table.Row>
+                    <Table.Cell colSpan={5}>
+                      <Skeleton rows={6} />
+                    </Table.Cell>
+                  </Table.Row>
+                ) : filteredEmployees.length === 0 ? (
+                  <Table.Row>
+                    <Table.Cell colSpan={5} className="py-6">
+                      <EmptyState title="No employees" description="No employees match your filters." />
+                    </Table.Cell>
+                  </Table.Row>
+                ) : (
                 filteredEmployees.map((employee) => (
                   <Table.Row key={employee.id}>
                     <Table.Cell>

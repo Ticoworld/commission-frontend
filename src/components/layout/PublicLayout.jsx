@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 import Header from './Header';
+import Breadcrumbs from './Breadcrumbs';
 import Footer from './Footer';
 import Loader from '../ui/Loader';
 
@@ -16,9 +17,13 @@ const PublicLayout = () => {
       <Header />
       <main
         id="main-content"
+        role="main"
         tabIndex={-1}
         className="flex-1 pt-24 sm:pt-28"
       >
+        <div className="px-6 pt-6">
+          <Breadcrumbs />
+        </div>
         <Suspense
           fallback={(
             <div className="flex items-center justify-center py-20">

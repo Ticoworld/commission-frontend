@@ -91,12 +91,23 @@ const NewsEditorForm = ({
     setValue('imageUrl', payload.url, { shouldDirty: true });
   };
 
+  const normalizeTags = (tags) => {
+    if (!tags) return [];
+    if (Array.isArray(tags)) return tags.map((t) => String(t).trim()).filter(Boolean);
+    return String(tags)
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean);
+  };
+
   const onSave = handleSubmit(async (values) => {
-    await onSaveDraft?.(values);
+    const payload = { ...values, tags: normalizeTags(values.tags) };
+    await onSaveDraft?.(payload);
   });
 
   const onSubmitApproval = handleSubmit(async (values) => {
-    await onSubmitForApproval?.(values);
+    const payload = { ...values, tags: normalizeTags(values.tags) };
+    await onSubmitForApproval?.(payload);
   });
 
   return (

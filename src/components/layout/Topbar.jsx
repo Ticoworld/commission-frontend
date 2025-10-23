@@ -60,11 +60,16 @@ const Topbar = () => {
         <div className="flex items-center space-x-4">
           {/* Notifications */}
           <Menu as="div" className="relative">
-            <Menu.Button className="relative p-2 text-gov-gray-600 hover:text-gov-blue-700 hover:bg-gov-gray-50 rounded-lg transition-colors">
-              <BellIcon className="w-5 h-5" />
+            <Menu.Button
+              className="relative p-2 text-gov-gray-600 hover:text-gov-blue-700 hover:bg-gov-gray-50 rounded-lg transition-colors"
+              aria-label={unreadCount > 0 ? `Notifications. ${unreadCount} unread.` : 'Notifications'}
+              aria-haspopup="true"
+            >
+              <BellIcon className="w-5 h-5" aria-hidden="true" />
               {unreadCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-red-500 px-1 text-xs font-medium text-white">
-                  {Math.min(unreadCount, 9)}
+                <span className="absolute -top-1 -right-1 flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-red-500 px-1 text-xs font-medium text-white" aria-hidden="false" aria-live="polite">
+                  <span className="sr-only">{unreadCount} unread notifications</span>
+                  <span aria-hidden="true">{Math.min(unreadCount, 9)}</span>
                 </span>
               )}
             </Menu.Button>
@@ -113,7 +118,7 @@ const Topbar = () => {
 
           {/* User Menu */}
           <Menu as="div" className="relative">
-            <Menu.Button className="flex items-center space-x-2 p-2 hover:bg-gov-gray-50 rounded-lg transition-colors">
+            <Menu.Button aria-haspopup="true" className="flex items-center space-x-2 p-2 hover:bg-gov-gray-50 rounded-lg transition-colors">
               <div className="w-8 h-8 bg-gov-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">
                 {user?.name ? getInitials(user.name) : 'U'}
               </div>

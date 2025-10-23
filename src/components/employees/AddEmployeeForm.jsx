@@ -16,7 +16,7 @@ const AddEmployeeForm = ({ onEmployeeAdded }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post('http://localhost:5000/api/employees', formData);
+      await api.post('/employees', formData);
       toast.success('Employee added successfully');
       setFormData({ name: '', email: '', position: '' });
       onEmployeeAdded?.(); // refresh list

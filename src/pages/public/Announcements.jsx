@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
+import EmptyState from '../../components/ui/EmptyState';
+import Skeleton from '../../components/ui/Skeleton';
 import PageHero from '../../components/common/PageHero';
 import api from '../../services/api';
 
@@ -38,15 +40,13 @@ const Announcements = () => {
 
       <section className="container-custom">
         {isLoading ? (
-          <div className="space-y-4">
-            <div className="h-24 w-full animate-pulse rounded-lg bg-gov-gray-100" />
-            <div className="h-24 w-full animate-pulse rounded-lg bg-gov-gray-100" />
-            <div className="h-24 w-full animate-pulse rounded-lg bg-gov-gray-100" />
+          <div className="p-4">
+            <Skeleton rows={3} />
           </div>
         ) : announcements.length === 0 ? (
-          <Card className="p-8 text-center text-gov-gray-600">
-            No announcements are currently available. Please check back soon.
-          </Card>
+          <div className="py-8">
+            <EmptyState title="No announcements" description="No announcements are currently available. Please check back soon." />
+          </div>
         ) : (
           <div className="space-y-6">
             {announcements.map((announcement) => (

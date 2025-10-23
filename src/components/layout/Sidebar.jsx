@@ -26,12 +26,15 @@ const Sidebar = () => {
 
     const roleSpecificNav = {
       SUPER: [
+        { name: 'Users', href: '/dashboard/admin/users', icon: UsersIcon },
         { name: 'Employees', href: '/dashboard/employees', icon: UsersIcon },
         { name: 'News Moderation', href: '/dashboard/news', icon: NewspaperIcon },
         { name: 'Audit Queue', href: '/dashboard/audit-queue', icon: ClipboardDocumentCheckIcon },
         { name: 'Retirement Alerts', href: '/dashboard/retirement-alerts', icon: BellAlertIcon },
         { name: 'Activity Log', href: '/dashboard/activity-log', icon: DocumentTextIcon },
-        { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon }
+        { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon },
+        { name: 'Invite User', href: '/dashboard/admin/invite', icon: UsersIcon },
+        { name: 'Role Editor', href: '/dashboard/admin/roles', icon: Cog6ToothIcon }
       ],
       ADMIN: [
         { name: 'Employees', href: '/dashboard/employees', icon: UsersIcon },
@@ -70,6 +73,9 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <aside
+        id="main-sidebar"
+        role="complementary"
+        aria-label="Main sidebar"
         className={clsx(
           'fixed top-0 left-0 bottom-0 z-50 w-64 bg-white border-r border-gov-gray-200 transform transition-transform duration-300 lg:translate-x-0',
           mobileMenuOpen ? 'translate-x-0' : '-translate-x-full'
@@ -91,9 +97,10 @@ const Sidebar = () => {
           
           <button
             onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close sidebar"
             className="lg:hidden text-gov-gray-500 hover:text-gov-gray-700"
           >
-            <XMarkIcon className="w-6 h-6" />
+            <XMarkIcon className="w-6 h-6" aria-hidden="true" />
           </button>
         </div>
 
@@ -137,9 +144,15 @@ const Sidebar = () => {
       {/* Mobile menu button */}
       <button
         onClick={() => setMobileMenuOpen(true)}
-        className="fixed top-4 left-4 z-30 lg:hidden bg-white p-2 rounded-lg shadow-md text-gov-gray-700 hover:text-gov-blue-700"
+        aria-label="Open sidebar menu"
+        aria-controls="main-sidebar"
+        aria-expanded={mobileMenuOpen}
+        className={clsx(
+          'fixed top-4 left-4 z-50 lg:hidden bg-white p-2 rounded-lg shadow-md text-gov-gray-700 hover:text-gov-blue-700',
+          mobileMenuOpen && 'hidden'
+        )}
       >
-        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
         </svg>
       </button>

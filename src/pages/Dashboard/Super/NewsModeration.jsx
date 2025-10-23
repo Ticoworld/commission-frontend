@@ -10,6 +10,8 @@ import { toast } from 'react-toastify';
 import useAuth from '../../../context/useAuth';
 import Badge from '../../../components/ui/Badge';
 import Button from '../../../components/ui/Button';
+import EmptyState from '../../../components/ui/EmptyState';
+import Skeleton from '../../../components/ui/Skeleton';
 import { formatDate } from '../../../lib/utils';
 
 const NewsModeration = () => {
@@ -27,7 +29,7 @@ const NewsModeration = () => {
     [queueItems]
   );
 
-  const { data: publishedNews = [] } = useQuery({
+  const { data: publishedNews = [], isLoading: loadingPublished } = useQuery({
     queryKey: ['news', 'published'],
     queryFn: () => fetchNews({ status: NEWS_STATUS.PUBLISHED })
   });
@@ -120,10 +122,16 @@ const NewsModeration = () => {
               </Table.Row>
             </Table.Head>
             <Table.Body>
-              {publishedNews.length === 0 ? (
+              {loadingPublished ? (
                 <Table.Row>
-                  <Table.Cell colSpan={4} className="text-center py-6 text-sm text-gov-gray-600">
-                    No articles have been published yet.
+                  <Table.Cell colSpan={4}>
+                    <Skeleton rows={4} />
+                  </Table.Cell>
+                </Table.Row>
+              ) : publishedNews.length === 0 ? (
+                <Table.Row>
+                  <Table.Cell colSpan={4} className="py-6">
+                    <EmptyState title="No published articles" description="No articles have been published yet." />
                   </Table.Cell>
                 </Table.Row>
               ) : (

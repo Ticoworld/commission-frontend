@@ -13,6 +13,7 @@ const Contact = lazy(() => import('../pages/Contact'));
 const Complaint = lazy(() => import('../pages/complaints/Complaint'));
 const GalleryPage = lazy(() => import('../pages/gallery/GalleryPage'));
 const NewsPage = lazy(() => import('../pages/NewsPage/NewsPage'));
+const NewsDetailPage = lazy(() => import('../pages/NewsPage/NewsDetailPage'));
 const LocalGovernmentPage = lazy(() => import('../pages/LocalGovernmentPage/LocalGovernmentPage'));
 const DcPage = lazy(() => import('../pages/DevelopmentCenterPage/DcPage'));
 const Faq = lazy(() => import('../pages/faq/Faq'));
@@ -20,6 +21,8 @@ const Faq = lazy(() => import('../pages/faq/Faq'));
 // Auth & error screens (lazy loaded)
 const Login = lazy(() => import('../pages/auth/Login'));
 const Unauthorized = lazy(() => import('../pages/errors/Unauthorized'));
+const SetPassword = lazy(() => import('../pages/auth/SetPassword'));
+const ResetPassword = lazy(() => import('../pages/auth/ResetPassword'));
 
 // Dashboard Pages (lazy loaded)
 const Dashboard = lazy(() => import('../pages/Dashboard'));
@@ -32,6 +35,9 @@ const NewsEditor = lazy(() => import('../pages/Dashboard/Media/NewsEditor'));
 const Drafts = lazy(() => import('../pages/Dashboard/Media/Drafts'));
 const PendingEdits = lazy(() => import('../pages/Dashboard/Audit/PendingEdits'));
 const EmployeeAudit = lazy(() => import('../pages/Dashboard/Audit/EmployeeAudit'));
+const InviteUser = lazy(() => import('../pages/admin/InviteUser'));
+const RoleEditorAdmin = lazy(() => import('../pages/admin/RoleEditor'));
+const UserManagement = lazy(() => import('../pages/admin/UserManagement'));
 
 const LoadingFallback = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -50,10 +56,13 @@ const AppRouter = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/development-centers" element={<DcPage />} />
         <Route path="/local-governments" element={<LocalGovernmentPage />} />
-        <Route path="/news-and-updates" element={<NewsPage />} />
+  <Route path="/news-and-updates" element={<NewsPage />} />
+  <Route path="/news-and-updates/:id" element={<NewsDetailPage />} />
     <Route path="/gallery" element={<GalleryPage />} />
     <Route path="/complaints" element={<Complaint />} />
         <Route path="/faq" element={<Faq />} />
+        <Route path="/set-password" element={<SetPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
       </Route>
 
       {/* Auth Routes (no layout) */}
@@ -132,6 +141,36 @@ const AppRouter = () => {
           } 
         />
         <Route path="settings" element={<div className="p-6">Settings (Coming Soon)</div>} />
+          <Route
+            path="admin/invite"
+            element={
+              <ProtectedRoute allowedRoles={[ 'SUPER' ]}>
+                <Suspense fallback={<LoadingFallback />}>
+                  <InviteUser />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="admin/roles"
+            element={
+              <ProtectedRoute allowedRoles={[ 'SUPER' ]}>
+                <Suspense fallback={<LoadingFallback />}>
+                  <RoleEditorAdmin />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="admin/users"
+            element={
+              <ProtectedRoute allowedRoles={[ 'SUPER' ]}>
+                <Suspense fallback={<LoadingFallback />}>
+                  <UserManagement />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
         <Route 
           path="news-editor" 
           element={

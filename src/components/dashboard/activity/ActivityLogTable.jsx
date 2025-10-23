@@ -1,6 +1,8 @@
 import Table from '../../ui/Table';
 import Button from '../../ui/Button';
 import Badge from '../../ui/Badge';
+import EmptyState from '../../ui/EmptyState';
+import Skeleton from '../../ui/Skeleton';
 import { formatDate } from '../../../lib/utils';
 
 const entityVariant = {
@@ -12,16 +14,16 @@ const entityVariant = {
 const ActivityLogTable = ({ entries = [], onSelect, isLoading }) => {
   if (isLoading) {
     return (
-      <div className="py-12 text-center text-sm text-gov-gray-600">
-        Loading activity history…
+      <div className="p-4">
+        <Skeleton rows={6} />
       </div>
     );
   }
 
   if (!entries.length) {
     return (
-      <div className="py-12 text-center text-sm text-gov-gray-600">
-        No activity found for the selected filters.
+      <div className="p-4">
+        <EmptyState title="No activity" description="No activity found for the selected filters." />
       </div>
     );
   }

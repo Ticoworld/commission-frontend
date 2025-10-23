@@ -85,7 +85,7 @@ const Home = () => {
                   alt={slide.subtitle}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/65 to-black/45" />
                 <div className="absolute inset-0 flex items-center">
                   <div className="container-custom">
                     <div className="max-w-2xl">
@@ -211,7 +211,7 @@ const Home = () => {
               <Card key={item} className="overflow-hidden hover:shadow-md transition-shadow">
                 <img 
                   src={`/pic${item}.jpg`} 
-                  alt="News" 
+                  alt={`News image ${item} - Community development`} 
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-6">

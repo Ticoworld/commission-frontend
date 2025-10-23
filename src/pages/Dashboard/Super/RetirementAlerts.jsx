@@ -140,20 +140,15 @@ const RetirementAlerts = () => {
           </Button>
         </div>
 
-        {isLoading ? (
-          <div className="flex items-center justify-center py-12">
-            <Loader size="md" label="Loading alerts" />
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <RetirementAlertsTable
-              alerts={sortedAlerts}
-              onSort={handleSort}
-              sortKey={sortKey}
-              sortDirection={sortDirection}
-            />
-          </div>
-        )}
+        <div className="overflow-x-auto">
+          <RetirementAlertsTable
+            alerts={sortedAlerts}
+            onSort={handleSort}
+            sortKey={sortKey}
+            sortDirection={sortDirection}
+            isLoading={isLoading}
+          />
+        </div>
       </Card>
     </div>
   );

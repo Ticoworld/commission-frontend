@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from 'react';
+import EmptyState from '../../components/ui/EmptyState';
+import Skeleton from '../../components/ui/Skeleton';
 import api from '../../services/api';
 import { toast } from 'react-toastify';
 import UploadForm from '../../components/uploads/UploadForm';
@@ -85,30 +87,25 @@ const LgaDashboard = () => {
       {/* Employee Table */}
       <div>
         <h3 className="text-lg font-semibold mb-2">LGA Employees</h3>
-        {loading ? (
-          <p>Loading employees...</p>
-        ) : employees.length === 0 ? (
-          <p>No employees found for your LGA.</p>
-        ) : (
-          <table className="w-full border text-sm">
-            <thead className="bg-gray-200">
-              <tr>
-                <th className="p-2 text-left">Name</th>
-                <th className="p-2 text-left">Email</th>
-                <th className="p-2 text-left">Position</th>
-              </tr>
-            </thead>
-            <tbody>
-              {employees.map((emp) => (
-                <tr key={emp.id} className="border-t">
-                  <td className="p-2">{emp.name}</td>
-                  <td className="p-2">{emp.email}</td>
-                  <td className="p-2">{emp.position}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        )}
+                    {loading ? (
+                      <Skeleton rows={4} />
+                    ) : employees.length === 0 ? (
+                      <EmptyState title="No employees" description="No employees found for your LGA." />
+                    ) : (
+                      <div className="grid gap-4">
+                        {employees.map((emp) => (
+                          <Card key={emp.id} className="p-4">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <p className="font-medium">{emp.name}</p>
+                                <p className="text-xs text-gov-gray-500">{emp.position}</p>
+                              </div>
+                              <div className="text-sm text-gov-gray-500">{emp.lga}</div>
+                            </div>
+                          </Card>
+                        ))}
+                      </div>
+                    )}
       </div>
     </div>
   );

@@ -18,7 +18,7 @@ const News = () => {
         </div>
           <div className="service-card-container">
               <div className="gold-card" data-aos="fade-up">
-              <img src="/abuja-with-sg.jpg" alt="" />
+              <img src="/abuja-with-sg.jpg" alt="Government official visiting Abuja" />
               <div className="gold-card-text">
                   <small>09/07/17</small>
                   <h3>Commission Launches Digital Records Initiative</h3>
@@ -27,7 +27,7 @@ const News = () => {
               </div>
               </div>
               <div className="gold-card" data-aos="fade-up">
-              <img src="/rebasing-coverpicture-052024.jpg" alt="" />
+              <img src="/rebasing-coverpicture-052024.jpg" alt="Training programme session with staff" />
               <div className="gold-card-text">
                   <small>01/09/16</small>
                   <h3>Training Programme for Local Government Staff Begins</h3>
@@ -36,7 +36,7 @@ const News = () => {
               </div>
               </div>
               <div className="gold-card" data-aos="fade-up">
-              <img src="/launch-picture-with-ministers.jpg" alt="" />
+              <img src="/launch-picture-with-ministers.jpg" alt="Commission launch event with ministers" />
               <div className="gold-card-text">
                   <small>03/03/17</small>
                   <h3>Community Outreach on Public Service Awareness</h3>

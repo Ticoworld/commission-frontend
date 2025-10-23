@@ -1,5 +1,7 @@
 import Table from '../../ui/Table';
 import Badge from '../../ui/Badge';
+import EmptyState from '../../ui/EmptyState';
+import Skeleton from '../../ui/Skeleton';
 
 const priorityVariant = {
   critical: 'red',
@@ -15,7 +17,7 @@ const priorityLabel = {
   low: 'Long term'
 };
 
-const RetirementAlertsTable = ({ alerts = [], onSort, sortKey, sortDirection }) => {
+const RetirementAlertsTable = ({ alerts = [], onSort, sortKey, sortDirection, isLoading }) => {
   const headerButton = (key, label) => (
     <button
       type="button"
@@ -30,6 +32,14 @@ const RetirementAlertsTable = ({ alerts = [], onSort, sortKey, sortDirection }) 
       )}
     </button>
   );
+
+  if (isLoading) {
+    return (
+      <div className="p-4">
+        <Skeleton rows={4} />
+      </div>
+    );
+  }
 
   return (
     <Table>
@@ -47,8 +57,8 @@ const RetirementAlertsTable = ({ alerts = [], onSort, sortKey, sortDirection }) 
       <Table.Body>
         {alerts.length === 0 ? (
           <Table.Row>
-            <Table.Cell colSpan={5} className="py-6 text-center text-sm text-gov-gray-600">
-              No retirement alerts match your filters.
+            <Table.Cell colSpan={5} className="py-6">
+              <EmptyState title="No retirement alerts" description="No retirement alerts match your filters." />
             </Table.Cell>
           </Table.Row>
         ) : (

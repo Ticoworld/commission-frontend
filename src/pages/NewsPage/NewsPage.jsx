@@ -4,6 +4,7 @@ import Card from '../../components/ui/Card';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
 import PageHero from '../../components/common/PageHero';
+import EmptyState from '../../components/ui/EmptyState';
 import {
   NewspaperIcon,
   MegaphoneIcon,
@@ -76,11 +77,11 @@ const newsArticles = [
   }
 ];
 
-const spotlight = {
+  const spotlight = {
   title: 'Special Report: How ESLGSC is digitising grassroots governance',
   description: 'In-depth feature on the new statewide records digitisation programme, highlighting change management, success stories, and what citizens can expect next.',
   image: '/commissionBuilding.jpg',
-  link: '#'
+  link: '/news-and-updates/spotlight'
 };
 
 const NewsPage = () => {
@@ -123,7 +124,7 @@ const NewsPage = () => {
             <Badge variant="green">Spotlight</Badge>
             <h2 className="text-2xl font-semibold text-gov-gray-900">{spotlight.title}</h2>
             <p className="text-gov-gray-600">{spotlight.description}</p>
-            <Button as={Link} to={spotlight.link} variant="outline" size="sm">
+                <Button as={Link} to={spotlight.link} variant="outline" size="sm">
               Read Special Report
             </Button>
           </div>
@@ -147,7 +148,15 @@ const NewsPage = () => {
         </div>
 
         <div className="grid gap-8 lg:grid-cols-3">
-          {filteredNews.map((article) => (
+          {filteredNews.length === 0 ? (
+            <div className="col-span-3">
+              <EmptyState
+                title="No news found"
+                description="There are no articles matching your filters right now. Check back later or select a different category."
+                action={<Button as={Link} to="/news-and-updates" size="sm">Browse all</Button>}
+              />
+            </div>
+          ) : filteredNews.map((article) => (
             <Card key={article.id} className="flex flex-col overflow-hidden">
               <div className="h-48 w-full overflow-hidden">
                 <img
@@ -164,7 +173,7 @@ const NewsPage = () => {
                 </div>
                 <h3 className="text-xl font-semibold text-gov-gray-900">{article.title}</h3>
                 <p className="text-sm text-gov-gray-600 flex-1">{article.summary}</p>
-                <Button as={Link} to={article.link} variant="outline" size="sm" className="self-start">
+                <Button as={Link} to={`/news-and-updates/${article.id}`} variant="outline" size="sm" className="self-start">
                   Read More
                 </Button>
               </div>

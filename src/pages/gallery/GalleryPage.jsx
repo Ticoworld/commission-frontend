@@ -3,6 +3,7 @@ import Card from '../../components/ui/Card';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
 import PageHero from '../../components/common/PageHero';
+import EmptyState from '../../components/ui/EmptyState';
 import {
   CameraIcon,
   PhotoIcon,
@@ -178,7 +179,15 @@ const GalleryPage = () => {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {filteredItems.map((item) => (
+          {filteredItems.length === 0 ? (
+            <div className="col-span-3">
+              <EmptyState
+                title="No media found"
+                description="We couldn't find any items matching your selection. Try a different category or return to the gallery home."
+                action={<Button as="a" href="/gallery" size="sm">View collection</Button>}
+              />
+            </div>
+          ) : filteredItems.map((item) => (
             <Card key={item.id} className="group overflow-hidden">
               <div className="relative h-64 w-full">
                 <img

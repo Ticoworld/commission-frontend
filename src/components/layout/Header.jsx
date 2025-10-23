@@ -61,6 +61,7 @@ const Header = () => {
 
   return (
     <header 
+      role="banner"
       className={clsx(
         'fixed top-0 left-0 right-0 z-40 transition-all duration-300',
         scrolled 
@@ -68,7 +69,7 @@ const Header = () => {
           : 'bg-white/95 backdrop-blur-sm'
       )}
     >
-      <nav className="container-custom py-4">
+  <nav role="navigation" aria-label="Primary navigation" className="container-custom py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
@@ -96,8 +97,9 @@ const Header = () => {
               if (hasChildren) {
                 return (
                   <Menu as="div" key={item.name} className="relative">
-                    <Menu.Button
-                      className={clsx(
+            <Menu.Button
+              aria-haspopup="true"
+              className={clsx(
                         'px-4 py-2 text-sm font-medium rounded-md transition-colors inline-flex items-center space-x-1',
                         childIsActive
                           ? 'text-gov-blue-700 bg-gov-gray-50'
@@ -178,12 +180,14 @@ const Header = () => {
             
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={mobileMenuOpen}
               className="lg:hidden text-gov-gray-700 hover:text-gov-blue-700 transition-colors"
             >
               {mobileMenuOpen ? (
-                <XMarkIcon className="w-6 h-6" />
+                <XMarkIcon className="w-6 h-6" aria-hidden="true" />
               ) : (
-                <Bars3Icon className="w-6 h-6" />
+                <Bars3Icon className="w-6 h-6" aria-hidden="true" />
               )}
             </button>
           </div>
@@ -209,7 +213,7 @@ const Header = () => {
                   <Menu as="div" className="relative">
                     {({ open }) => (
                       <>
-                        <Menu.Button className="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-gov-gray-700 hover:bg-gov-gray-50 rounded-md transition-colors">
+                        <Menu.Button aria-haspopup="true" className="w-full flex items-center justify-between px-4 py-2 text-sm font-medium text-gov-gray-700 hover:bg-gov-gray-50 rounded-md transition-colors">
                           <span>{item.name}</span>
                           <ChevronDownIcon 
                             className={clsx('w-4 h-4 transition-transform', open && 'rotate-180')} 

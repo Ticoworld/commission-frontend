@@ -13,7 +13,7 @@ const DashboardLayout = () => {
       <div className="lg:pl-64">
         <Topbar />
         
-        <main className="p-6 pt-20">
+  <main id="main" className="p-6 pt-20">
           <Breadcrumbs />
           
           <Suspense fallback={<Loader size="lg" className="py-12" />}>

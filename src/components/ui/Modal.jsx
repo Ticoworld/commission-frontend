@@ -55,9 +55,10 @@ const Modal = ({
                     {showCloseButton && (
                       <button
                         onClick={onClose}
+                        aria-label="Close dialog"
                         className="text-gov-gray-400 hover:text-gov-gray-600 transition-colors"
                       >
-                        <XMarkIcon className="w-5 h-5" />
+                        <XMarkIcon className="w-5 h-5" aria-hidden="true" />
                       </button>
                     )}
                   </div>

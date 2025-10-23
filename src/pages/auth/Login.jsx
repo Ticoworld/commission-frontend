@@ -159,6 +159,7 @@ const Login = () => {
               />
               <button
                 type="button"
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
                 onClick={() => setShowPassword((prev) => !prev)}
                 className="absolute inset-y-0 right-3 flex items-center text-gov-gray-500 hover:text-gov-blue-600"
               >
