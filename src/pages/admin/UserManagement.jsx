@@ -17,7 +17,13 @@ const UserManagement = () => {
   const fetchUsers = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await api.get('/users', { params: { q, role: roleFilter, status, page, pageSize } });
+      // Build params object and only include filters when meaningful to avoid sending empty strings
+      const params = { page, pageSize };
+      if (q && q.trim() !== '') params.q = q.trim();
+      if (roleFilter && roleFilter.trim() !== '') params.role = roleFilter;
+      if (status && status !== 'all') params.status = status;
+
+      const res = await api.get('/users', { params });
       const payload = res.data;
       if (Array.isArray(payload)) setUsers(payload);
       else if (payload && Array.isArray(payload.data)) setUsers(payload.data);
