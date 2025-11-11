@@ -1,4 +1,4 @@
-// src/components/Employees/EmployeeOnboardingForm.jsx
+// src/components/employees/EmployeeOnboardingForm.jsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createEmployee } from '../../services/employeeService';

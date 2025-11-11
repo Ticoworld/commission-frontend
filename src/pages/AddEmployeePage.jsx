@@ -1,5 +1,5 @@
 // src/pages/AddEmployeePage.jsx
-import EmployeeOnboardingForm from '../components/Employees/EmployeeOnboardingForm';
+import EmployeeOnboardingForm from '../components/employees/EmployeeOnboardingForm';
 
 const AddEmployeePage = () => {
   return (
