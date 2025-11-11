@@ -1,10 +1,9 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Card from '../../../components/ui/Card';
 import Table from '../../../components/ui/Table';
-import AuditQueueTable from '../../../components/dashboard/audit/AuditQueueTable';
 import AuditDetailModal from '../../../components/dashboard/audit/AuditDetailModal';
-import { approveAudit, fetchAuditQueue, fetchNews, rejectAudit } from '../../../services/dataService';
+import { getAllNews, approveNews, rejectNews } from '../../../services/newsService';
 import { NEWS_STATUS } from '../../../lib/constants';
 import { toast } from 'react-toastify';
 import useAuth from '../../../context/useAuth';
@@ -15,38 +14,30 @@ import Skeleton from '../../../components/ui/Skeleton';
 import { formatDate } from '../../../lib/utils';
 
 const NewsModeration = () => {
-  const { user } = useAuth();
+  useAuth();
   const queryClient = useQueryClient();
   const [selectedItem, setSelectedItem] = useState(null);
 
-  const { data: queueItems = [], isLoading } = useQuery({
-    queryKey: ['auditQueue'],
-    queryFn: fetchAuditQueue
+  // Fetch pending (awaiting approval) news articles directly
+  const { data: pendingNews = [], isLoading: loadingPending } = useQuery({
+    queryKey: ['news', 'pending'],
+    queryFn: () => getAllNews({ status: NEWS_STATUS.PENDING })
   });
 
-  const pendingNews = useMemo(
-    () => queueItems.filter((item) => item.entityType === 'news'),
-    [queueItems]
-  );
-
+  // Fetch published news articles
   const { data: publishedNews = [], isLoading: loadingPublished } = useQuery({
     queryKey: ['news', 'published'],
-    queryFn: () => fetchNews({ status: NEWS_STATUS.PUBLISHED })
+    queryFn: () => getAllNews({ status: NEWS_STATUS.PUBLISHED })
   });
 
   const invalidate = () => {
-    queryClient.invalidateQueries({ queryKey: ['auditQueue'] });
-    queryClient.invalidateQueries({ queryKey: ['news'] });
+    queryClient.invalidateQueries({ queryKey: ['news', 'pending'] });
     queryClient.invalidateQueries({ queryKey: ['news', 'published'] });
     queryClient.invalidateQueries({ queryKey: ['activityLog'] });
   };
 
   const approveMutation = useMutation({
-    mutationFn: (notes) => approveAudit({
-      id: selectedItem.id,
-      actor: user,
-      notes
-    }),
+    mutationFn: (notes) => approveNews(selectedItem.id, { notes }),
     onSuccess: () => {
       toast.success('Article approved and published');
       invalidate();
@@ -56,11 +47,7 @@ const NewsModeration = () => {
   });
 
   const rejectMutation = useMutation({
-    mutationFn: (notes) => rejectAudit({
-      id: selectedItem.id,
-      actor: user,
-      notes
-    }),
+    mutationFn: (notes) => rejectNews(selectedItem.id, { notes }),
     onSuccess: () => {
       toast.info('Article sent back to author');
       invalidate();
@@ -88,12 +75,62 @@ const NewsModeration = () => {
           </div>
           <Badge variant="yellow">{pendingNews.length} awaiting review</Badge>
         </div>
-        <div className="p-6">
-          <AuditQueueTable
-            items={pendingNews}
-            isLoading={isLoading}
-            onReview={setSelectedItem}
-          />
+        <div className="overflow-x-auto">
+          <Table>
+            <Table.Head>
+              <Table.Row>
+                <Table.HeaderCell>Title</Table.HeaderCell>
+                <Table.HeaderCell>Category</Table.HeaderCell>
+                <Table.HeaderCell>Submitted</Table.HeaderCell>
+                <Table.HeaderCell className="text-right">Action</Table.HeaderCell>
+              </Table.Row>
+            </Table.Head>
+            <Table.Body>
+              {loadingPending ? (
+                <Table.Row>
+                  <Table.Cell colSpan={4}>
+                    <Skeleton rows={4} />
+                  </Table.Cell>
+                </Table.Row>
+              ) : pendingNews.length === 0 ? (
+                <Table.Row>
+                  <Table.Cell colSpan={4} className="py-6">
+                    <EmptyState title="No pending submissions" description="No articles are awaiting moderation." />
+                  </Table.Cell>
+                </Table.Row>
+              ) : (
+                pendingNews.map((article) => (
+                  <Table.Row key={article.id}>
+                    <Table.Cell>
+                      <div className="space-y-1">
+                        <p className="font-medium text-gov-gray-900">{article.title || 'Untitled article'}</p>
+                        <p className="text-xs text-gov-gray-500">{article.summary || 'No summary provided'}</p>
+                      </div>
+                    </Table.Cell>
+                    <Table.Cell>{article.category || '—'}</Table.Cell>
+                    <Table.Cell>{article.submittedAt ? formatDate(article.submittedAt) : '—'}</Table.Cell>
+                    <Table.Cell className="text-right">
+                      <Button
+                        size="sm"
+                        onClick={() => setSelectedItem({
+                          id: article.id,
+                          entityType: 'news',
+                          entityName: article.title,
+                          submittedByName: article.authorName,
+                          submittedById: article.authorId,
+                          submittedAt: article.submittedAt || article.updatedAt,
+                          status: NEWS_STATUS.PENDING,
+                          payload: { article }
+                        })}
+                      >
+                        Review
+                      </Button>
+                    </Table.Cell>
+                  </Table.Row>
+                ))
+              )}
+            </Table.Body>
+          </Table>
         </div>
       </Card>
 

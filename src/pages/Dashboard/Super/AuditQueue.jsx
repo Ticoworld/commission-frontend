@@ -3,20 +3,20 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Card from '../../../components/ui/Card';
 import AuditQueueTable from '../../../components/dashboard/audit/AuditQueueTable';
 import AuditDetailModal from '../../../components/dashboard/audit/AuditDetailModal';
-import { approveAudit, fetchAuditQueue, rejectAudit } from '../../../services/dataService';
+import { approveAudit, getAuditQueue, rejectAudit } from '../../../services/auditService';
 import { toast } from 'react-toastify';
 import useAuth from '../../../context/useAuth';
 
 const AUDIT_QUEUE_QUERY_KEY = ['auditQueue'];
 
 const AuditQueue = () => {
-  const { user } = useAuth();
+  useAuth();
   const queryClient = useQueryClient();
   const [selectedItem, setSelectedItem] = useState(null);
 
   const { data: queueItems = [], isLoading } = useQuery({
     queryKey: AUDIT_QUEUE_QUERY_KEY,
-    queryFn: fetchAuditQueue
+    queryFn: getAuditQueue
   });
 
   const closeModal = () => setSelectedItem(null);
@@ -31,11 +31,7 @@ const AuditQueue = () => {
   };
 
   const approveMutation = useMutation({
-    mutationFn: (notes) => approveAudit({
-      id: selectedItem.id,
-      actor: user,
-      notes
-    }),
+    mutationFn: (notes) => approveAudit(selectedItem.id, { notes }),
     onSuccess: () => {
       toast.success('Submission approved successfully');
       invalidateRelatedQueries();
@@ -48,11 +44,7 @@ const AuditQueue = () => {
   });
 
   const rejectMutation = useMutation({
-    mutationFn: (notes) => rejectAudit({
-      id: selectedItem.id,
-      actor: user,
-      notes
-    }),
+    mutationFn: (notes) => rejectAudit(selectedItem.id, { notes }),
     onSuccess: () => {
       toast.info('Submission rejected');
       invalidateRelatedQueries();

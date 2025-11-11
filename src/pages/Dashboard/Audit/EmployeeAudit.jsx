@@ -10,7 +10,8 @@ import EmptyState from '../../../components/ui/EmptyState';
 import Skeleton from '../../../components/ui/Skeleton';
 import SuggestEditModal from '../../../components/dashboard/employees/SuggestEditModal';
 import useAuth from '../../../context/useAuth';
-import { fetchEmployees, suggestEmployeeEdit } from '../../../services/dataService';
+import { getAllEmployees } from '../../../services/employeeService';
+import { suggestEmployeeEdit } from '../../../services/auditService';
 import { DEPARTMENTS } from '../../../lib/constants';
 import { toast } from 'react-toastify';
 import { formatDate } from '../../../lib/utils';
@@ -24,7 +25,7 @@ const EmployeeAudit = () => {
 
   const { data: employees = [], isLoading } = useQuery({
     queryKey: ['employees'],
-    queryFn: fetchEmployees
+    queryFn: getAllEmployees
   });
 
   const filteredEmployees = useMemo(() => {
@@ -42,7 +43,7 @@ const EmployeeAudit = () => {
 
   const mutation = useMutation({
     mutationFn: ({ employeeId, changes, reason }) =>
-      suggestEmployeeEdit({ employeeId, changes, reason }, user),
+      suggestEmployeeEdit({ employeeId, changes, reason }),
     onSuccess: () => {
       toast.success('Edit suggestion submitted for approval');
       setSelectedEmployee(null);

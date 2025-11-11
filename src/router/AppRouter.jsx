@@ -38,6 +38,7 @@ const EmployeeAudit = lazy(() => import('../pages/Dashboard/Audit/EmployeeAudit'
 const InviteUser = lazy(() => import('../pages/admin/InviteUser'));
 const RoleEditorAdmin = lazy(() => import('../pages/admin/RoleEditor'));
 const UserManagement = lazy(() => import('../pages/admin/UserManagement'));
+const AddEmployeePage = lazy(() => import('../pages/AddEmployeePage'));
 
 const LoadingFallback = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -87,7 +88,7 @@ const AppRouter = () => {
       <Route
         path="/dashboard"
         element={
-          <ProtectedRoute allowedRoles={['SUPER', 'ADMIN', 'MEDIA', 'AUDIT']}>
+          <ProtectedRoute allowedRoles={['SUPER_ADMIN', 'ADMIN', 'MEDIA_ADMIN', 'AUDIT']}>
             <DashboardLayout />
           </ProtectedRoute>
         }
@@ -105,6 +106,14 @@ const AppRouter = () => {
           element={
             <Suspense fallback={<LoadingFallback />}>
               <Employees />
+            </Suspense>
+          } 
+        />
+        <Route 
+          path="employees/new" 
+          element={
+            <Suspense fallback={<LoadingFallback />}>
+              <AddEmployeePage />
             </Suspense>
           } 
         />
@@ -144,7 +153,7 @@ const AppRouter = () => {
           <Route
             path="admin/invite"
             element={
-              <ProtectedRoute allowedRoles={[ 'SUPER' ]}>
+              <ProtectedRoute allowedRoles={[ 'SUPER_ADMIN' ]}>
                 <Suspense fallback={<LoadingFallback />}>
                   <InviteUser />
                 </Suspense>
@@ -154,7 +163,7 @@ const AppRouter = () => {
           <Route
             path="admin/roles"
             element={
-              <ProtectedRoute allowedRoles={[ 'SUPER' ]}>
+              <ProtectedRoute allowedRoles={[ 'SUPER_ADMIN' ]}>
                 <Suspense fallback={<LoadingFallback />}>
                   <RoleEditorAdmin />
                 </Suspense>
@@ -164,7 +173,7 @@ const AppRouter = () => {
           <Route
             path="admin/users"
             element={
-              <ProtectedRoute allowedRoles={[ 'SUPER' ]}>
+              <ProtectedRoute allowedRoles={[ 'SUPER_ADMIN' ]}>
                 <Suspense fallback={<LoadingFallback />}>
                   <UserManagement />
                 </Suspense>

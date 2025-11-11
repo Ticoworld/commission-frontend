@@ -84,9 +84,9 @@ const UserManagement = () => {
           <label className="block text-sm font-medium mb-1">Role</label>
           <select className="input" value={roleFilter} onChange={(e) => { setPage(1); setRoleFilter(e.target.value); }}>
             <option value="">All</option>
-            <option value="SUPER">SUPER</option>
+            <option value="SUPER_ADMIN">SUPER_ADMIN</option>
             <option value="ADMIN">ADMIN</option>
-            <option value="MEDIA">MEDIA</option>
+            <option value="MEDIA_ADMIN">MEDIA_ADMIN</option>
             <option value="AUDIT">AUDIT</option>
           </select>
         </div>
@@ -131,9 +131,9 @@ const UserManagement = () => {
                   <td className="p-3 border-b">{u.email}</td>
                   <td className="p-3 border-b">
                     <select className="input" value={u.role} onChange={(e) => changeRole(u.id, e.target.value)}>
-                      <option value="SUPER">SUPER</option>
+                      <option value="SUPER_ADMIN">SUPER_ADMIN</option>
                       <option value="ADMIN">ADMIN</option>
-                      <option value="MEDIA">MEDIA</option>
+                      <option value="MEDIA_ADMIN">MEDIA_ADMIN</option>
                       <option value="AUDIT">AUDIT</option>
                     </select>
                   </td>

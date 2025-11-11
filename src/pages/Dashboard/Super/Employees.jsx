@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Card from '../../../components/ui/Card';
 import Table from '../../../components/ui/Table';
@@ -15,23 +16,21 @@ import { useRetirement } from '../../../hooks/useRetirement';
 import { DEPARTMENTS, POSITIONS } from '../../../lib/constants';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
-  createEmployee,
   deleteEmployee,
-  fetchEmployees,
+  getAllEmployees,
   updateEmployee
-} from '../../../services/dataService';
+} from '../../../services/employeeService';
 import { toast } from 'react-toastify';
 import useAuth from '../../../context/useAuth';
 
 const Employees = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
 
   const { data: employees = [], isLoading } = useQuery({
     queryKey: ['employees'],
-    queryFn: fetchEmployees
+    queryFn: getAllEmployees
   });
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm();
@@ -47,16 +46,6 @@ const Employees = () => {
     queryClient.invalidateQueries({ queryKey: ['employees'] });
     queryClient.invalidateQueries({ queryKey: ['retirementAlerts'] });
   };
-
-  const createMutation = useMutation({
-    mutationFn: (payload) => createEmployee(payload, user),
-    onSuccess: () => {
-      toast.success('Employee added');
-      invalidateEmployees();
-      handleCloseModal();
-    },
-    onError: () => toast.error('Unable to create employee')
-  });
 
   const updateMutation = useMutation({
     mutationFn: (payload) => updateEmployee(editingEmployee?.id, payload, user),
@@ -78,16 +67,11 @@ const Employees = () => {
   });
 
   const onSubmit = (data) => {
-    if (editingEmployee) {
-      updateMutation.mutate(data);
-    } else {
-      createMutation.mutate(data);
-    }
+    updateMutation.mutate(data);
   };
 
   const handleEdit = (employee) => {
     setEditingEmployee(employee);
-    setIsModalOpen(true);
   };
 
   const handleDelete = (id) => {
@@ -97,7 +81,6 @@ const Employees = () => {
   };
 
   const handleCloseModal = () => {
-    setIsModalOpen(false);
     setEditingEmployee(null);
     reset({});
   };
@@ -193,10 +176,12 @@ const Employees = () => {
             Manage employee records and information
           </p>
         </div>
-        <Button onClick={() => setIsModalOpen(true)}>
-          <PlusIcon className="w-4 h-4 mr-2" />
-          Add Employee
-        </Button>
+        <Link to="/dashboard/employees/new">
+          <Button>
+            <PlusIcon className="w-4 h-4 mr-2" />
+            Add Employee
+          </Button>
+        </Link>
       </div>
 
       <Card>
@@ -252,84 +237,84 @@ const Employees = () => {
         </div>
       </Card>
 
-      {/* Add/Edit Modal */}
-      <Modal
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        title={editingEmployee ? 'Edit Employee' : 'Add New Employee'}
-        size="lg"
-      >
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input
-              label="Full Name"
-              required
-              {...register('name', { required: 'Name is required' })}
-              error={errors.name?.message}
-            />
-            <Input
-              label="Email"
-              type="email"
-              required
-              {...register('email', { required: 'Email is required' })}
-              error={errors.email?.message}
-            />
-          </div>
+      {/* Edit Modal */}
+      {editingEmployee && (
+        <Modal
+          isOpen={!!editingEmployee}
+          onClose={handleCloseModal}
+          title="Edit Employee"
+          size="lg"
+        >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                label="Full Name"
+                required
+                {...register('name', { required: 'Name is required' })}
+                error={errors.name?.message}
+              />
+              <Input
+                label="Email"
+                type="email"
+                required
+                {...register('email', { required: 'Email is required' })}
+                error={errors.email?.message}
+              />
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Select
-              label="Position"
-              required
-              {...register('position', { required: 'Position is required' })}
-              error={errors.position?.message}
-              placeholder="Select position"
-            >
-              {POSITIONS.map(pos => (
-                <option key={pos} value={pos}>{pos}</option>
-              ))}
-            </Select>
-            <Select
-              label="Department"
-              required
-              {...register('department', { required: 'Department is required' })}
-              error={errors.department?.message}
-              placeholder="Select department"
-            >
-              {DEPARTMENTS.map(dept => (
-                <option key={dept} value={dept}>{dept}</option>
-              ))}
-            </Select>
-          </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Select
+                label="Position"
+                required
+                {...register('position', { required: 'Position is required' })}
+                error={errors.position?.message}
+                placeholder="Select position"
+              >
+                {POSITIONS.map(pos => (
+                  <option key={pos} value={pos}>{pos}</option>
+                ))}
+              </Select>
+              <Select
+                label="Department"
+                required
+                {...register('department', { required: 'Department is required' })}
+                error={errors.department?.message}
+                placeholder="Select department"
+              >
+                {DEPARTMENTS.map(dept => (
+                  <option key={dept} value={dept}>{dept}</option>
+                ))}
+              </Select>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Input
-              label="Employment Date"
-              type="date"
-              required
-              {...register('employmentDate', { required: 'Employment date is required' })}
-              error={errors.employmentDate?.message}
-            />
-            <Input
-              label="Retirement Date"
-              type="date"
-              required
-              {...register('retirementDate', { required: 'Retirement date is required' })}
-              error={errors.retirementDate?.message}
-            />
-          </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Input
+                label="Employment Date"
+                type="date"
+                required
+                {...register('employmentDate', { required: 'Employment date is required' })}
+                error={errors.employmentDate?.message}
+              />
+              <Input
+                label="Retirement Date"
+                type="date"
+                required
+                {...register('retirementDate', { required: 'Retirement date is required' })}
+                error={errors.retirementDate?.message}
+              />
+            </div>
 
-          <div className="flex justify-end space-x-3 pt-4">
-            <Button type="button" variant="ghost" onClick={handleCloseModal}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={createMutation.isPending || updateMutation.isPending}>
-              {createMutation.isPending || updateMutation.isPending
-                ? 'Saving…'
-                : editingEmployee ? 'Update' : 'Create'} Employee
-            </Button>
-          </div>
-        </form>
-      </Modal>
+            <div className="flex justify-end space-x-3 pt-4">
+              <Button type="button" variant="ghost" onClick={handleCloseModal}>
+                Cancel
+              </Button>
+              <Button type="submit" disabled={updateMutation.isPending}>
+                {updateMutation.isPending ? 'Saving…' : 'Update Employee'}
+              </Button>
+            </div>
+          </form>
+        </Modal>
+      )}
     </div>
   );
 };

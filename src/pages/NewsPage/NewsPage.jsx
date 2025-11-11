@@ -27,7 +27,7 @@ const newsArticles = [
     summary: 'The commission has launched a three-year roadmap focusing on service digitisation, leadership pipelines, and community accountability across all LGAs.',
     date: 'September 18, 2025',
     category: 'policy',
-    image: '/vertexbuilding.png',
+    image: '/images/hero/hero6.jpg',
     link: '#'
   },
   {
@@ -36,7 +36,7 @@ const newsArticles = [
     summary: 'A unified scorecard now tracks project delivery, citizen feedback, and service desk responsiveness across the state.',
     date: 'August 30, 2025',
     category: 'policy',
-    image: '/pic6.jpg',
+    image: '/images/gallery/image16.jpg',
     link: '#'
   },
   {
@@ -45,7 +45,7 @@ const newsArticles = [
     summary: 'Over 420 officers participated in workshops on records automation, analytics dashboards, and digital-first service design.',
     date: 'August 14, 2025',
     category: 'programmes',
-    image: '/seminar2.jpg',
+    image: '/images/gallery/image18.jpg',
     link: '#'
   },
   {
@@ -54,7 +54,7 @@ const newsArticles = [
     summary: 'The hubs provide citizens with direct channels to report service gaps, track resolutions, and co-create solutions.',
     date: 'July 25, 2025',
     category: 'community',
-    image: '/pic4.jpg',
+    image: '/images/gallery/image19.jpg',
     link: '#'
   },
   {
@@ -63,7 +63,7 @@ const newsArticles = [
     summary: 'Applications are invited from young professionals to join the Ebonyi Local Government Talent Pipeline (ELG-TP).',
     date: 'July 4, 2025',
     category: 'careers',
-    image: '/pic13.jpg',
+    image: '/images/gallery/image20.jpg',
     link: '#'
   },
   {
@@ -72,7 +72,7 @@ const newsArticles = [
     summary: 'A new partnership with civic organisations will host quarterly transparency forums within service centres.',
     date: 'June 18, 2025',
     category: 'community',
-    image: '/pic1.jpg',
+    image: '/images/hero/hero7.jpg',
     link: '#'
   }
 ];
@@ -80,7 +80,7 @@ const newsArticles = [
   const spotlight = {
   title: 'Special Report: How ESLGSC is digitising grassroots governance',
   description: 'In-depth feature on the new statewide records digitisation programme, highlighting change management, success stories, and what citizens can expect next.',
-  image: '/commissionBuilding.jpg',
+  image: '/images/hero/hero8.jpg',
   link: '/news-and-updates/spotlight'
 };
 

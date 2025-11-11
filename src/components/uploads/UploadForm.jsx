@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import api from '../../services/api';
+import { uploadDocument } from '../../services/documentService';
 import { toast } from 'react-toastify';
 
 const UploadForm = () => {
@@ -17,7 +17,7 @@ const UploadForm = () => {
 
     try {
       setUploading(true);
-  await api.post('/uploads', formData);
+      await uploadDocument(formData);
       toast.success('File uploaded successfully');
       setFile(null);
       setTitle('');

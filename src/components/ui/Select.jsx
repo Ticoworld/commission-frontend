@@ -9,6 +9,7 @@ const Select = forwardRef(({
   required,
   options = [],
   placeholder,
+  helperText,
   children,
   ...props 
 }, ref) => {
@@ -43,6 +44,9 @@ const Select = forwardRef(({
       </select>
       {error && (
         <p className="mt-1 text-sm text-red-600">{error}</p>
+      )}
+      {!error && helperText && (
+        <p className="mt-1 text-sm text-gov-gray-600">{helperText}</p>
       )}
     </div>
   );

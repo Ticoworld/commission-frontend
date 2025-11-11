@@ -8,7 +8,7 @@ import EmptyState from '../../../components/ui/EmptyState';
 import Skeleton from '../../../components/ui/Skeleton';
 import Modal from '../../../components/ui/Modal';
 import useAuth from '../../../context/useAuth';
-import { fetchEmployeeEdits } from '../../../services/dataService';
+import { getEmployeeEdits } from '../../../services/auditService';
 import { AUDIT_STATUS } from '../../../lib/constants';
 import { formatDate } from '../../../lib/utils';
 
@@ -24,7 +24,7 @@ const PendingEdits = () => {
 
   const { data: submissions = [], isLoading } = useQuery({
     queryKey: ['employeeEdits', user?.id],
-    queryFn: () => fetchEmployeeEdits({ submittedById: user?.id })
+    queryFn: () => getEmployeeEdits({ submittedById: user?.id })
   });
 
   return (

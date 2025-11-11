@@ -8,10 +8,10 @@ const Dashboard = () => {
 
   // Route to role-specific dashboard
   switch (user?.role) {
-    case 'SUPER':
+    case 'SUPER_ADMIN':
     case 'ADMIN':
       return <SuperDashboard />;
-    case 'MEDIA':
+    case 'MEDIA_ADMIN':
       return <MediaDashboard />;
     case 'AUDIT':
       return <AuditDashboard />;

@@ -11,9 +11,9 @@ import Button from '../../components/ui/Button';
 import Alert from '../../components/ui/Alert';
 
 const roleRedirectMap = {
-  SUPER: '/dashboard',
+  SUPER_ADMIN: '/dashboard',
   ADMIN: '/dashboard',
-  MEDIA: '/dashboard/news-editor',
+  MEDIA_ADMIN: '/dashboard/news-editor',
   AUDIT: '/dashboard/pending-edits'
 };
 
@@ -33,7 +33,7 @@ const Login = () => {
 
   const mockUsers = useMemo(() => ([
     {
-      role: 'SUPER',
+      role: 'SUPER_ADMIN',
       label: 'Super Admin',
       id: 'super-1',
       name: 'Super Admin'
@@ -45,7 +45,7 @@ const Login = () => {
       name: 'Admin Officer'
     },
     {
-      role: 'MEDIA',
+      role: 'MEDIA_ADMIN',
       label: 'Media Editor',
       id: 'media-1',
       name: 'Media Editor'
@@ -91,13 +91,13 @@ const Login = () => {
         password: values.password
       });
 
-      login(response.data.user, response.data.token);
-      toast.success('Login successful');
+    login(response.data.user, response.data.token);
+    toast.success('Login successful');
 
-      const roleDestination = roleRedirectMap[response.data.user.role];
-      navigate(roleDestination || '/');
-    } catch (error) {
-      console.error(error);
+    const roleDestination = roleRedirectMap[response.data.user.role];
+    navigate(roleDestination || '/dashboard', { replace: true });
+  } catch (error) {
+    console.error(error);
       const message = error.response?.data?.message || 'Unable to sign in. Please check your credentials.';
       setAuthError(message);
       toast.error(message);
@@ -112,7 +112,7 @@ const Login = () => {
         <div className="mb-8 text-center">
           <div className="flex justify-center mb-4">
             <img
-              src="/cropped-Kwara-Vector-logo-1.webp"
+              src="/images/logo/logo.png"
               alt="ESLGSC"
               className="h-14 w-14"
             />

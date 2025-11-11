@@ -21,11 +21,11 @@ const Sidebar = () => {
   // Role-based navigation
   const getNavigation = () => {
     const baseNav = [
-      { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, roles: ['SUPER', 'ADMIN', 'MEDIA', 'AUDIT'] }
+      { name: 'Dashboard', href: '/dashboard', icon: HomeIcon, roles: ['SUPER_ADMIN', 'ADMIN', 'MEDIA_ADMIN', 'AUDIT'] }
     ];
 
     const roleSpecificNav = {
-      SUPER: [
+      SUPER_ADMIN: [
         { name: 'Users', href: '/dashboard/admin/users', icon: UsersIcon },
         { name: 'Employees', href: '/dashboard/employees', icon: UsersIcon },
         { name: 'News Moderation', href: '/dashboard/news', icon: NewspaperIcon },
@@ -42,7 +42,7 @@ const Sidebar = () => {
         { name: 'Audit Queue', href: '/dashboard/audit-queue', icon: ClipboardDocumentCheckIcon },
         { name: 'Retirement Alerts', href: '/dashboard/retirement-alerts', icon: BellAlertIcon }
       ],
-      MEDIA: [
+      MEDIA_ADMIN: [
         { name: 'News Editor', href: '/dashboard/news-editor', icon: NewspaperIcon },
         { name: 'My Drafts', href: '/dashboard/drafts', icon: DocumentTextIcon }
       ],
@@ -85,7 +85,7 @@ const Sidebar = () => {
         <div className="flex items-center justify-between p-6 border-b border-gov-gray-200">
           <Link to="/dashboard" className="flex items-center space-x-2">
             <img 
-              src="/cropped-Kwara-Vector-logo-1.webp" 
+              src="/images/logo/logo.png" 
               alt="ESLGSC" 
               className="h-8 w-8"
             />

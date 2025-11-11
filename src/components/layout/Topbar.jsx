@@ -10,14 +10,14 @@ import {
 } from '@heroicons/react/24/outline';
 import { getInitials } from '../../lib/utils';
 import { useQuery } from '@tanstack/react-query';
-import { fetchDashboardNotifications } from '../../services/dataService';
+import { getDashboardNotifications } from '../../services/dashboardService';
 
 const Topbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const { data: metrics } = useQuery({
     queryKey: ['dashboard', 'notifications'],
-    queryFn: fetchDashboardNotifications,
+    queryFn: getDashboardNotifications,
     refetchInterval: 60_000
   });
 

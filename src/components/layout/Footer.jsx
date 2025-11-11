@@ -34,7 +34,7 @@ const Footer = () => {
           <div>
             <div className="flex items-center space-x-2 mb-4">
               <img 
-                src="/cropped-Kwara-Vector-logo-1.webp" 
+                src="/images/logo/logo.png" 
                 alt="ESLGSC" 
                 className="h-10 w-10"
               />

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import api from '../../services/api';
+import { createLGA, updateLGA } from '../../services/lgaService';
 import { toast } from 'react-toastify';
 
 const LGAForm = ({ existing, onSuccess }) => {
@@ -22,10 +22,10 @@ const LGAForm = ({ existing, onSuccess }) => {
 
     try {
       if (existing) {
-        await api.put(`/lgas/${existing.id}`, { name, code });
+        await updateLGA(existing.id, { name, code });
         toast.success('LGA updated successfully');
       } else {
-        await api.post('/lgas', { name, code });
+        await createLGA({ name, code });
         toast.success('LGA created successfully');
       }
       onSuccess();

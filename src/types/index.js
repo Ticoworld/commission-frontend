@@ -4,7 +4,7 @@
  */
 
 /**
- * @typedef {'SUPER' | 'ADMIN' | 'MEDIA' | 'AUDIT' | 'LGA'} UserRole
+ * @typedef {'SUPER_ADMIN' | 'ADMIN' | 'MEDIA_ADMIN' | 'AUDIT' | 'LGA'} UserRole
  */
 
 /**

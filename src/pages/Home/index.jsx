@@ -38,29 +38,29 @@ const Home = () => {
 
   const slides = [
     {
-      image: '/launch-picture-with-ministers.jpg',
+      image: '/images/hero/hero1.jpg',
       title: 'Ebonyi State Local Government Service Commission',
-      subtitle: 'Rural Remuneration Programme'
+      subtitle: 'Empowering Local Governance Excellence'
     },
     {
-      image: '/rebasing-coverpicture-052024.jpg',
+      image: '/images/hero/hero2.jpg',
       title: 'Ebonyi State Local Government Service Commission',
-      subtitle: 'Community Revitalization Scheme'
+      subtitle: 'Building Capacity for Service Delivery'
     },
     {
-      image: '/226.jpg',
+      image: '/images/hero/hero3.jpg',
       title: 'Ebonyi State Local Government Service Commission',
-      subtitle: 'Youth Employment Drive'
+      subtitle: 'Professional Development & Training'
     },
     {
-      image: '/F8uB6jNWcAEj6Ba.jpg',
+      image: '/images/hero/hero4.jpg',
       title: 'Ebonyi State Local Government Service Commission',
-      subtitle: 'Public Health Outreach Programme'
+      subtitle: 'Transparent Recruitment Processes'
     },
     {
-      image: '/abuja-with-sg.jpg',
+      image: '/images/hero/hero5.jpg',
       title: 'Ebonyi State Local Government Service Commission',
-      subtitle: 'Cultural Heritage Preservation Project'
+      subtitle: 'Community-Centered Initiatives'
     }
   ];
 
@@ -139,7 +139,7 @@ const Home = () => {
             </div>
             <div className="relative">
               <img 
-                src="/commissionBuilding.jpg" 
+                src="/images/gallery/image11.jpg" 
                 alt="Commission Building" 
                 className="rounded-xl shadow-lg w-full object-cover h-96"
               />
@@ -207,17 +207,21 @@ const Home = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[1, 2, 3].map((item) => (
-              <Card key={item} className="overflow-hidden hover:shadow-md transition-shadow">
+            {[
+              { id: 1, image: '/images/gallery/image19.jpg' },
+              { id: 2, image: '/images/gallery/image20.jpg' },
+              { id: 3, image: '/images/gallery/image14.jpg' }
+            ].map((item) => (
+              <Card key={item.id} className="overflow-hidden hover:shadow-md transition-shadow">
                 <img 
-                  src={`/pic${item}.jpg`} 
-                  alt={`News image ${item} - Community development`} 
+                  src={item.image} 
+                  alt={`News image ${item.id} - Community development`} 
                   className="w-full h-48 object-cover"
                 />
                 <div className="p-6">
-                  <div className="text-xs text-gov-gray-500 mb-2">October {item}, 2025</div>
+                  <div className="text-xs text-gov-gray-500 mb-2">October {item.id}, 2025</div>
                   <h3 className="text-lg font-semibold text-gov-gray-900 mb-3 line-clamp-2">
-                    Community Development Initiative Phase {item} Launched
+                    Community Development Initiative Phase {item.id} Launched
                   </h3>
                   <p className="text-gov-gray-600 text-sm mb-4 line-clamp-3">
                     ESLGSC announces new programs to enhance service delivery and community engagement across all local governments.

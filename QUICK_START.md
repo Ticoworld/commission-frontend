@@ -140,7 +140,7 @@ function MyComponent() {
 <Route
   path="/dashboard"
   element={
-    <ProtectedRoute allowedRoles={['SUPER', 'ADMIN']}>
+    <ProtectedRoute allowedRoles={['', 'ADMIN']}>
       <Dashboard />
     </ProtectedRoute>
   }
@@ -172,7 +172,7 @@ function EmployeeList() {
 ### User Roles
 ```javascript
 USER_ROLES = {
-  SUPER: 'SUPER',     // Full access
+  : '',     // Full access
   ADMIN: 'ADMIN',     // Most features
   MEDIA: 'MEDIA',     // News management
   AUDIT: 'AUDIT',     // Review changes
@@ -182,7 +182,7 @@ USER_ROLES = {
 
 ### Conditional Rendering
 ```jsx
-{user?.role === 'SUPER' && (
+{user?.role === '' && (
   <Button onClick={handleDelete}>Delete</Button>
 )}
 ```
@@ -237,7 +237,7 @@ function MyForm() {
 <Route
   path="/dashboard"
   element={
-    <ProtectedRoute allowedRoles={['SUPER', 'ADMIN']}>
+    <ProtectedRoute allowedRoles={['', 'ADMIN']}>
       <DashboardLayout />
     </ProtectedRoute>
   }

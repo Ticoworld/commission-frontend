@@ -10,9 +10,9 @@ import EmptyState from '../../../components/ui/EmptyState';
 import Skeleton from '../../../components/ui/Skeleton';
 import useAuth from '../../../context/useAuth';
 import {
-  fetchNews,
+  getAllNews,
   submitNewsForApproval
-} from '../../../services/dataService';
+} from '../../../services/newsService';
 import { NEWS_STATUS } from '../../../lib/constants';
 import { toast } from 'react-toastify';
 import { formatDate } from '../../../lib/utils';
@@ -25,13 +25,13 @@ const Drafts = () => {
 
   const { data: drafts = [], isLoading: loadingDrafts } = useQuery({
     queryKey: ['news', 'drafts', user?.id],
-    queryFn: () => fetchNews({ status: NEWS_STATUS.DRAFT, authorId: user.id }),
+    queryFn: () => getAllNews({ status: NEWS_STATUS.DRAFT, authorId: user.id }),
     enabled: queryEnabled
   });
 
   const { data: pending = [], isLoading: loadingPending } = useQuery({
     queryKey: ['news', 'pending', user?.id],
-    queryFn: () => fetchNews({ status: NEWS_STATUS.PENDING, authorId: user.id }),
+    queryFn: () => getAllNews({ status: NEWS_STATUS.PENDING, authorId: user.id }),
     enabled: queryEnabled
   });
 

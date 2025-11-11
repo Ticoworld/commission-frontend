@@ -74,7 +74,7 @@ const Header = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
             <img 
-              src="/cropped-Kwara-Vector-logo-1.webp" 
+              src="/images/logo/logo.png" 
               alt="ESLGSC Logo" 
               className="h-10 w-10 object-contain"
             />

@@ -22,85 +22,85 @@ const categories = [
 const galleryItems = [
   {
     id: 1,
-    src: '/launch-picture-with-ministers.jpg',
-    title: 'Commissioners Strategy Retreat',
+    src: '/images/gallery/image1.jpg',
+    title: 'Leadership Strategy Session',
     description: 'Executive leadership convened to co-create the 2025 service delivery agenda.',
     category: 'leadership'
   },
   {
     id: 2,
-    src: '/seminar1.jpg',
+    src: '/images/gallery/image2.jpg',
     title: 'Capacity Building Workshop',
     description: 'Training facilitators engaging senior administrative officers in a digital governance module.',
     category: 'events'
   },
   {
     id: 3,
-    src: '/pic3.jpg',
-    title: 'Community Outreach in Afikpo',
-    description: 'Grassroots consultation with women leaders on inclusive service delivery.',
+    src: '/images/gallery/image3.jpg',
+    title: 'Community Outreach Program',
+    description: 'Grassroots consultation with community leaders on inclusive service delivery.',
     category: 'community'
   },
   {
     id: 4,
-    src: '/rebasing-coverpicture-052024.jpg',
+    src: '/images/gallery/image4.jpg',
     title: 'Development Centres Showcase',
-    description: 'Showcasing modern training aids deployed across all 12 development centres.',
+    description: 'Showcasing modern training facilities deployed across all development centres.',
     category: 'infrastructure'
   },
   {
     id: 5,
-    src: '/abuja-with-sg.jpg',
-    title: 'National Collaboration Visit',
-    description: 'Engagement with the Federal Civil Service Commission for shared reforms.',
-    category: 'leadership'
+    src: '/images/gallery/image5.jpg',
+    title: 'Training & Development Session',
+    description: 'Professional development programs enhancing workforce capabilities.',
+    category: 'events'
   },
   {
     id: 6,
-    src: '/pic5.jpg',
-    title: 'ICT Upgrade Commissioning',
-    description: 'Launch of the Ikwo Digital Innovation Lab and new service desks.',
+    src: '/images/gallery/image6.jpg',
+    title: 'ICT Infrastructure Launch',
+    description: 'Launch of digital innovation labs and new service desks.',
     category: 'infrastructure'
   },
   {
     id: 7,
-    src: '/pic7.jpg',
-    title: 'Youth Empowerment Hub',
+    src: '/images/gallery/image7.jpg',
+    title: 'Youth Empowerment Initiative',
     description: 'Young professionals completing the public service mentorship programme.',
     category: 'community'
   },
   {
     id: 8,
-    src: '/pic9.jpg',
+    src: '/images/gallery/image8.jpg',
     title: 'Field Monitoring Exercise',
-    description: 'Joint monitoring by ESLGSC and citizens groups to track project delivery.',
+    description: 'Joint monitoring by ESLGSC and stakeholders to track project delivery.',
     category: 'events'
   },
   {
     id: 9,
-    src: '/seminar3.jpg',
-    title: 'Policy Co-creation Lab',
-    description: 'Facilitators guiding officers through scenario planning workshops.',
+    src: '/images/gallery/image9.jpg',
+    title: 'Policy Development Workshop',
+    description: 'Facilitators guiding officers through strategic planning workshops.',
     category: 'events'
   },
   {
     id: 10,
-    src: '/pic2.jpg',
-    title: 'Women in Service Forum',
-    description: 'Highlighting the leadership journey of women across Ebonyi’s LGAs.',
+    src: '/images/gallery/image10.jpg',
+    title: 'Women in Leadership Forum',
+    description: 'Highlighting the leadership journey of women across Ebonyi LGAs.',
     category: 'community'
   },
   {
     id: 11,
-    src: '/pic10.jpg',
+    src: '/images/gallery/image11.jpg',
     title: 'Commission Headquarters',
     description: 'The ESLGSC complex—nerve centre for policy, HR, and reform initiatives.',
     category: 'infrastructure'
   },
   {
     id: 12,
-    src: '/pic12.jpg',
-    title: 'Service Excellence Awards',
+    src: '/images/gallery/image12.jpg',
+    title: 'Service Excellence Recognition',
     description: 'Recognising outstanding officers who exceeded service delivery benchmarks.',
     category: 'leadership'
   }

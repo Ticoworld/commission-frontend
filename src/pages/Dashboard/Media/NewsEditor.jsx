@@ -7,10 +7,10 @@ import Card from '../../../components/ui/Card';
 import Loader from '../../../components/ui/Loader';
 import useAuth from '../../../context/useAuth';
 import {
-  fetchNewsById,
+  getNewsById,
   saveNewsDraft,
   submitNewsForApproval
-} from '../../../services/dataService';
+} from '../../../services/newsService';
 import Button from '../../../components/ui/Button';
 import { ArrowLeftIcon } from '@heroicons/react/24/outline';
 
@@ -22,7 +22,7 @@ const NewsEditor = () => {
 
   const { data: article, isLoading } = useQuery({
     queryKey: ['news', newsId || 'new'],
-    queryFn: () => (newsId ? fetchNewsById(newsId) : Promise.resolve(null)),
+    queryFn: () => (newsId ? getNewsById(newsId) : Promise.resolve(null)),
     enabled: Boolean(newsId)
   });
 

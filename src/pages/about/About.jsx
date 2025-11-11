@@ -2,6 +2,7 @@ import Card from '../../components/ui/Card';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
 import PageHero from '../../components/common/PageHero';
+import { EXECUTIVES } from '../../lib/constants';
 import {
   AcademicCapIcon,
   BuildingOffice2Icon,
@@ -62,79 +63,6 @@ const timeline = [
     year: '2023',
     title: 'ESLGSC Transformation Agenda',
     description: 'Launched strategic reforms for leadership development, service automation, and community accountability.'
-  }
-];
-
-const leadership = [
-  {
-    name: 'Chief. Romanus Okemini Nwasum',
-    role: 'Chairman LGSC',
-    image: '/pic1.jpg'
-  },
-  {
-    name: 'Mrs. Okezie Juliet',
-    role: 'HPM ICT LGSC',
-    image: '/pic2.jpg'
-  },
-  {
-    name: 'Mr Egwu Ernest Otu',
-    role: 'Cashier LGSC',
-    image: '/pic3.jpg'
-  },
-  {
-    name: 'Mrs Nene I Chijioke-Alum',
-    role: 'HPM III LGSC',
-    image: '/pic4.jpg'
-  },
-  {
-    name: 'Mrs Chinyere G Okorie',
-    role: 'Director of Agriculture (HOD)',
-    image: '/pic5.jpg'
-  },
-  {
-    name: 'Mr Alphonsus C Anyigor',
-    role: 'Director of Admin and Gen. Service (Sir. of Training)',
-    image: '/pic6.jpg'
-  },
-  {
-    name: 'Mrs Stella Nwagu',
-    role: 'Director of Education & Social Welfare (HOD)',
-    image: '/pic7.jpg'
-  },
-  {
-    name: 'Mr Emma Ogbu Ituma',
-    role: 'HPM IV LGSC',
-    image: '/pic8.jpg'
-  },
-  {
-    name: 'Mr Alex E Iduma',
-    role: 'HPM II LGSC',
-    image: '/pic9.jpg'
-  },
-  {
-    name: 'Mrs Bridget N Jioke',
-    role: 'Internal Auditor LGSC',
-    image: '/pic10.jpg'
-  },
-  {
-    name: 'Nnachi Rachael Orie',
-    role: 'HPM LGSC',
-    image: '/pic11.jpg'
-  },
-  {
-    name: 'Mrs Edith Eze',
-    role: 'HPM ICT LGSC',
-    image: '/pic12.jpg'
-  },
-  {
-    name: 'Mrs Amaka Eucharia Larry-Udu',
-    role: 'HPM Pension LGSC',
-    image: '/pic13.jpg'
-  },
-  {
-    name: 'Mr Paulinus A Okafor',
-    role: 'HPM (PRS) LGSC',
-    image: '/F8uB6jNWcAEj6Ba.jpg'
   }
 ];
 
@@ -281,7 +209,7 @@ const About = () => {
             </p>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {leadership.map((leader) => (
+            {EXECUTIVES.map((leader) => (
               <article
                 key={leader.name}
                 className="group relative overflow-hidden rounded-2xl bg-gov-gray-900/5 shadow-sm"

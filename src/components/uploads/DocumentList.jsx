@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import api from '../../services/api';
+import { getMyLgaDocuments } from '../../services/documentService';
 import { toast } from 'react-toastify';
 import EmptyState from '../ui/EmptyState';
 import Skeleton from '../ui/Skeleton';
@@ -11,8 +11,9 @@ const DocumentList = () => {
   const fetchDocuments = async () => {
     try {
       setLoading(true);
-      const res = await api.get('/uploads/my-lga'); // scoped to their LGA
-      setDocuments(res.data);
+  const res = await getMyLgaDocuments();
+  const list = Array.isArray(res) ? res : (res?.data || []);
+  setDocuments(list);
     } catch (err) {
       console.error(err);
       toast.error('Failed to fetch documents');

@@ -17,7 +17,7 @@ const centers = [
     location: 'Abakaliki Development Centre',
     capacity: '220 delegates per cohort',
     facilities: ['Smart lecture theatres', 'Policy simulation lab', 'Residential hostels', 'Resource library'],
-    image: '/seminar1.jpg'
+    image: '/images/gallery/image2.jpg'
   },
   {
     name: 'Ivo Community Leadership Hub',
@@ -25,7 +25,7 @@ const centers = [
     location: 'Ivo Development Centre',
     capacity: '120 officers per session',
     facilities: ['Civic dialogue studio', 'Hybrid classrooms', 'Collaboration pods'],
-    image: '/pic8.jpg'
+    image: '/images/gallery/image5.jpg'
   },
   {
     name: 'Ikwo Digital Innovation Lab',
@@ -33,7 +33,7 @@ const centers = [
     location: 'Ikwo Development Centre',
     capacity: '160 officers per quarter',
     facilities: ['Device testing lab', 'Fiber-backed computer suites', 'Design thinking studio'],
-    image: '/pic11.jpg'
+    image: '/images/gallery/image6.jpg'
   },
   {
     name: 'Afikpo South Service Academy',
@@ -41,7 +41,7 @@ const centers = [
     location: 'Afikpo South Development Centre',
     capacity: '140 officers per cohort',
     facilities: ['Mini auditorium', 'Documentation centre', 'Project incubation rooms'],
-    image: '/pic5.jpg'
+    image: '/images/gallery/image4.jpg'
   }
 ];
 

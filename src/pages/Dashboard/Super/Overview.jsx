@@ -12,47 +12,45 @@ import Badge from '../../../components/ui/Badge';
 import EmptyState from '../../../components/ui/EmptyState';
 import Skeleton from '../../../components/ui/Skeleton';
 import { useQuery } from '@tanstack/react-query';
-import {
-  fetchEmployees,
-  fetchNews,
-  fetchAuditQueue,
-  fetchRetirementAlerts,
-  fetchActivityLog
-} from '../../../services/dataService';
+import { getAllEmployees } from '../../../services/employeeService';
+import { getAllNews } from '../../../services/newsService';
+import { getAuditQueue } from '../../../services/auditService';
+import { getRetirementAlerts } from '../../../services/retirementService';
+import { getActivityLog } from '../../../services/activityService';
 
 const SuperDashboard = () => {
   // Fetch live data from backend
   const { data: employeesResp = { data: [], meta: { total: 0 } }, isLoading: loadingEmployees } = useQuery({
     queryKey: ['employees', 'meta'],
-    queryFn: () => fetchEmployees({ page: 1, pageSize: 1 }),
+    queryFn: () => getAllEmployees({ page: 1, pageSize: 1 }),
     staleTime: 5 * 60 * 1000, // 5 minutes
     refetchInterval: 5 * 60 * 1000 // refresh every 5 minutes
   });
 
   const { data: news = [], isLoading: loadingNews } = useQuery({
     queryKey: ['news', 'published'],
-    queryFn: () => fetchNews({ status: 'published' }),
+    queryFn: () => getAllNews({ status: 'published' }),
     staleTime: 5 * 60 * 1000,
     refetchInterval: 5 * 60 * 1000
   });
 
   const { data: auditQueue = [], isLoading: loadingAudit } = useQuery({
     queryKey: ['auditQueue', 'pending'],
-    queryFn: () => fetchAuditQueue({ status: 'pending' }),
+    queryFn: () => getAuditQueue({ status: 'pending' }),
     staleTime: 30 * 1000,
     refetchInterval: 30 * 1000 // refresh every 30s for near-real-time approvals
   });
 
   const { data: retirementAlerts = [], isLoading: loadingRetirements } = useQuery({
     queryKey: ['retirementAlerts', 'list'],
-    queryFn: () => fetchRetirementAlerts({}),
+    queryFn: () => getRetirementAlerts({}),
     staleTime: 5 * 60 * 1000,
     refetchInterval: 5 * 60 * 1000
   });
 
   const { data: activity = [], isLoading: loadingActivity } = useQuery({
     queryKey: ['activityLog', 'recent'],
-    queryFn: () => fetchActivityLog({}),
+    queryFn: () => getActivityLog({}),
     staleTime: 60 * 1000,
     refetchInterval: 60 * 1000 // refresh every minute
   });

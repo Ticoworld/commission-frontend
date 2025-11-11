@@ -7,6 +7,7 @@ const Input = forwardRef(({
   label,
   id,
   required,
+  helperText,
   ...props 
 }, ref) => {
   const inputId = id || props.name;
@@ -30,6 +31,9 @@ const Input = forwardRef(({
       />
       {error && (
         <p className="mt-1 text-sm text-red-600">{error}</p>
+      )}
+      {!error && helperText && (
+        <p className="mt-1 text-sm text-gov-gray-600">{helperText}</p>
       )}
     </div>
   );

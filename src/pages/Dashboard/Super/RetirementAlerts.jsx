@@ -7,9 +7,9 @@ import RetirementAlertsTable from '../../../components/dashboard/alerts/Retireme
 import Loader from '../../../components/ui/Loader';
 import { DEPARTMENTS } from '../../../lib/constants';
 import {
-  exportRetirementAlertsReport,
-  fetchRetirementAlerts
-} from '../../../services/dataService';
+  exportRetirementReport,
+  getRetirementAlerts
+} from '../../../services/retirementService';
 import { toast } from 'react-toastify';
 
 const priorityOptions = [
@@ -27,11 +27,11 @@ const RetirementAlerts = () => {
 
   const { data: alerts = [], isLoading } = useQuery({
     queryKey: ['retirementAlerts', { priority, department }],
-    queryFn: () => fetchRetirementAlerts({ priority, department })
+    queryFn: () => getRetirementAlerts({ priority, department })
   });
 
   const exportMutation = useMutation({
-    mutationFn: () => exportRetirementAlertsReport({
+    mutationFn: () => exportRetirementReport({
       format: 'pdf',
       filters: { priority, department }
     }),

@@ -6,7 +6,7 @@ import Select from '../../../components/ui/Select';
 import Button from '../../../components/ui/Button';
 import ActivityLogTable from '../../../components/dashboard/activity/ActivityLogTable';
 import ActivityDetailModal from '../../../components/dashboard/activity/ActivityDetailModal';
-import { fetchActivityLog } from '../../../services/dataService';
+import { getActivityLog } from '../../../services/activityService';
 
 const entityOptions = [
   { label: 'All entities', value: '' },
@@ -24,7 +24,7 @@ const ActivityLog = () => {
 
   const { data: entries = [], isLoading } = useQuery({
     queryKey: ['activityLog'],
-    queryFn: () => fetchActivityLog()
+    queryFn: () => getActivityLog()
   });
 
   const filteredEntries = useMemo(() => {

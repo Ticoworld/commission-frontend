@@ -44,9 +44,9 @@ const InviteUser = () => {
           <label className="block text-sm font-medium">Role</label>
           <select value={role} onChange={(e) => setRole(e.target.value)} className="input w-full">
             <option value="ADMIN">ADMIN</option>
-            <option value="MEDIA">MEDIA</option>
+            <option value="MEDIA_ADMIN">MEDIA_ADMIN</option>
             <option value="AUDIT">AUDIT</option>
-            <option value="SUPER">SUPER</option>
+            <option value="SUPER_ADMIN">SUPER_ADMIN</option>
           </select>
         </div>
         <div className="pt-2">

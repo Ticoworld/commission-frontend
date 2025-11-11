@@ -25,7 +25,7 @@ const NewsDetailPage = () => {
     `,
     date: 'September 18, 2025',
     category: 'policy',
-    image: '/vertexbuilding.png',
+    image: '/images/hero/hero6.jpg',
     author: 'ESLGSC Communications Team'
   };
 
@@ -88,7 +88,7 @@ const NewsDetailPage = () => {
           <h2 className="heading-md mb-8">Related Articles</h2>
           <div className="grid gap-6 md:grid-cols-3">
             <Card className="overflow-hidden hover:shadow-md transition-shadow">
-              <img src="/pic6.jpg" alt="Related article" className="w-full h-40 object-cover" />
+              <img src="/images/gallery/image16.jpg" alt="Related article" className="w-full h-40 object-cover" />
               <div className="p-4">
                 <Badge variant="blue" className="mb-2">Policy</Badge>
                 <h3 className="font-semibold text-gov-gray-900 mb-2 line-clamp-2">Performance Management Framework Update</h3>
