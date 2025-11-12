@@ -1,10 +1,14 @@
 import { useMemo, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 import Card from '../../components/ui/Card';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
 import PageHero from '../../components/common/PageHero';
 import EmptyState from '../../components/ui/EmptyState';
+import Skeleton from '../../components/ui/Skeleton';
+import { getPublishedNews } from '../../services/newsService';
+import { formatDate, truncate } from '../../lib/utils';
 import {
   NewspaperIcon,
   MegaphoneIcon,
@@ -20,62 +24,7 @@ const categories = [
   { value: 'careers', label: 'Careers & Opportunities' }
 ];
 
-const newsArticles = [
-  {
-    id: 1,
-    title: 'ESLGSC Unveils 2025-2027 Strategic Transformation Agenda',
-    summary: 'The commission has launched a three-year roadmap focusing on service digitisation, leadership pipelines, and community accountability across all LGAs.',
-    date: 'September 18, 2025',
-    category: 'policy',
-    image: '/images/hero/hero6.jpg',
-    link: '#'
-  },
-  {
-    id: 2,
-    title: 'New Performance Management Framework Goes Live in 13 LGAs',
-    summary: 'A unified scorecard now tracks project delivery, citizen feedback, and service desk responsiveness across the state.',
-    date: 'August 30, 2025',
-    category: 'policy',
-    image: '/images/gallery/image16.jpg',
-    link: '#'
-  },
-  {
-    id: 3,
-    title: 'Development Centres Host Digital Service Bootcamp Series',
-    summary: 'Over 420 officers participated in workshops on records automation, analytics dashboards, and digital-first service design.',
-    date: 'August 14, 2025',
-    category: 'programmes',
-    image: '/images/gallery/image18.jpg',
-    link: '#'
-  },
-  {
-    id: 4,
-    title: 'Community Feedback Hubs Launched in Four Pilot LGAs',
-    summary: 'The hubs provide citizens with direct channels to report service gaps, track resolutions, and co-create solutions.',
-    date: 'July 25, 2025',
-    category: 'community',
-    image: '/images/gallery/image19.jpg',
-    link: '#'
-  },
-  {
-    id: 5,
-    title: 'Recruitment Portal Opens for Graduate Trainee Programme',
-    summary: 'Applications are invited from young professionals to join the Ebonyi Local Government Talent Pipeline (ELG-TP).',
-    date: 'July 4, 2025',
-    category: 'careers',
-    image: '/images/gallery/image20.jpg',
-    link: '#'
-  },
-  {
-    id: 6,
-    title: 'Commission Partners with Civil Society on Transparency Clinics',
-    summary: 'A new partnership with civic organisations will host quarterly transparency forums within service centres.',
-    date: 'June 18, 2025',
-    category: 'community',
-    image: '/images/hero/hero7.jpg',
-    link: '#'
-  }
-];
+// Data now fetched from API (published only)
 
   const spotlight = {
   title: 'Special Report: How ESLGSC is digitising grassroots governance',
@@ -86,11 +35,15 @@ const newsArticles = [
 
 const NewsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const { data: newsArticles = [], isLoading } = useQuery({
+    queryKey: ['news', 'public', 'published'],
+    queryFn: () => getPublishedNews({ limit: 30 })
+  });
 
   const filteredNews = useMemo(() => {
     if (selectedCategory === 'all') return newsArticles;
-    return newsArticles.filter((article) => article.category === selectedCategory);
-  }, [selectedCategory]);
+    return (newsArticles || []).filter((article) => article.category === selectedCategory);
+  }, [selectedCategory, newsArticles]);
 
   return (
     <div className="pb-20 space-y-16">
@@ -148,7 +101,9 @@ const NewsPage = () => {
         </div>
 
         <div className="grid gap-8 lg:grid-cols-3">
-          {filteredNews.length === 0 ? (
+          {isLoading ? (
+            <div className="col-span-3"><Skeleton rows={6} /></div>
+          ) : filteredNews.length === 0 ? (
             <div className="col-span-3">
               <EmptyState
                 title="No news found"
@@ -160,7 +115,7 @@ const NewsPage = () => {
             <Card key={article.id} className="flex flex-col overflow-hidden">
               <div className="h-48 w-full overflow-hidden">
                 <img
-                  src={article.image}
+                  src={article.imageUrl || '/images/hero/hero6.jpg'}
                   alt={article.title}
                   loading="lazy"
                   className="h-full w-full object-cover"
@@ -168,12 +123,12 @@ const NewsPage = () => {
               </div>
               <div className="flex flex-1 flex-col p-6 space-y-4">
                 <div className="flex items-center justify-between text-sm text-gov-gray-500">
-                  <Badge variant="gray" className="capitalize">{article.category}</Badge>
-                  <span>{article.date}</span>
+                  <Badge variant="gray" className="capitalize">{article.category || 'news'}</Badge>
+                  <span>{formatDate(article.publishedAt || article.createdAt)}</span>
                 </div>
                 <h3 className="text-xl font-semibold text-gov-gray-900">{article.title}</h3>
-                <p className="text-sm text-gov-gray-600 flex-1">{article.summary}</p>
-                <Button as={Link} to={`/news-and-updates/${article.id}`} variant="outline" size="sm" className="self-start">
+                <p className="text-sm text-gov-gray-600 flex-1">{truncate(article.summary, 160)}</p>
+                <Button as={Link} to={`/news-and-updates/${article.slug || article.id}`} variant="outline" size="sm" className="self-start">
                   Read More
                 </Button>
               </div>

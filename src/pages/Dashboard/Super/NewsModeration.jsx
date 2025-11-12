@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import Card from '../../../components/ui/Card';
 import Table from '../../../components/ui/Table';
+import Modal from '../../../components/ui/Modal';
 import AuditDetailModal from '../../../components/dashboard/audit/AuditDetailModal';
-import { getAllNews, approveNews, rejectNews } from '../../../services/newsService';
+import { getAllNews, approveNews, rejectNews, deleteNews } from '../../../services/newsService';
 import { NEWS_STATUS } from '../../../lib/constants';
 import { toast } from 'react-toastify';
 import useAuth from '../../../context/useAuth';
@@ -17,6 +19,7 @@ const NewsModeration = () => {
   useAuth();
   const queryClient = useQueryClient();
   const [selectedItem, setSelectedItem] = useState(null);
+  const [deleteConfirm, setDeleteConfirm] = useState(null); // { id, title }
 
   // Fetch pending (awaiting approval) news articles directly
   const { data: pendingNews = [], isLoading: loadingPending } = useQuery({
@@ -55,6 +58,29 @@ const NewsModeration = () => {
     },
     onError: (error) => toast.error(error?.message || 'Unable to reject article')
   });
+
+  const deleteMutation = useMutation({
+    mutationFn: (id) => deleteNews(id),
+    onSuccess: () => {
+      toast.success('Article deleted');
+      setDeleteConfirm(null);
+      invalidate();
+    },
+    onError: (error) => {
+      toast.error(error?.message || 'Unable to delete article');
+      setDeleteConfirm(null);
+    }
+  });
+
+  const handleDeleteClick = (article) => {
+    setDeleteConfirm({ id: article.id, title: article.title });
+  };
+
+  const handleDeleteConfirm = () => {
+    if (deleteConfirm) {
+      deleteMutation.mutate(deleteConfirm.id);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -155,7 +181,9 @@ const NewsModeration = () => {
                 <Table.HeaderCell>Title</Table.HeaderCell>
                 <Table.HeaderCell>Category</Table.HeaderCell>
                 <Table.HeaderCell>Published</Table.HeaderCell>
+                <Table.HeaderCell>Submitted</Table.HeaderCell>
                 <Table.HeaderCell>Author</Table.HeaderCell>
+                <Table.HeaderCell className="text-right">Actions</Table.HeaderCell>
               </Table.Row>
             </Table.Head>
             <Table.Body>
@@ -182,7 +210,22 @@ const NewsModeration = () => {
                     </Table.Cell>
                     <Table.Cell>{article.category}</Table.Cell>
                     <Table.Cell>{formatDate(article.publishedAt)}</Table.Cell>
+                    <Table.Cell>{formatDate(article.submittedAt || article.createdAt)}</Table.Cell>
                     <Table.Cell>{article.authorName || 'Media Team'}</Table.Cell>
+                    <Table.Cell className="text-right space-x-2">
+                      <Button as={Link} to={`/news-and-updates/${article.slug || article.id}`} variant="outline" size="sm" target="_blank" rel="noopener noreferrer">
+                        View
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        className="text-red-600 hover:text-red-700"
+                        disabled={deleteMutation.isPending && deleteConfirm?.id === article.id}
+                        onClick={() => handleDeleteClick(article)}
+                      >
+                        {deleteMutation.isPending && deleteConfirm?.id === article.id ? 'Deleting…' : 'Delete'}
+                      </Button>
+                    </Table.Cell>
                   </Table.Row>
                 ))
               )}
@@ -200,6 +243,37 @@ const NewsModeration = () => {
         isApproving={approveMutation.isPending}
         isRejecting={rejectMutation.isPending}
       />
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={Boolean(deleteConfirm)}
+        onClose={() => setDeleteConfirm(null)}
+        title="Delete Article"
+        size="sm"
+      >
+        <div className="space-y-4">
+          <p className="text-gov-gray-700">
+            Are you sure you want to delete <strong>{deleteConfirm?.title}</strong>? This action cannot be undone.
+          </p>
+          <div className="flex gap-3 justify-end">
+            <Button
+              variant="outline"
+              onClick={() => setDeleteConfirm(null)}
+              disabled={deleteMutation.isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="ghost"
+              className="bg-red-600 text-white hover:bg-red-700"
+              onClick={handleDeleteConfirm}
+              disabled={deleteMutation.isPending}
+            >
+              {deleteMutation.isPending ? 'Deleting…' : 'Delete Article'}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 };

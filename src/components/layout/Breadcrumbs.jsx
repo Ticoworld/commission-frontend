@@ -17,7 +17,7 @@ const breadcrumbNames = {
 // Add common public and admin routes so breadcrumbs render friendly labels
 Object.assign(breadcrumbNames, {
   '/news-and-updates': 'News & Updates',
-  '/news-and-updates/:id': 'News',
+  '/news-and-updates/:slug': 'News',
   '/gallery': 'Gallery',
   '/services': 'Services',
   '/development-centers': 'Development Centers',

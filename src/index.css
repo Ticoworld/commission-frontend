@@ -218,4 +218,30 @@
   .scrollbar-gov:hover::-webkit-scrollbar-thumb {
     background-color: var(--color-gov-blue-500);
   }
+
+  /* TipTap Editor - Force word breaking for long strings */
+  .ProseMirror {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: pre-wrap;
+  }
+
+  .ProseMirror * {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .ProseMirror p,
+  .ProseMirror h1,
+  .ProseMirror h2,
+  .ProseMirror h3,
+  .ProseMirror h4,
+  .ProseMirror h5,
+  .ProseMirror h6 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
 }

@@ -1,33 +1,27 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, Navigate } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getNewsBySlug } from '../../services/newsService';
+import Skeleton from '../../components/ui/Skeleton';
 import { ArrowLeftIcon, CalendarIcon, TagIcon, ShareIcon } from '@heroicons/react/24/outline';
 import Card from '../../components/ui/Card';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
 
 const NewsDetailPage = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
+  const { data: article, isLoading, isError } = useQuery({
+    queryKey: ['news', 'public', slug],
+    queryFn: () => getNewsBySlug(slug)
+  });
 
-  // TODO: Replace with API fetch by id
-  const article = {
-    id: Number(id) || 1,
-    title: 'ESLGSC Unveils 2025-2027 Strategic Transformation Agenda',
-    content: `
-      <p>The Ebonyi State Local Government Service Commission has launched a comprehensive three-year roadmap focusing on service digitisation, leadership pipelines, and community accountability across all 13 Local Government Areas.</p>
-      <p>Speaking at the unveiling ceremony held at the Commission's headquarters in Abakaliki, the Chairman emphasized the Commission's commitment to modernizing local government operations and improving service delivery to citizens.</p>
-      <h2>Key Pillars of the Transformation Agenda</h2>
-      <ul>
-        <li><strong>Digital Service Delivery:</strong> Implementation of e-governance platforms across all LGAs.</li>
-        <li><strong>Leadership Development:</strong> Comprehensive training programs for local government staff.</li>
-        <li><strong>Community Accountability:</strong> Establishment of feedback mechanisms and citizen engagement forums.</li>
-        <li><strong>Workforce Optimization:</strong> Strategic recruitment and deployment of qualified personnel.</li>
-      </ul>
-      <p>The Commission has allocated resources to ensure successful implementation, with quarterly review mechanisms to track progress and adjust strategies as needed.</p>
-    `,
-    date: 'September 18, 2025',
-    category: 'policy',
-    image: '/images/hero/hero6.jpg',
-    author: 'ESLGSC Communications Team'
-  };
+  if (isLoading) {
+    return <div className="container-custom py-12 max-w-3xl mx-auto"><Skeleton rows={8} /></div>;
+  }
+
+  // If not found or not published, redirect to public listing
+  if (isError || !article || article.status !== 'published') {
+    return <Navigate to="/news-and-updates" replace />;
+  }
 
   return (
     <div className="pb-20">
@@ -52,16 +46,16 @@ const NewsDetailPage = () => {
             <div className="flex flex-wrap items-center gap-6 text-sm text-gov-gray-600">
               <div className="flex items-center gap-2">
                 <CalendarIcon className="w-5 h-5" />
-                <time dateTime={article.date}>{article.date}</time>
+                <time dateTime={article.publishedAt}>{new Date(article.publishedAt).toLocaleDateString()}</time>
               </div>
               <div className="flex items-center gap-2">
                 <TagIcon className="w-5 h-5" />
-                <span>By {article.author}</span>
+                <span>By {article.authorName || 'Media Team'}</span>
               </div>
             </div>
 
             <div className="overflow-hidden rounded-lg">
-              <img src={article.image} alt={article.title} className="w-full h-auto object-cover" />
+              <img src={article.imageUrl || '/images/hero/hero6.jpg'} alt={article.title} className="w-full h-auto object-cover" />
             </div>
 
             <div className="prose prose-lg max-w-none prose-headings:text-gov-blue-800 prose-a:text-gov-blue-600 prose-strong:text-gov-gray-900" dangerouslySetInnerHTML={{ __html: article.content }} />

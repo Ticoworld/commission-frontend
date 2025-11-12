@@ -13,12 +13,30 @@ export const getAllNews = async (params = {}) => {
 };
 
 /**
+ * Convenience: Get only published news for public site
+ * @param {Object} params - Additional query params (page, limit, search, etc.)
+ */
+export const getPublishedNews = async (params = {}) => {
+  return getAllNews({ status: 'published', ...params });
+};
+
+/**
  * Get news article by ID
  * @param {string} id - News article ID
  * @returns {Promise} - News article data
  */
 export const getNewsById = async (id) => {
   const response = await api.get(`/news/${id}`);
+  return response.data;
+};
+
+/**
+ * Get news article by slug
+ * @param {string} slug - News article slug
+ * @returns {Promise} - News article data
+ */
+export const getNewsBySlug = async (slug) => {
+  const response = await api.get(`/news/slug/${slug}`);
   return response.data;
 };
 

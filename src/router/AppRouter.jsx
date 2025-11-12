@@ -58,7 +58,7 @@ const AppRouter = () => {
         <Route path="/development-centers" element={<DcPage />} />
         <Route path="/local-governments" element={<LocalGovernmentPage />} />
   <Route path="/news-and-updates" element={<NewsPage />} />
-  <Route path="/news-and-updates/:id" element={<NewsDetailPage />} />
+  <Route path="/news-and-updates/:slug" element={<NewsDetailPage />} />
     <Route path="/gallery" element={<GalleryPage />} />
     <Route path="/complaints" element={<Complaint />} />
         <Route path="/faq" element={<Faq />} />

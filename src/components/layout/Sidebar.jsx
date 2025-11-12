@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 import useAuth from '../../context/useAuth';
+import { getAllNews } from '../../services/newsService';
+import { NEWS_STATUS } from '../../lib/constants';
 import {
   HomeIcon,
   UsersIcon,
@@ -17,6 +20,13 @@ const Sidebar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user } = useAuth();
   const location = useLocation();
+
+  // Fetch pending news count for badge
+  const { data: pendingNews = [] } = useQuery({
+    queryKey: ['news', 'pending', 'count'],
+    queryFn: () => getAllNews({ status: NEWS_STATUS.PENDING }),
+    enabled: user?.role === 'SUPER_ADMIN' || user?.role === 'ADMIN'
+  });
 
   // Role-based navigation
   const getNavigation = () => {
@@ -60,6 +70,13 @@ const Sidebar = () => {
   const navigation = getNavigation();
 
   const isActive = (href) => location.pathname === href;
+
+  const getBadgeCount = (href) => {
+    if (href === '/dashboard/news' && pendingNews.length > 0) {
+      return pendingNews.length;
+    }
+    return null;
+  };
 
   return (
     <>
@@ -108,20 +125,28 @@ const Sidebar = () => {
         <nav className="p-4 space-y-1">
           {navigation.map((item) => {
             const Icon = item.icon;
+            const badgeCount = getBadgeCount(item.href);
             return (
               <Link
                 key={item.name}
                 to={item.href}
                 onClick={() => setMobileMenuOpen(false)}
                 className={clsx(
-                  'flex items-center space-x-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors',
+                  'flex items-center justify-between px-4 py-3 rounded-lg text-sm font-medium transition-colors',
                   isActive(item.href)
                     ? 'bg-gov-blue-50 text-gov-blue-700'
                     : 'text-gov-gray-700 hover:bg-gov-gray-50 hover:text-gov-blue-700'
                 )}
               >
-                <Icon className="w-5 h-5" />
-                <span>{item.name}</span>
+                <div className="flex items-center space-x-3">
+                  <Icon className="w-5 h-5" />
+                  <span>{item.name}</span>
+                </div>
+                {badgeCount && (
+                  <span className="inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                    {badgeCount}
+                  </span>
+                )}
               </Link>
             );
           })}
