@@ -25,7 +25,7 @@ const faqData = {
     },
     {
       question: 'How can I contact the commission for official correspondence?',
-      answer: 'You can reach us via info@eslgsc.gov.ng, call +234 (0) 803 555 0100, or visit the ESLGSC Complex, Abakaliki. Our reception desk is open Monday to Friday, 8:00 AM – 5:00 PM.'
+      answer: 'You can reach us via ebonyistatelgsc@gmail.com, call +234 (0) 803 555 0100, or visit the ESLGSC Complex, Abakaliki. Our reception desk is open Monday to Friday, 8:00 AM – 5:00 PM.'
     }
   ],
   services: [
@@ -41,7 +41,7 @@ const faqData = {
   complaints: [
     {
       question: 'How can I report misconduct or poor service delivery?',
-      answer: 'Submit a report through the Complaints & Reports page, email reportdesk@eslgsc.gov.ng, or call +234 (0) 803 555 0101. Anonymous tips are welcome and logged in our secure case management system.'
+      answer: 'Submit a report through the Complaints & Reports page, email ebonyistatelgsc@gmail.com, or call +234 (0) 803 555 0101. Anonymous tips are welcome and logged in our secure case management system.'
     },
     {
       question: 'What happens after I lodge a complaint?',
@@ -76,7 +76,7 @@ const Faq = () => {
             <Button as="a" href="#faq-list" size="lg">
               Browse FAQs
             </Button>
-            <Button as="a" href="mailto:support@eslgsc.gov.ng" variant="outline" size="lg">
+            <Button as="a" href="mailto:ebonyistatelgsc@gmail.com" variant="outline" size="lg">
               Email support team
             </Button>
           </>

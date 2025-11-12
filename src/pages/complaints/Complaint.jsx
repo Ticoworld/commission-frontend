@@ -196,7 +196,7 @@ const Complaint = () => {
               </li>
               <li className="flex items-center gap-3">
                 <EnvelopeIcon className="h-5 w-5" />
-                reportdesk@eslgsc.gov.ng
+                ebonyistatelgsc@gmail.com
               </li>
               <li className="flex items-start gap-3">
                 <MapPinIcon className="mt-0.5 h-5 w-5" />

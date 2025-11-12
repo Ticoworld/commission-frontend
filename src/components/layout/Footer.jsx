@@ -113,7 +113,7 @@ const Footer = () => {
               </li>
               <li className="flex items-center space-x-2 text-sm text-gov-blue-100">
                 <EnvelopeIcon className="w-5 h-5 flex-shrink-0" />
-                <span>info@eslgsc.gov.ng</span>
+                <span>ebonyistatelgsc@gmail.com</span>
               </li>
             </ul>
           </div>

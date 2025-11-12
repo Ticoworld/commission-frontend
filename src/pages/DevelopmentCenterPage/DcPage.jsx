@@ -214,11 +214,11 @@ const DcPage = () => {
           </p>
           <Button
             as="a"
-            href="mailto:training@eslgsc.gov.ng"
+            href="mailto:ebonyistatelgsc@gmail.com"
             size="lg"
             className="bg-white text-gov-blue-700 hover:bg-gov-gray-100"
           >
-            training@eslgsc.gov.ng
+            ebonyistatelgsc@gmail.com
           </Button>
         </div>
       </section>

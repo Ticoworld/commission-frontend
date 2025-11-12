@@ -129,7 +129,7 @@ const LocalGovernmentPage = () => {
             </p>
             <Button
               as="a"
-              href="mailto:analytics@eslgsc.gov.ng"
+              href="mailto:ebonyistatelgsc@gmail.com"
               size="lg"
               className="bg-white text-gov-blue-700 hover:bg-gov-gray-100"
             >

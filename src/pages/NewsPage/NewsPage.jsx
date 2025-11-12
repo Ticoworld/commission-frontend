@@ -56,7 +56,7 @@ const NewsPage = () => {
             <Button as="a" href="#updates" size="lg">
               Browse Latest Updates
             </Button>
-            <Button as="a" href="mailto:press@eslgsc.gov.ng" variant="outline" size="lg">
+            <Button as="a" href="mailto:ebonyistatelgsc@gmail.com" variant="outline" size="lg">
               Media Enquiries
             </Button>
           </>
@@ -191,11 +191,11 @@ const NewsPage = () => {
             </div>
             <Button
               as="a"
-              href="mailto:press@eslgsc.gov.ng"
+              href="mailto:ebonyistatelgsc@gmail.com"
               size="lg"
               className="bg-white text-gov-blue-700 hover:bg-gov-gray-100"
             >
-              press@eslgsc.gov.ng
+              ebonyistatelgsc@gmail.com
             </Button>
           </Card>
         </div>

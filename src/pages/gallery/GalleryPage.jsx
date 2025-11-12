@@ -125,7 +125,7 @@ const GalleryPage = () => {
             <Button as="a" href="#collection" size="lg">
               View Collection
             </Button>
-            <Button as="a" href="mailto:media@eslgsc.gov.ng" variant="outline" size="lg">
+            <Button as="a" href="mailto:ebonyistatelgsc@gmail.com" variant="outline" size="lg">
               Submit Media
             </Button>
           </>
@@ -256,8 +256,8 @@ const GalleryPage = () => {
                 Invite ESLGSC spokespersons for expert commentary and civic education programmes.
               </li>
             </ul>
-            <Button as="a" href="mailto:media@eslgsc.gov.ng" variant="outline" size="lg">
-              media@eslgsc.gov.ng
+            <Button as="a" href="mailto:ebonyistatelgsc@gmail.com" variant="outline" size="lg">
+              ebonyistatelgsc@gmail.com
             </Button>
           </Card>
         </div>

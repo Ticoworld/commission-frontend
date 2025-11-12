@@ -45,7 +45,7 @@ const Contact = () => {
     {
       icon: EnvelopeIcon,
       title: 'Email',
-      content: 'info@eslgsc.gov.ng'
+      content: 'ebonyistatelgsc@gmail.com'
     },
     {
       icon: ClockIcon,
