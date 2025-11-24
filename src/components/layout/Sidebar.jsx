@@ -151,19 +151,6 @@ const Sidebar = () => {
             );
           })}
         </nav>
-
-        {/* Back to Site Link */}
-        <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-gov-gray-200">
-          <Link
-            to="/"
-            className="flex items-center justify-center space-x-2 px-4 py-2 text-sm font-medium text-gov-gray-700 hover:bg-gov-gray-50 rounded-lg transition-colors"
-          >
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-            <span>Back to Site</span>
-          </Link>
-        </div>
       </aside>
 
       {/* Mobile menu button */}

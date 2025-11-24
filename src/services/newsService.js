@@ -1,5 +1,6 @@
 // src/services/newsService.js
 import api from './api';
+import { NEWS_STATUS } from '../types';
 
 /**
  * Get all news articles with optional filters
@@ -62,15 +63,21 @@ export const updateNews = async (id, newsData) => {
 };
 
 /**
- * Save news article as draft (create or update)
- * @param {Object} newsData - News article data (with optional id)
- * @returns {Promise} - Saved draft
+ * Save news article as DRAFT (create or update)
+ * Ensures the payload has status: 'draft' unless explicitly overridden.
+ *
+ * Contract
+ * - Input: newsData { id?: string, title?: string, content?: string, status?: string, ... }
+ * - Behavior: If id exists -> PUT /news/:id, else POST /news
+ * - Guarantees: status defaults to 'draft' if not provided
+ * - Output: API response data (created/updated news item)
  */
-export const saveNewsDraft = async (newsData) => {
-  if (newsData?.id) {
-    return updateNews(newsData.id, newsData);
+export const saveNewsDraft = async (newsData = {}) => {
+  const payload = { status: 'draft', ...newsData };
+  if (payload?.id) {
+    return updateNews(payload.id, payload);
   }
-  return createNews(newsData);
+  return createNews(payload);
 };
 
 /**
@@ -107,6 +114,47 @@ export const rejectNews = async (id, data = {}) => {
 };
 
 /**
+ * Generic status setter (fallback when specialized endpoints don't exist)
+ * @param {string} id
+ * @param {string} status
+ * @param {Object} extra
+ */
+export const setNewsStatus = async (id, status, extra = {}) => {
+  return updateNews(id, { status, ...extra });
+};
+
+/** Publish news (tries dedicated endpoint then falls back) */
+export const publishNews = async (id, data = {}) => {
+  try {
+    const response = await api.post(`/news/${id}/publish`, data);
+    return response.data;
+  } catch {
+    // Fallback to status update if dedicated endpoint not implemented
+    return setNewsStatus(id, NEWS_STATUS.PUBLISHED, { publishedAt: new Date().toISOString(), ...data });
+  }
+};
+
+/** Unpublish (revert to draft or pending) */
+export const unpublishNews = async (id, toStatus = NEWS_STATUS.DRAFT, data = {}) => {
+  try {
+    const response = await api.post(`/news/${id}/unpublish`, { toStatus, ...data });
+    return response.data;
+  } catch {
+    return setNewsStatus(id, toStatus, data);
+  }
+};
+
+/** Archive news */
+export const archiveNews = async (id, data = {}) => {
+  try {
+    const response = await api.post(`/news/${id}/archive`, data);
+    return response.data;
+  } catch {
+    return setNewsStatus(id, NEWS_STATUS.ARCHIVED, data);
+  }
+};
+
+/**
  * Delete a news article
  * @param {string} id - News article ID
  * @returns {Promise} - Deletion result
@@ -114,4 +162,22 @@ export const rejectNews = async (id, data = {}) => {
 export const deleteNews = async (id) => {
   const response = await api.delete(`/news/${id}`);
   return response.data;
+};
+/** Convenience collection export */
+export default {
+  getAllNews,
+  getPublishedNews,
+  getNewsById,
+  getNewsBySlug,
+  createNews,
+  updateNews,
+  saveNewsDraft,
+  submitNewsForApproval,
+  approveNews,
+  rejectNews,
+  setNewsStatus,
+  publishNews,
+  unpublishNews,
+  archiveNews,
+  deleteNews
 };

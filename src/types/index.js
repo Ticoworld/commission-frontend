@@ -115,3 +115,14 @@
  */
 
 export {};
+/**
+ * Central exported status constants for news lifecycle.
+ * Keep in sync with backend accepted values.
+ */
+export const NEWS_STATUS = Object.freeze({
+	DRAFT: 'draft',
+	PENDING: 'pending',
+	PUBLISHED: 'published',
+	ARCHIVED: 'archived'
+});
+
