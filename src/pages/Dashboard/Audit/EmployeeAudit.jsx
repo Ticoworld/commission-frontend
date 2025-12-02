@@ -33,7 +33,7 @@ const EmployeeAudit = () => {
     return employees.filter((employee) => {
       const matchesDepartment = department ? employee.department === department : true;
       const matchesSearch = lowerSearch
-        ? [employee.name, employee.email, employee.position]
+        ? [employee.full_name || employee.name, employee.rank || employee.position]
             .filter(Boolean)
             .some((value) => value.toLowerCase().includes(lowerSearch))
         : true;
@@ -116,20 +116,40 @@ const EmployeeAudit = () => {
                     </Table.Cell>
                   </Table.Row>
                 ) : (
-                filteredEmployees.map((employee) => (
+                filteredEmployees.map((employee) => {
+                  // Compute retirement date and status (same logic as Employees.jsx)
+                  const computeRetirementDate = (emp) => {
+                    const candidates = [];
+                    if (emp?.date_of_birth) {
+                      const d = new Date(emp.date_of_birth);
+                      d.setFullYear(d.getFullYear() + 60);
+                      candidates.push(d);
+                    }
+                    if (emp?.date_of_first_appointment) {
+                      const d = new Date(emp.date_of_first_appointment);
+                      d.setFullYear(d.getFullYear() + 35);
+                      candidates.push(d);
+                    }
+                    if (candidates.length === 0) return null;
+                    return candidates.reduce((a, b) => (a < b ? a : b)).toISOString();
+                  };
+
+                  const retirementDate = computeRetirementDate(employee);
+                  const status = retirementDate ? (new Date(retirementDate) < new Date() ? 'Retired' : 'Active') : 'N/A';
+
+                  return (
                   <Table.Row key={employee.id}>
                     <Table.Cell>
                       <div className="space-y-1">
-                        <p className="font-medium text-gov-gray-900">{employee.name}</p>
-                        <p className="text-xs text-gov-gray-500">{employee.email}</p>
+                        <p className="font-medium text-gov-gray-900">{employee.full_name || employee.name}</p>
                       </div>
                     </Table.Cell>
-                    <Table.Cell>{employee.position}</Table.Cell>
+                    <Table.Cell>{employee.rank || employee.position}</Table.Cell>
                     <Table.Cell>{employee.department}</Table.Cell>
                     <Table.Cell>
                       <div className="space-y-1">
-                        <p className="text-sm text-gov-gray-700">{formatDate(employee.retirementDate)}</p>
-                        <Badge variant="gray">{employee.status}</Badge>
+                        <p className="text-sm text-gov-gray-700">{retirementDate ? formatDate(retirementDate) : 'N/A'}</p>
+                        <Badge variant={status === 'Retired' ? 'gray' : 'green'}>{status}</Badge>
                       </div>
                     </Table.Cell>
                     <Table.Cell className="text-right">
@@ -138,7 +158,8 @@ const EmployeeAudit = () => {
                       </Button>
                     </Table.Cell>
                   </Table.Row>
-                ))
+                  );
+                })
               )}
             </Table.Body>
           </Table>

@@ -39,6 +39,7 @@ const InviteUser = lazy(() => import('../pages/admin/InviteUser'));
 const RoleEditorAdmin = lazy(() => import('../pages/admin/RoleEditor'));
 const UserManagement = lazy(() => import('../pages/admin/UserManagement'));
 const AddEmployeePage = lazy(() => import('../pages/AddEmployeePage'));
+const EditEmployeePage = lazy(() => import('../pages/EditEmployeePage'));
 
 const LoadingFallback = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -116,6 +117,14 @@ const AppRouter = () => {
               <AddEmployeePage />
             </Suspense>
           } 
+        />
+        <Route
+          path="employees/:id/edit"
+          element={
+            <Suspense fallback={<LoadingFallback />}>
+              <EditEmployeePage />
+            </Suspense>
+          }
         />
         <Route 
           path="news" 

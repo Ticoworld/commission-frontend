@@ -1,8 +1,9 @@
 // src/components/employees/EmployeeOnboardingForm.jsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createEmployee } from '../../services/employeeService';
+import { createEmployee, updateEmployee } from '../../services/employeeService';
 import { getLGAs } from '../../services/lgaService';
+import { DEPARTMENTS } from '../../lib/constants';
 import Button from '../ui/Button';
 import Input from '../ui/Input';
 import Select from '../ui/Select';
@@ -11,7 +12,7 @@ import Alert from '../ui/Alert';
 
 // LGAs will be fetched dynamically instead of hardcoded
 
-const EmployeeOnboardingForm = () => {
+const EmployeeOnboardingForm = ({ initialValues } = {}) => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -60,6 +61,45 @@ const EmployeeOnboardingForm = () => {
     loadLgas();
   }, []);
 
+  // If initialValues provided, populate formData
+  useEffect(() => {
+    if (initialValues) {
+      // Helper: Convert ISO string (2023-01-01T00:00...) to Input format (2023-01-01)
+      const formatDateForInput = (dateString) => {
+        if (!dateString) return '';
+        try {
+          return new Date(dateString).toISOString().split('T')[0];
+        } catch (e) {
+          return '';
+        }
+      };
+
+      // Reset the form with formatted values
+      setFormData({
+        full_name: initialValues.full_name || initialValues.name || '',
+        sex: initialValues.sex || '',
+        rank: initialValues.rank || initialValues.position || '',
+        grade_level: initialValues.grade_level || '',
+        date_of_birth: formatDateForInput(initialValues.date_of_birth || initialValues.dob),
+        date_of_first_appointment: formatDateForInput(initialValues.date_of_first_appointment || initialValues.employmentDate),
+        lga_of_origin: initialValues.lga_of_origin || '',
+        department: initialValues.department || '',
+        present_station: initialValues.present_station || '',
+        phone_number: initialValues.phone_number || '',
+        qualifications: initialValues.qualifications || '',
+        date_of_confirmation: formatDateForInput(initialValues.date_of_confirmation),
+        date_of_transfer: formatDateForInput(initialValues.date_of_transfer),
+        remark: initialValues.remark || '',
+        fingerprint_template: initialValues.fingerprint_template || ''
+      });
+      
+      // If there's an existing image URL, we could use it for preview (not implemented)
+      if (initialValues.profile_picture_url) {
+        // Preview logic could be added here if needed
+      }
+    }
+  }, [initialValues]);
+
   // Handle text input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -99,8 +139,8 @@ const EmployeeOnboardingForm = () => {
       // Create FormData object
       const formDataToSend = new FormData();
 
-      // Append all text fields
-      formDataToSend.append('full_name', formData.full_name);
+       // Append all text fields
+       formDataToSend.append('full_name', formData.full_name);
       formDataToSend.append('sex', formData.sex);
       formDataToSend.append('rank', formData.rank);
       formDataToSend.append('grade_level', formData.grade_level);
@@ -131,16 +171,20 @@ const EmployeeOnboardingForm = () => {
         formDataToSend.append('profile_picture', profilePicture);
       }
 
-      // Call API
-      await createEmployee(formDataToSend);
+      // Call API: create or update
+      if (initialValues && initialValues.id) {
+        await updateEmployee(initialValues.id, formDataToSend);
+      } else {
+        await createEmployee(formDataToSend);
+      }
       
       setSuccess(true);
       setError(null);
 
-      // Navigate to employees list after 2 seconds
+      // Navigate back to employees list after 1 second
       setTimeout(() => {
         navigate('/dashboard/employees');
-      }, 2000);
+      }, 1000);
     } catch (err) {
       console.error('Error creating employee:', err);
       setError(err.response?.data?.message || 'Failed to create employee. Please try again.');
@@ -245,14 +289,20 @@ const EmployeeOnboardingForm = () => {
               required
               placeholder="Enter grade level"
             />
-            <Input
+            <Select
               label="Department"
               name="department"
               value={formData.department}
               onChange={handleInputChange}
               required
-              placeholder="Enter department"
-            />
+            >
+              <option value="">Select Department</option>
+              {DEPARTMENTS.map((dept) => (
+                <option key={dept} value={dept}>
+                  {dept}
+                </option>
+              ))}
+            </Select>
             <Input
               label="Present Station"
               name="present_station"
@@ -360,7 +410,7 @@ const EmployeeOnboardingForm = () => {
             variant="primary"
             disabled={loading}
           >
-            {loading ? 'Creating Employee...' : 'Create Employee'}
+            {loading ? (initialValues && initialValues.id ? 'Saving...' : 'Processing...') : (initialValues && initialValues.id ? 'Save Changes' : 'Create Employee')}
           </Button>
         </div>
       </form>

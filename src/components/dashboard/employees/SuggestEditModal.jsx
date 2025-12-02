@@ -24,25 +24,50 @@ const SuggestEditModal = ({
     formState: { errors }
   } = useForm({
     defaultValues: {
-      name: '',
-      email: '',
-      position: '',
+      full_name: '',
+      rank: '',
       department: '',
-      phone: '',
-      retirementDate: '',
+      phone_number: '',
+      date_of_transfer: '',
       reason: ''
     }
   });
 
   useEffect(() => {
     if (employee) {
+      // Helper: Convert ISO string to Input format (YYYY-MM-DD)
+      const formatDateForInput = (dateString) => {
+        if (!dateString) return '';
+        try {
+          return new Date(dateString).toISOString().split('T')[0];
+        } catch (e) {
+          return '';
+        }
+      };
+
+      // Compute retirement date
+      const computeRetirementDate = (emp) => {
+        const candidates = [];
+        if (emp?.date_of_birth) {
+          const d = new Date(emp.date_of_birth);
+          d.setFullYear(d.getFullYear() + 60);
+          candidates.push(d);
+        }
+        if (emp?.date_of_first_appointment) {
+          const d = new Date(emp.date_of_first_appointment);
+          d.setFullYear(d.getFullYear() + 35);
+          candidates.push(d);
+        }
+        if (candidates.length === 0) return '';
+        return candidates.reduce((a, b) => (a < b ? a : b)).toISOString().split('T')[0];
+      };
+
       reset({
-        name: employee.name || '',
-        email: employee.email || '',
-        position: employee.position || '',
+        full_name: employee.full_name || employee.name || '',
+        rank: employee.rank || employee.position || '',
         department: employee.department || '',
-        phone: employee.phone || '',
-        retirementDate: employee.retirementDate || '',
+        phone_number: employee.phone_number || '',
+        date_of_transfer: formatDateForInput(employee.date_of_transfer || ''),
         reason: ''
       });
       setChangeError('');
@@ -54,8 +79,12 @@ const SuggestEditModal = ({
   const changedFields = useMemo(() => {
     if (!employee) return {};
     const nextChanges = {};
-    ['name', 'email', 'position', 'department', 'phone', 'retirementDate'].forEach((key) => {
-      if (employee[key] !== values[key] && values[key] !== undefined) {
+    // Only include fields that actually exist in the database schema
+    ['full_name', 'rank', 'department', 'phone_number', 'date_of_transfer'].forEach((key) => {
+      const empKey = key === 'full_name' ? (employee.full_name !== undefined ? 'full_name' : 'name') 
+                   : key === 'rank' ? (employee.rank !== undefined ? 'rank' : 'position')
+                   : key;
+      if (employee[empKey] !== values[key] && values[key] !== undefined && values[key] !== '') {
         nextChanges[key] = values[key];
       }
     });
@@ -69,6 +98,7 @@ const SuggestEditModal = ({
     }
     setChangeError('');
     onSubmit?.({
+      employeeId: employee.id,
       changes: changedFields,
       reason
     });
@@ -81,27 +111,22 @@ const SuggestEditModal = ({
       isOpen={isOpen}
       onClose={onClose}
       size="lg"
-      title={`Suggest edits for ${employee.name}`}
+      title={`Suggest edits for ${employee.full_name || employee.name || 'Employee'}`}
     >
       <form onSubmit={submit} className="space-y-5">
         <div className="grid gap-4 md:grid-cols-2">
           <Input
             label="Full name"
-            {...register('name', { required: 'Name is required' })}
-            error={errors.name?.message}
-          />
-          <Input
-            label="Email"
-            type="email"
-            {...register('email', { required: 'Email is required' })}
-            error={errors.email?.message}
+            {...register('full_name', { required: 'Full name is required' })}
+            error={errors.full_name?.message}
           />
           <Select
-            label="Position"
-            {...register('position', { required: 'Position is required' })}
-            error={errors.position?.message}
+            label="Rank"
+            {...register('rank', { required: 'Rank is required' })}
+            error={errors.rank?.message}
           >
-            <option value="" disabled>Select position</option>
+            <option value="">Select rank</option>
+            {/* POSITIONS is used as rank options */}
             {POSITIONS.map((position) => (
               <option key={position} value={position}>
                 {position}
@@ -113,7 +138,7 @@ const SuggestEditModal = ({
             {...register('department', { required: 'Department is required' })}
             error={errors.department?.message}
           >
-            <option value="" disabled>Select department</option>
+            <option value="">Select department</option>
             {DEPARTMENTS.map((department) => (
               <option key={department} value={department}>
                 {department}
@@ -121,14 +146,13 @@ const SuggestEditModal = ({
             ))}
           </Select>
           <Input
-            label="Phone"
-            {...register('phone')}
+            label="Phone Number"
+            {...register('phone_number')}
           />
           <Input
-            label="Retirement date"
+            label="Date of Transfer"
             type="date"
-            {...register('retirementDate', { required: 'Retirement date is required' })}
-            error={errors.retirementDate?.message}
+            {...register('date_of_transfer')}
           />
         </div>
 

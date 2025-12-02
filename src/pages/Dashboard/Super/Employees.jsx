@@ -1,24 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Card from '../../../components/ui/Card';
 import Table from '../../../components/ui/Table';
 import Button from '../../../components/ui/Button';
 import Badge from '../../../components/ui/Badge';
-import Modal from '../../../components/ui/Modal';
-import Input from '../../../components/ui/Input';
-import Select from '../../../components/ui/Select';
 import EmptyState from '../../../components/ui/EmptyState';
 import Skeleton from '../../../components/ui/Skeleton';
-import { useForm } from 'react-hook-form';
 import { formatDate } from '../../../lib/utils';
 import { useRetirement } from '../../../hooks/useRetirement';
-import { DEPARTMENTS, POSITIONS } from '../../../lib/constants';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   deleteEmployee,
-  getAllEmployees,
-  updateEmployee
+  getAllEmployees
 } from '../../../services/employeeService';
 import { toast } from 'react-toastify';
 import useAuth from '../../../context/useAuth';
@@ -26,53 +20,27 @@ import useAuth from '../../../context/useAuth';
 const Employees = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const [editingEmployee, setEditingEmployee] = useState(null);
+  const [refresh, setRefresh] = useState(false);
 
   const { data: employees = [], isLoading } = useQuery({
     queryKey: ['employees'],
     queryFn: getAllEmployees
   });
 
-  const { register, handleSubmit, reset, formState: { errors } } = useForm();
-  useEffect(() => {
-    if (editingEmployee) {
-      reset(editingEmployee);
-    } else {
-      reset({});
-    }
-  }, [editingEmployee, reset]);
-
   const invalidateEmployees = () => {
     queryClient.invalidateQueries({ queryKey: ['employees'] });
     queryClient.invalidateQueries({ queryKey: ['retirementAlerts'] });
   };
 
-  const updateMutation = useMutation({
-    mutationFn: (payload) => updateEmployee(editingEmployee?.id, payload, user),
-    onSuccess: () => {
-      toast.success('Employee updated');
-      invalidateEmployees();
-      handleCloseModal();
-    },
-    onError: () => toast.error('Unable to update employee')
-  });
-
   const deleteMutation = useMutation({
-    mutationFn: (id) => deleteEmployee(id, user),
+    mutationFn: (id) => deleteEmployee(id),
     onSuccess: () => {
       toast.success('Employee removed');
       invalidateEmployees();
+      setRefresh((r) => !r);
     },
     onError: () => toast.error('Unable to delete employee')
   });
-
-  const onSubmit = (data) => {
-    updateMutation.mutate(data);
-  };
-
-  const handleEdit = (employee) => {
-    setEditingEmployee(employee);
-  };
 
   const handleDelete = (id) => {
     if (confirm('Are you sure you want to delete this employee?')) {
@@ -80,56 +48,50 @@ const Employees = () => {
     }
   };
 
-  const handleCloseModal = () => {
-    setEditingEmployee(null);
-    reset({});
-  };
-
   // Row component for desktop table
   const EmployeeRow = ({ employee }) => {
-    const retirement = useRetirement(employee.retirementDate);
+    const computeRetirementDate = (emp) => {
+      const candidates = [];
+      if (emp?.date_of_birth) {
+        const d = new Date(emp.date_of_birth);
+        d.setFullYear(d.getFullYear() + 60);
+        candidates.push(d);
+      }
+      if (emp?.date_of_first_appointment) {
+        const d = new Date(emp.date_of_first_appointment);
+        d.setFullYear(d.getFullYear() + 35);
+        candidates.push(d);
+      }
+      if (candidates.length === 0) return null;
+      return candidates.reduce((a, b) => (a < b ? a : b)).toISOString();
+    };
+
+    const retirementDate = computeRetirementDate(employee);
+    const retirement = useRetirement(retirementDate);
+    const status = retirementDate ? (new Date(retirementDate) < new Date() ? 'Retired' : 'Active') : 'N/A';
+
     return (
       <Table.Row key={employee.id}>
-        <Table.Cell className="font-medium">{employee.name}</Table.Cell>
-        <Table.Cell>{employee.email}</Table.Cell>
-        <Table.Cell>{employee.position}</Table.Cell>
-        <Table.Cell>{employee.department}</Table.Cell>
+        <Table.Cell className="font-medium">{employee.full_name || employee.name}</Table.Cell>
+        <Table.Cell>{employee.rank || employee.position}</Table.Cell>
+        <Table.Cell>{employee.department || 'N/A'}</Table.Cell>
         <Table.Cell>
           <div>
-            <div className="text-sm">{formatDate(employee.retirementDate)}</div>
-            {retirement.daysRemaining !== null && retirement.daysRemaining > 0 && (
-              <div className="text-xs text-gov-gray-500 mt-0.5">
-                {retirement.daysRemaining} days remaining
-              </div>
+            <div className="text-sm">{retirementDate ? formatDate(retirementDate) : 'N/A'}</div>
+            {retirement?.daysRemaining !== null && retirement?.daysRemaining > 0 && (
+              <div className="text-xs text-gov-gray-500 mt-0.5">{retirement.daysRemaining} days remaining</div>
             )}
           </div>
         </Table.Cell>
         <Table.Cell>
-          <Badge variant={
-            retirement.priority === 'critical' ? 'red' :
-            retirement.priority === 'warning' ? 'yellow' :
-            retirement.priority === 'retired' ? 'gray' : 'green'
-          }>
-            {retirement.priority || 'active'}
-          </Badge>
+          <Badge variant={status === 'Retired' ? 'gray' : 'green'}>{status}</Badge>
         </Table.Cell>
         <Table.Cell>
           <div className="flex items-center justify-center space-x-2">
-            <button
-              onClick={() => handleEdit(employee)}
-              className="text-gov-blue-600 hover:text-gov-blue-700 p-1"
-              title={`Edit ${employee.name}`}
-              aria-label={`Edit ${employee.name}`}
-            >
+            <Link to={`/dashboard/employees/${employee.id}/edit`} title={`Edit ${employee.full_name || employee.name}`} aria-label={`Edit ${employee.full_name || employee.name}`} className="text-gov-blue-600 hover:text-gov-blue-700 p-1">
               <PencilIcon className="w-4 h-4" />
-            </button>
-            <button
-              onClick={() => handleDelete(employee.id)}
-              className="text-red-600 hover:text-red-700 p-1"
-              title={`Delete ${employee.name}`}
-              aria-label={`Delete ${employee.name}`}
-              disabled={deleteMutation.isPending}
-            >
+            </Link>
+            <button onClick={() => handleDelete(employee.id)} className="text-red-600 hover:text-red-700 p-1" title={`Delete ${employee.full_name || employee.name}`} aria-label={`Delete ${employee.full_name || employee.name}`} disabled={deleteMutation.isPending}>
               <TrashIcon className="w-4 h-4" />
             </button>
           </div>
@@ -140,26 +102,43 @@ const Employees = () => {
 
   // Mobile card component so hooks can be used at top-level
   const MobileEmployeeCard = ({ employee }) => {
-    const retirement = useRetirement(employee.retirementDate);
+    const computeRetirementDate = (emp) => {
+      const candidates = [];
+      if (emp?.date_of_birth) {
+        const d = new Date(emp.date_of_birth);
+        d.setFullYear(d.getFullYear() + 60);
+        candidates.push(d);
+      }
+      if (emp?.date_of_first_appointment) {
+        const d = new Date(emp.date_of_first_appointment);
+        d.setFullYear(d.getFullYear() + 35);
+        candidates.push(d);
+      }
+      if (candidates.length === 0) return null;
+      return candidates.reduce((a, b) => (a < b ? a : b)).toISOString();
+    };
+
+    const retirementDate = computeRetirementDate(employee);
+    const retirement = useRetirement(retirementDate);
+    const status = retirementDate ? (new Date(retirementDate) < new Date() ? 'Retired' : 'Active') : 'N/A';
+
     return (
       <div className="p-4 border rounded-lg bg-white">
         <div className="flex items-center justify-between">
           <div>
-            <div className="font-medium">{employee.name}</div>
-            <div className="text-sm text-gov-gray-600">{employee.position} • {employee.department}</div>
+            <div className="font-medium">{employee.full_name || employee.name}</div>
+            <div className="text-sm text-gov-gray-600">{employee.rank || employee.position} • {employee.department}</div>
           </div>
           <div className="text-right">
-            <div className="text-sm">{formatDate(employee.retirementDate)}</div>
-            <Badge variant={retirement.priority === 'critical' ? 'red' : retirement.priority === 'warning' ? 'yellow' : 'green'}>
-              {retirement.priority || 'active'}
-            </Badge>
+            <div className="text-sm">{retirementDate ? formatDate(retirementDate) : 'N/A'}</div>
+            <Badge variant={status === 'Retired' ? 'gray' : 'green'}>{status}</Badge>
           </div>
         </div>
         <div className="mt-3 flex items-center justify-end space-x-2">
-          <button onClick={() => handleEdit(employee)} aria-label={`Edit ${employee.name}`} className="text-gov-blue-600 hover:text-gov-blue-700 p-1">
+          <Link to={`/dashboard/employees/${employee.id}/edit`} aria-label={`Edit ${employee.full_name || employee.name}`} className="text-gov-blue-600 hover:text-gov-blue-700 p-1">
             <PencilIcon className="w-4 h-4" />
-          </button>
-          <button onClick={() => handleDelete(employee.id)} aria-label={`Delete ${employee.name}`} className="text-red-600 hover:text-red-700 p-1">
+          </Link>
+          <button onClick={() => handleDelete(employee.id)} aria-label={`Delete ${employee.full_name || employee.name}`} className="text-red-600 hover:text-red-700 p-1">
             <TrashIcon className="w-4 h-4" />
           </button>
         </div>
@@ -191,24 +170,23 @@ const Employees = () => {
             <Table.Head>
               <Table.Row>
                 <Table.HeaderCell>Name</Table.HeaderCell>
-                <Table.HeaderCell>Email</Table.HeaderCell>
-                <Table.HeaderCell>Position</Table.HeaderCell>
-                <Table.HeaderCell>Department</Table.HeaderCell>
-                <Table.HeaderCell>Retirement Date</Table.HeaderCell>
-                <Table.HeaderCell>Status</Table.HeaderCell>
-                <Table.HeaderCell className="text-center">Actions</Table.HeaderCell>
-              </Table.Row>
+                <Table.HeaderCell>Rank/Position</Table.HeaderCell>
+                  <Table.HeaderCell>Department</Table.HeaderCell>
+                  <Table.HeaderCell>Retirement Date</Table.HeaderCell>
+                  <Table.HeaderCell>Status</Table.HeaderCell>
+                  <Table.HeaderCell className="text-center">Actions</Table.HeaderCell>
+                </Table.Row>
             </Table.Head>
             <Table.Body>
               {isLoading ? (
                 <Table.Row>
-                  <Table.Cell colSpan={7} className="py-6 text-center">
+                  <Table.Cell colSpan={6} className="py-6 text-center">
                     <Skeleton rows={4} />
                   </Table.Cell>
                 </Table.Row>
               ) : employees.length === 0 ? (
                 <Table.Row>
-                  <Table.Cell colSpan={7} className="py-6 text-center">
+                  <Table.Cell colSpan={6} className="py-6 text-center">
                     <EmptyState title="No employees" description="No employee records found." />
                   </Table.Cell>
                 </Table.Row>
@@ -237,84 +215,7 @@ const Employees = () => {
         </div>
       </Card>
 
-      {/* Edit Modal */}
-      {editingEmployee && (
-        <Modal
-          isOpen={!!editingEmployee}
-          onClose={handleCloseModal}
-          title="Edit Employee"
-          size="lg"
-        >
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input
-                label="Full Name"
-                required
-                {...register('name', { required: 'Name is required' })}
-                error={errors.name?.message}
-              />
-              <Input
-                label="Email"
-                type="email"
-                required
-                {...register('email', { required: 'Email is required' })}
-                error={errors.email?.message}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Select
-                label="Position"
-                required
-                {...register('position', { required: 'Position is required' })}
-                error={errors.position?.message}
-                placeholder="Select position"
-              >
-                {POSITIONS.map(pos => (
-                  <option key={pos} value={pos}>{pos}</option>
-                ))}
-              </Select>
-              <Select
-                label="Department"
-                required
-                {...register('department', { required: 'Department is required' })}
-                error={errors.department?.message}
-                placeholder="Select department"
-              >
-                {DEPARTMENTS.map(dept => (
-                  <option key={dept} value={dept}>{dept}</option>
-                ))}
-              </Select>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <Input
-                label="Employment Date"
-                type="date"
-                required
-                {...register('employmentDate', { required: 'Employment date is required' })}
-                error={errors.employmentDate?.message}
-              />
-              <Input
-                label="Retirement Date"
-                type="date"
-                required
-                {...register('retirementDate', { required: 'Retirement date is required' })}
-                error={errors.retirementDate?.message}
-              />
-            </div>
-
-            <div className="flex justify-end space-x-3 pt-4">
-              <Button type="button" variant="ghost" onClick={handleCloseModal}>
-                Cancel
-              </Button>
-              <Button type="submit" disabled={updateMutation.isPending}>
-                {updateMutation.isPending ? 'Saving…' : 'Update Employee'}
-              </Button>
-            </div>
-          </form>
-        </Modal>
-      )}
+      {/* Editing handled on dedicated page: /dashboard/employees/:id/edit */}
     </div>
   );
 };

@@ -27,6 +27,7 @@ export const getEmployeeEdits = async (params = {}) => {
  * @returns {Promise} - Created suggestion
  */
 export const suggestEmployeeEdit = async (data) => {
+  console.log('📤 Sending employee edit suggestion:', JSON.stringify(data, null, 2));
   const response = await api.post('/employee-edits', data);
   return response.data;
 };
