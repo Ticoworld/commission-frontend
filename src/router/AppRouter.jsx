@@ -179,7 +179,7 @@ const AppRouter = () => {
             }
           />
         <Route 
-          path="news-editor" 
+          path="news-editor/:newsId?" 
           element={
             <Suspense fallback={<LoadingFallback />}>
               <NewsEditor />

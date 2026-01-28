@@ -23,13 +23,13 @@ const Drafts = () => {
 
   const queryEnabled = Boolean(user?.id);
 
-  const { data: drafts = [], isLoading: loadingDrafts } = useQuery({
+  const { data: drafts = [], isLoading: loadingDrafts, isFetching: fetchingDrafts } = useQuery({
     queryKey: ['news', 'drafts', user?.id],
     queryFn: () => getAllNews({ status: NEWS_STATUS.DRAFT, authorId: user.id }),
     enabled: queryEnabled
   });
 
-  const { data: pending = [], isLoading: loadingPending } = useQuery({
+  const { data: pending = [], isLoading: loadingPending, isFetching: fetchingPending } = useQuery({
     queryKey: ['news', 'pending', user?.id],
     queryFn: () => getAllNews({ status: NEWS_STATUS.PENDING, authorId: user.id }),
     enabled: queryEnabled
@@ -64,7 +64,10 @@ const Drafts = () => {
     }
   });
 
-  const tablesLoading = useMemo(() => loadingDrafts || loadingPending, [loadingDrafts, loadingPending]);
+  const tablesLoading = useMemo(
+    () => loadingDrafts || loadingPending || fetchingDrafts || fetchingPending,
+    [loadingDrafts, loadingPending, fetchingDrafts, fetchingPending]
+  );
 
   return (
     <div className="space-y-6">
@@ -76,8 +79,12 @@ const Drafts = () => {
       </div>
 
       {tablesLoading ? (
-        <div className="p-4">
-          <Skeleton rows={6} />
+        <div className="flex flex-col items-center justify-center py-16 gap-4">
+          <Loader size="lg" label="Loading articles…" />
+          <p className="text-sm text-gov-gray-500">Fetching your drafts and pending submissions</p>
+          <div className="w-full max-w-md p-4">
+            <Skeleton rows={4} />
+          </div>
         </div>
       ) : (
         <div className="grid gap-6 lg:grid-cols-2">
