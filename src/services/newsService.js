@@ -18,7 +18,8 @@ export const getAllNews = async (params = {}) => {
  * @param {Object} params - Additional query params (page, limit, search, etc.)
  */
 export const getPublishedNews = async (params = {}) => {
-  return getAllNews({ status: 'published', ...params });
+  const response = await api.get('/news/published', { params });
+  return response.data?.data ?? response.data;
 };
 
 /**
