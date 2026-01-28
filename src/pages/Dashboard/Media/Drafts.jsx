@@ -38,13 +38,29 @@ const Drafts = () => {
   const submitMutation = useMutation({
     mutationFn: (id) => submitNewsForApproval(id, { actor: user }),
     onSuccess: () => {
-      toast.success('Draft submitted for approval');
+      // Check if user is SUPER_ADMIN or ADMIN (auto-approved)
+      if (user?.role === 'SUPER_ADMIN' || user?.role === 'ADMIN') {
+        toast.success('Article published successfully');
+      } else {
+        toast.success('Draft submitted for approval');
+      }
       queryClient.invalidateQueries({ queryKey: ['news', 'drafts', user?.id] });
       queryClient.invalidateQueries({ queryKey: ['news', 'pending', user?.id] });
       queryClient.invalidateQueries({ queryKey: ['auditQueue'] });
     },
     onError: (error) => {
-      toast.error(error?.message || 'Unable to submit draft');
+      console.error('Submit error:', error);
+      
+      // Handle specific HTTP status codes
+      if (error?.response?.status === 403) {
+        toast.error('You do not have permission to submit news articles');
+      } else if (error?.response?.status === 500) {
+        toast.error('Server error. Please try again later');
+      } else if (error?.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error?.message || 'Unable to submit draft');
+      }
     }
   });
 

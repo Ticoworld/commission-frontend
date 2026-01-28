@@ -24,10 +24,12 @@ const LgaDashboard = () => {
     try {
       setLoading(true);
       const res = await api.get('/employees/my-lga'); // Scoped endpoint
-      setEmployees(res.data);
+      // Backend now returns { data: [...], meta: {...} }
+      setEmployees(res.data?.data || []);
     } catch (err) {
-      console.error(err);
+      console.error('Error loading LGA employees:', err);
       toast.error('Failed to load LGA employees');
+      setEmployees([]); // Set empty array on error
     } finally {
       setLoading(false);
     }

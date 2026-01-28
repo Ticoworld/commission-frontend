@@ -47,13 +47,12 @@ const EmployeeOnboardingForm = ({ initialValues } = {}) => {
       try {
         setLgasLoading(true);
         const data = await getLGAs();
-        // support array or { data: [] }
-        const list = Array.isArray(data) ? data : (data?.data || []);
-        // Normalize to objects having name property
-        setLgas(list.map((item) => (typeof item === 'string' ? { name: item } : item)));
+        // Backend now returns standardized array format
+        setLgas(data || []);
       } catch (err) {
-        console.error(err);
-        setLgasError('Failed to load LGAs');
+        console.error('Error loading LGAs:', err);
+        setLgasError('Failed to load local governments');
+        setLgas([]); // Set empty array on error
       } finally {
         setLgasLoading(false);
       }

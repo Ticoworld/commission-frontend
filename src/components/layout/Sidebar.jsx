@@ -43,8 +43,7 @@ const Sidebar = () => {
         { name: 'Retirement Alerts', href: '/dashboard/retirement-alerts', icon: BellAlertIcon },
         { name: 'Activity Log', href: '/dashboard/activity-log', icon: DocumentTextIcon },
         { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon },
-        { name: 'Invite User', href: '/dashboard/admin/invite', icon: UsersIcon },
-        { name: 'Role Editor', href: '/dashboard/admin/roles', icon: Cog6ToothIcon }
+        { name: 'Invite User', href: '/dashboard/admin/invite', icon: UsersIcon }
       ],
       ADMIN: [
         { name: 'Employees', href: '/dashboard/employees', icon: UsersIcon },

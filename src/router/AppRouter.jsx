@@ -36,7 +36,6 @@ const Drafts = lazy(() => import('../pages/Dashboard/Media/Drafts'));
 const PendingEdits = lazy(() => import('../pages/Dashboard/Audit/PendingEdits'));
 const EmployeeAudit = lazy(() => import('../pages/Dashboard/Audit/EmployeeAudit'));
 const InviteUser = lazy(() => import('../pages/admin/InviteUser'));
-const RoleEditorAdmin = lazy(() => import('../pages/admin/RoleEditor'));
 const UserManagement = lazy(() => import('../pages/admin/UserManagement'));
 const AddEmployeePage = lazy(() => import('../pages/AddEmployeePage'));
 const EditEmployeePage = lazy(() => import('../pages/EditEmployeePage'));
@@ -165,16 +164,6 @@ const AppRouter = () => {
               <ProtectedRoute allowedRoles={[ 'SUPER_ADMIN' ]}>
                 <Suspense fallback={<LoadingFallback />}>
                   <InviteUser />
-                </Suspense>
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="admin/roles"
-            element={
-              <ProtectedRoute allowedRoles={[ 'SUPER_ADMIN' ]}>
-                <Suspense fallback={<LoadingFallback />}>
-                  <RoleEditorAdmin />
                 </Suspense>
               </ProtectedRoute>
             }

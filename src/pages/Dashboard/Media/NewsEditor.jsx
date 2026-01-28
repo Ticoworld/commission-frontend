@@ -50,7 +50,18 @@ const NewsEditor = () => {
       }
     },
     onError: (error) => {
-      toast.error(error?.message || 'Unable to save draft');
+      console.error('Save draft error:', error);
+      
+      // Handle specific HTTP status codes
+      if (error?.response?.status === 403) {
+        toast.error('You do not have permission to create/edit news articles');
+      } else if (error?.response?.status === 500) {
+        toast.error('Server error. Please try again later');
+      } else if (error?.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error?.message || 'Unable to save draft');
+      }
     }
   });
 
@@ -60,13 +71,29 @@ const NewsEditor = () => {
       await submitNewsForApproval(draft.id, { actor: user });
       return draft;
     },
-    onSuccess: () => {
-      toast.success('Article submitted for approval');
+    onSuccess: (data, variables, context) => {
+      // Check if user is SUPER_ADMIN or ADMIN (auto-approved)
+      if (user?.role === 'SUPER_ADMIN' || user?.role === 'ADMIN') {
+        toast.success('Article published successfully');
+      } else {
+        toast.success('Article submitted for approval');
+      }
       invalidateLists();
       navigate('/dashboard/drafts');
     },
     onError: (error) => {
-      toast.error(error?.message || 'Unable to submit for approval');
+      console.error('Submit error:', error);
+      
+      // Handle specific HTTP status codes
+      if (error?.response?.status === 403) {
+        toast.error('You do not have permission to submit news articles');
+      } else if (error?.response?.status === 500) {
+        toast.error('Server error. Please try again later');
+      } else if (error?.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error?.message || 'Unable to submit for approval');
+      }
     }
   });
 

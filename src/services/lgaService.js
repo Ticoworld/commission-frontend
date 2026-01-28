@@ -8,7 +8,8 @@ import api from './api';
  */
 export const getLGAs = async (params = {}) => {
   const res = await api.get('/lgas', { params });
-  return res.data?.data ?? res.data; // support both array and {data,meta}
+  // Backend now always returns { data: [...], meta: {...} }
+  return res.data?.data || [];
 };
 
 /**
