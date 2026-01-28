@@ -42,6 +42,16 @@ export const getNewsBySlug = async (slug) => {
 };
 
 /**
+ * Get published news article by ID (public endpoint, fallback when slug doesn't exist)
+ * @param {string} id - News article ID
+ * @returns {Promise} - News article data
+ */
+export const getPublishedNewsById = async (id) => {
+  const response = await api.get(`/news/published/${id}`);
+  return response.data;
+};
+
+/**
  * Create a new news article
  * @param {Object} newsData - News article data
  * @returns {Promise} - Created news article

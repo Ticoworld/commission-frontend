@@ -24,21 +24,15 @@ const categories = [
   { value: 'careers', label: 'Careers & Opportunities' }
 ];
 
-// Data now fetched from API (published only)
-
-  const spotlight = {
-  title: 'Special Report: How ESLGSC is digitising grassroots governance',
-  description: 'In-depth feature on the new statewide records digitisation programme, highlighting change management, success stories, and what citizens can expect next.',
-  image: '/images/hero/hero8.jpg',
-  link: '/news-and-updates/spotlight'
-};
-
 const NewsPage = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const { data: newsArticles = [], isLoading } = useQuery({
     queryKey: ['news', 'public', 'published'],
     queryFn: () => getPublishedNews({ limit: 30 })
   });
+
+  // Use latest published article as spotlight, or null if none exist
+  const spotlightArticle = newsArticles.length > 0 ? newsArticles[0] : null;
 
   const filteredNews = useMemo(() => {
     if (selectedCategory === 'all') return newsArticles;
@@ -63,26 +57,34 @@ const NewsPage = () => {
         }
       />
 
-      <section className="container-custom">
-        <Card className="overflow-hidden">
-          <div className="h-60 w-full overflow-hidden">
-            <img
-              src={spotlight.image}
-              alt={spotlight.title}
-              loading="lazy"
-              className="h-full w-full object-cover"
-            />
-          </div>
-          <div className="p-6 space-y-4">
-            <Badge variant="green">Spotlight</Badge>
-            <h2 className="text-2xl font-semibold text-gov-gray-900">{spotlight.title}</h2>
-            <p className="text-gov-gray-600">{spotlight.description}</p>
-                <Button as={Link} to={spotlight.link} variant="outline" size="sm">
-              Read Special Report
-            </Button>
-          </div>
-        </Card>
-      </section>
+      {/* Spotlight Section - Shows latest published article */}
+      {spotlightArticle && (
+        <section className="container-custom">
+          <Card className="overflow-hidden">
+            <div className="h-60 w-full overflow-hidden">
+              <img
+                src={spotlightArticle.imageUrl || '/images/hero/hero8.jpg'}
+                alt={spotlightArticle.title}
+                loading="lazy"
+                className="h-full w-full object-cover"
+              />
+            </div>
+            <div className="p-6 space-y-4">
+              <Badge variant="green">Spotlight</Badge>
+              <h2 className="text-2xl font-semibold text-gov-gray-900">{spotlightArticle.title}</h2>
+              <p className="text-gov-gray-600">{spotlightArticle.summary || truncate(spotlightArticle.content || '', 200)}</p>
+              <Button 
+                as={Link} 
+                to={`/news-and-updates/${spotlightArticle.slug || spotlightArticle.id}`} 
+                variant="outline" 
+                size="sm"
+              >
+                Read Full Article
+              </Button>
+            </div>
+          </Card>
+        </section>
+      )}
 
       {/* Filters */}
       <section id="updates" className="container-custom space-y-10">

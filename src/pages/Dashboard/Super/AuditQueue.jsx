@@ -38,8 +38,16 @@ const AuditQueue = () => {
       closeModal();
     },
     onError: (error) => {
-      const message = error?.message || 'Unable to approve submission';
-      toast.error(message);
+      console.error('Approve error:', error);
+      if (error?.response?.status === 403) {
+        toast.error('You do not have permission to approve submissions. Only SUPER_ADMIN and ADMIN can approve.');
+      } else if (error?.response?.status === 500) {
+        toast.error('Server error. Please try again later');
+      } else if (error?.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error?.message || 'Unable to approve submission');
+      }
     }
   });
 
@@ -51,8 +59,16 @@ const AuditQueue = () => {
       closeModal();
     },
     onError: (error) => {
-      const message = error?.message || 'Unable to reject submission';
-      toast.error(message);
+      console.error('Reject error:', error);
+      if (error?.response?.status === 403) {
+        toast.error('You do not have permission to reject submissions. Only SUPER_ADMIN and ADMIN can reject.');
+      } else if (error?.response?.status === 500) {
+        toast.error('Server error. Please try again later');
+      } else if (error?.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error?.message || 'Unable to reject submission');
+      }
     }
   });
 

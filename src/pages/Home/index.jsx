@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
+import { useQuery } from '@tanstack/react-query';
 import { 
   AcademicCapIcon, 
   BanknotesIcon, 
@@ -11,8 +12,91 @@ import {
 } from '@heroicons/react/24/outline';
 import Card from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
+import Skeleton from '../../components/ui/Skeleton';
+import { getPublishedNews } from '../../services/newsService';
+import { formatDate, truncate } from '../../lib/utils';
 import 'swiper/css';
 import 'swiper/css/pagination';
+
+// News Preview Component - Fetches real data from API
+const NewsPreviewSection = () => {
+  const { data: newsArticles = [], isLoading } = useQuery({
+    queryKey: ['news', 'public', 'home-preview'],
+    queryFn: () => getPublishedNews({ limit: 3 })
+  });
+
+  return (
+    <section className="py-16 md:py-20 bg-white">
+      <div className="container-custom">
+        <div className="flex items-center justify-between mb-12">
+          <div>
+            <h2 className="heading-lg mb-2">Latest News & Updates</h2>
+            <p className="text-gov-gray-600">Stay informed about our activities and programs</p>
+          </div>
+          <Button variant="outline" as={Link} to="/news-and-updates" className="hidden sm:inline-flex">
+            <NewspaperIcon className="w-4 h-4 mr-2" />
+            View All News
+          </Button>
+        </div>
+        
+        {isLoading ? (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[1, 2, 3].map((i) => (
+              <Card key={i} className="overflow-hidden">
+                <Skeleton className="h-48 w-full" />
+                <div className="p-6">
+                  <Skeleton className="h-4 w-24 mb-2" />
+                  <Skeleton className="h-6 w-full mb-3" />
+                  <Skeleton className="h-4 w-full mb-4" />
+                </div>
+              </Card>
+            ))}
+          </div>
+        ) : newsArticles.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-gov-gray-600">No news articles available yet. Check back soon!</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {newsArticles.slice(0, 3).map((article) => (
+              <Card key={article.id} className="overflow-hidden hover:shadow-md transition-shadow">
+                <img 
+                  src={article.imageUrl || '/images/gallery/image14.jpg'} 
+                  alt={article.title} 
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-6">
+                  <div className="text-xs text-gov-gray-500 mb-2">
+                    {formatDate(article.publishedAt || article.createdAt)}
+                  </div>
+                  <h3 className="text-lg font-semibold text-gov-gray-900 mb-3 line-clamp-2">
+                    {article.title}
+                  </h3>
+                  <p className="text-gov-gray-600 text-sm mb-4 line-clamp-3">
+                    {truncate(article.summary || article.content || '', 120)}
+                  </p>
+                  <Link 
+                    to={`/news-and-updates/${article.slug || article.id}`}
+                    className="text-gov-blue-600 hover:text-gov-blue-700 font-medium text-sm inline-flex items-center transition-colors"
+                  >
+                    Read more
+                    <ArrowRightIcon className="w-3 h-3 ml-1" />
+                  </Link>
+                </div>
+              </Card>
+            ))}
+          </div>
+        )}
+        
+        <div className="text-center mt-8 sm:hidden">
+          <Button variant="outline" as={Link} to="/news-and-updates">
+            View All News
+          </Button>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 const Home = () => {
   const services = [
@@ -193,58 +277,7 @@ const Home = () => {
       </section>
 
       {/* News Preview */}
-      <section className="py-16 md:py-20 bg-white">
-        <div className="container-custom">
-          <div className="flex items-center justify-between mb-12">
-            <div>
-              <h2 className="heading-lg mb-2">Latest News & Updates</h2>
-              <p className="text-gov-gray-600">Stay informed about our activities and programs</p>
-            </div>
-            <Button variant="outline" as={Link} to="/news-and-updates" className="hidden sm:inline-flex">
-              <NewspaperIcon className="w-4 h-4 mr-2" />
-              View All News
-            </Button>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { id: 1, image: '/images/gallery/image19.jpg' },
-              { id: 2, image: '/images/gallery/image20.jpg' },
-              { id: 3, image: '/images/gallery/image14.jpg' }
-            ].map((item) => (
-              <Card key={item.id} className="overflow-hidden hover:shadow-md transition-shadow">
-                <img 
-                  src={item.image} 
-                  alt={`News image ${item.id} - Community development`} 
-                  className="w-full h-48 object-cover"
-                />
-                <div className="p-6">
-                  <div className="text-xs text-gov-gray-500 mb-2">October {item.id}, 2025</div>
-                  <h3 className="text-lg font-semibold text-gov-gray-900 mb-3 line-clamp-2">
-                    Community Development Initiative Phase {item.id} Launched
-                  </h3>
-                  <p className="text-gov-gray-600 text-sm mb-4 line-clamp-3">
-                    ESLGSC announces new programs to enhance service delivery and community engagement across all local governments.
-                  </p>
-                  <Link 
-                    to="/news-and-updates"
-                    className="text-gov-blue-600 hover:text-gov-blue-700 font-medium text-sm inline-flex items-center transition-colors"
-                  >
-                    Read more
-                    <ArrowRightIcon className="w-3 h-3 ml-1" />
-                  </Link>
-                </div>
-              </Card>
-            ))}
-          </div>
-          
-          <div className="text-center mt-8 sm:hidden">
-            <Button variant="outline" as={Link} to="/news-and-updates">
-              View All News
-            </Button>
-          </div>
-        </div>
-      </section>
+      <NewsPreviewSection />
 
       {/* Quick Links / CTA */}
       <section className="py-16 md:py-20 bg-gov-blue-600 text-white">

@@ -1,17 +1,45 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { getNewsBySlug } from '../../services/newsService';
+import { getNewsBySlug, getPublishedNewsById } from '../../services/newsService';
 import Skeleton from '../../components/ui/Skeleton';
 import { ArrowLeftIcon, CalendarIcon, TagIcon, ShareIcon } from '@heroicons/react/24/outline';
 import Card from '../../components/ui/Card';
 import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
 
+// Check if string is a UUID (ID) format
+const isUUID = (str) => {
+  const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  return uuidRegex.test(str);
+};
+
 const NewsDetailPage = () => {
   const { slug } = useParams();
+  // If param looks like UUID, treat as ID; otherwise treat as slug
+  const isId = isUUID(slug);
+  
   const { data: article, isLoading, isError } = useQuery({
-    queryKey: ['news', 'public', slug],
-    queryFn: () => getNewsBySlug(slug)
+    queryKey: ['news', 'public', slug, isId ? 'id' : 'slug'],
+    queryFn: async () => {
+      if (isId) {
+        // Param is UUID - use published by ID endpoint (public)
+        return await getPublishedNewsById(slug);
+      } else {
+        // Param is slug - try slug endpoint first
+        try {
+          return await getNewsBySlug(slug);
+        } catch (error) {
+          // If slug fails (404), param might actually be an ID that was passed as slug
+          // Only try ID endpoint if slug looks like it could be a UUID
+          if (error?.response?.status === 404 && isUUID(slug)) {
+            return await getPublishedNewsById(slug);
+          }
+          // Otherwise, slug not found - throw the error
+          throw error;
+        }
+      }
+    },
+    retry: false // Don't retry on 404
   });
 
   if (isLoading) {

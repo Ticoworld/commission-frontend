@@ -51,7 +51,16 @@ const EmployeeAudit = () => {
       queryClient.invalidateQueries({ queryKey: ['employeeEdits', user?.id] });
     },
     onError: (error) => {
-      toast.error(error?.message || 'Unable to submit suggestion');
+      console.error('Submit edit error:', error);
+      if (error?.response?.status === 403) {
+        toast.error('You do not have permission to submit audit suggestions. Only AUDIT role can submit.');
+      } else if (error?.response?.status === 500) {
+        toast.error('Server error. Please try again later');
+      } else if (error?.response?.data?.message) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error(error?.message || 'Unable to submit suggestion');
+      }
     }
   });
 

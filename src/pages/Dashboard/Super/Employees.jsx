@@ -1,12 +1,14 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, PencilIcon, TrashIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 import Card from '../../../components/ui/Card';
 import Table from '../../../components/ui/Table';
 import Button from '../../../components/ui/Button';
 import Badge from '../../../components/ui/Badge';
 import EmptyState from '../../../components/ui/EmptyState';
 import Skeleton from '../../../components/ui/Skeleton';
+import Input from '../../../components/ui/Input';
+import Select from '../../../components/ui/Select';
 import { formatDate } from '../../../lib/utils';
 import { useRetirement } from '../../../hooks/useRetirement';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -21,11 +23,35 @@ const Employees = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [refresh, setRefresh] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchBy, setSearchBy] = useState('surname'); // 'surname' or 'date'
 
   const { data: employees = [], isLoading } = useQuery({
     queryKey: ['employees'],
     queryFn: getAllEmployees
   });
+
+  // Filter employees based on search
+  const filteredEmployees = useMemo(() => {
+    if (!searchTerm.trim()) return employees;
+    
+    const term = searchTerm.toLowerCase().trim();
+    
+    return employees.filter((emp) => {
+      if (searchBy === 'surname') {
+        // Search by surname (last name) - extract surname from full_name
+        const fullName = (emp.full_name || emp.name || '').toLowerCase();
+        const surname = fullName.split(' ').pop() || ''; // Get last word as surname
+        return surname.includes(term) || fullName.includes(term);
+      } else if (searchBy === 'date') {
+        // Search by date of first appointment
+        if (!emp.date_of_first_appointment) return false;
+        const dateStr = formatDate(emp.date_of_first_appointment).toLowerCase();
+        return dateStr.includes(term);
+      }
+      return false;
+    });
+  }, [employees, searchTerm, searchBy]);
 
   const invalidateEmployees = () => {
     queryClient.invalidateQueries({ queryKey: ['employees'] });
@@ -184,14 +210,17 @@ const Employees = () => {
                     <Skeleton rows={4} />
                   </Table.Cell>
                 </Table.Row>
-              ) : employees.length === 0 ? (
+              ) : filteredEmployees.length === 0 ? (
                 <Table.Row>
                   <Table.Cell colSpan={6} className="py-6 text-center">
-                    <EmptyState title="No employees" description="No employee records found." />
+                    <EmptyState 
+                      title={searchTerm ? "No matching employees" : "No employees"} 
+                      description={searchTerm ? `No employees found matching "${searchTerm}". Try a different search term.` : "No employee records found."} 
+                    />
                   </Table.Cell>
                 </Table.Row>
               ) : (
-                employees.map((employee) => (
+                filteredEmployees.map((employee) => (
                   <EmployeeRow key={employee.id} employee={employee} />
                 ))
               )}
@@ -203,11 +232,14 @@ const Employees = () => {
         <div className="block sm:hidden">
           {isLoading ? (
             <Skeleton rows={4} />
-          ) : employees.length === 0 ? (
-            <EmptyState title="No employees" description="No employee records found." />
+          ) : filteredEmployees.length === 0 ? (
+            <EmptyState 
+              title={searchTerm ? "No matching employees" : "No employees"} 
+              description={searchTerm ? `No employees found matching "${searchTerm}". Try a different search term.` : "No employee records found."} 
+            />
           ) : (
             <div className="space-y-4">
-              {employees.map((employee) => (
+              {filteredEmployees.map((employee) => (
                 <MobileEmployeeCard key={employee.id} employee={employee} />
               ))}
             </div>
