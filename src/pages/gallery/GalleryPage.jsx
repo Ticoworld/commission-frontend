@@ -164,17 +164,19 @@ const GalleryPage = () => {
 
       {/* Filters */}
       <section id="collection" className="container-custom space-y-8">
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-6 border-b border-gov-gray-100">
           {categories.map((category) => (
-            <Button
+            <button
               key={category.value}
-              variant={selectedCategory === category.value ? 'primary' : 'outline'}
-              size="sm"
+              className={`px-1 py-4 text-xs font-bold uppercase tracking-wider transition-all border-b-2 outline-none ${
+                selectedCategory === category.value 
+                ? 'border-gov-navy-600 text-gov-navy-900' 
+                : 'border-transparent text-gov-gray-500 hover:text-gov-navy-600 hover:border-gov-gray-300'
+              }`}
               onClick={() => setSelectedCategory(category.value)}
-              className="capitalize"
             >
               {category.label}
-            </Button>
+            </button>
           ))}
         </div>
 
@@ -188,7 +190,7 @@ const GalleryPage = () => {
               />
             </div>
           ) : filteredItems.map((item) => (
-            <Card key={item.id} className="group overflow-hidden">
+            <Card key={item.id} className="group overflow-hidden relative">
               <div className="relative h-64 w-full">
                 <img
                   src={item.src}
@@ -196,11 +198,13 @@ const GalleryPage = () => {
                   loading="lazy"
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                <div className="absolute inset-x-0 bottom-0 p-5 text-white opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Badge variant="blue" className="mb-2">{item.category}</Badge>
-                  <h3 className="text-lg font-semibold mb-1">{item.title}</h3>
-                  <p className="text-sm text-white/80 leading-relaxed">{item.description}</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity" />
+                <div className="absolute inset-x-0 bottom-0 p-5 text-white">
+                  <span className="inline-block text-[10px] font-bold uppercase tracking-[0.15em] text-white/90 bg-white/10 backdrop-blur-sm px-2 py-0.5 rounded-sm border border-white/20 mb-2">
+                    {item.category}
+                  </span>
+                  <h3 className="text-lg font-bold mb-1">{item.title}</h3>
+                  <p className="text-sm text-white/80 leading-relaxed line-clamp-2">{item.description}</p>
                 </div>
               </div>
             </Card>

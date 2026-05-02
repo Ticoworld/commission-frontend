@@ -39,7 +39,7 @@ const PageHero = ({
       <div className="container-custom">
         <div className={clsx('flex flex-col gap-6 max-w-4xl', alignmentVariants[align])}>
           {eyebrow && (
-            <span className="badge badge-blue uppercase tracking-wide text-xs font-semibold">
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-gov-blue-600">
               {eyebrow}
             </span>
           )}

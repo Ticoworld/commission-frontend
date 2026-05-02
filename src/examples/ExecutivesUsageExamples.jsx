@@ -4,6 +4,7 @@
  * This file demonstrates how to use the EXECUTIVES constant
  * in different scenarios throughout the application.
  */
+/* eslint-disable react-refresh/only-export-components */
 
 import { EXECUTIVES } from '../lib/constants';
 

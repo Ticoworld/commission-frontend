@@ -34,10 +34,8 @@ const ActivityLog = lazy(() => import('../pages/Dashboard/Super/ActivityLog'));
 const NewsEditor = lazy(() => import('../pages/Dashboard/Media/NewsEditor'));
 const Drafts = lazy(() => import('../pages/Dashboard/Media/Drafts'));
 const PendingEdits = lazy(() => import('../pages/Dashboard/Audit/PendingEdits'));
-const EmployeeAudit = lazy(() => import('../pages/Dashboard/Audit/EmployeeAudit'));
 const InviteUser = lazy(() => import('../pages/admin/InviteUser'));
 const UserManagement = lazy(() => import('../pages/admin/UserManagement'));
-const AddEmployeePage = lazy(() => import('../pages/AddEmployeePage'));
 const EditEmployeePage = lazy(() => import('../pages/EditEmployeePage'));
 
 const LoadingFallback = () => (
@@ -106,14 +104,6 @@ const AppRouter = () => {
           element={
             <Suspense fallback={<LoadingFallback />}>
               <Employees />
-            </Suspense>
-          } 
-        />
-        <Route 
-          path="employees/new" 
-          element={
-            <Suspense fallback={<LoadingFallback />}>
-              <AddEmployeePage />
             </Suspense>
           } 
         />
@@ -202,15 +192,7 @@ const AppRouter = () => {
             </Suspense>
           } 
         />
-        <Route 
-          path="employee-audit" 
-          element={
-            <Suspense fallback={<LoadingFallback />}>
-              <EmployeeAudit />
-            </Suspense>
-          } 
-        />
-      </Route>
+</Route>
 
       {/* Catch all */}
       <Route path="*" element={<Navigate to="/" replace />} />

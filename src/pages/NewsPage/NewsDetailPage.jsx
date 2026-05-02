@@ -66,31 +66,33 @@ const NewsDetailPage = () => {
         <article className="max-w-4xl mx-auto">
           <div className="space-y-6">
             <div>
-              <Badge variant="blue" className="uppercase tracking-wide">{article.category}</Badge>
+              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-gov-blue-600 bg-gov-blue-50 px-2 py-0.5 rounded-sm border border-gov-blue-100">
+                {article.category}
+              </span>
             </div>
 
             <h1 className="heading-xl">{article.title}</h1>
 
             <div className="flex flex-wrap items-center gap-6 text-sm text-gov-gray-600">
-              <div className="flex items-center gap-2">
-                <CalendarIcon className="w-5 h-5" />
+              <div className="flex items-center gap-2 font-medium">
+                <CalendarIcon className="w-5 h-5 text-gov-blue-500" />
                 <time dateTime={article.publishedAt}>{new Date(article.publishedAt).toLocaleDateString()}</time>
               </div>
-              <div className="flex items-center gap-2">
-                <TagIcon className="w-5 h-5" />
+              <div className="flex items-center gap-2 font-medium">
+                <TagIcon className="w-5 h-5 text-gov-blue-500" />
                 <span>By {article.authorName || 'Media Team'}</span>
               </div>
             </div>
 
-            <div className="overflow-hidden rounded-lg">
-              <img src={article.imageUrl || '/images/hero/hero6.jpg'} alt={article.title} className="w-full h-auto object-cover" />
+            <div className="overflow-hidden rounded-lg shadow-sm">
+              <img src={article.imageUrl || '/images/hero/hero6.jpg'} alt={article.title} className="w-full h-auto object-cover max-h-[500px]" />
             </div>
 
-            <div className="prose prose-lg max-w-none prose-headings:text-gov-blue-800 prose-a:text-gov-blue-600 prose-strong:text-gov-gray-900" dangerouslySetInnerHTML={{ __html: article.content }} />
+            <div className="prose prose-lg max-w-none prose-headings:text-gov-navy-700 prose-a:text-gov-blue-600 prose-strong:text-gov-gray-900 leading-relaxed" dangerouslySetInnerHTML={{ __html: article.content }} />
 
             <div className="border-t border-gov-gray-200 pt-6 mt-12">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-gov-gray-700">Share this article</span>
+                <span className="text-sm font-bold uppercase tracking-wider text-gov-gray-600">Share this article</span>
                 <div className="flex gap-3">
                   <Button variant="outline" size="sm" onClick={() => window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=${encodeURIComponent(article.title)}`, '_blank')}>
                     <ShareIcon className="w-4 h-4 mr-2" />
@@ -109,10 +111,10 @@ const NewsDetailPage = () => {
         <div className="max-w-4xl mx-auto mt-16">
           <h2 className="heading-md mb-8">Related Articles</h2>
           <div className="grid gap-6 md:grid-cols-3">
-            <Card className="overflow-hidden hover:shadow-md transition-shadow">
-              <img src="/images/gallery/image16.jpg" alt="Related article" className="w-full h-40 object-cover" />
-              <div className="p-4">
-                <Badge variant="blue" className="mb-2">Policy</Badge>
+            <Card className="overflow-hidden hover:shadow-md transition-shadow group">
+              <img src="/images/gallery/image16.jpg" alt="Related article" className="w-full h-40 object-cover transition-transform group-hover:scale-105 duration-500" />
+              <div className="p-4 space-y-2">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-gov-blue-600">Policy</span>
                 <h3 className="font-semibold text-gov-gray-900 mb-2 line-clamp-2">Performance Management Framework Update</h3>
                 <Link to="/news-and-updates/2" className="text-sm text-gov-blue-600 hover:text-gov-blue-700">Read more →</Link>
               </div>

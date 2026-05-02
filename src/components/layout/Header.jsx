@@ -1,37 +1,49 @@
 import { useState, useEffect, Fragment } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, Transition } from '@headlessui/react';
-import { Bars3Icon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon, ChevronDownIcon, EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import Button from '../ui/Button';
 
 const navigation = [
   { name: 'Home', href: '/' },
-  { name: 'About', href: '/about' },
   { 
-    name: 'Units & Centers', 
+    name: 'Newsroom', 
     href: '#',
     children: [
-      { name: 'Development Centers', href: '/development-centers' },
-      { name: 'Local Governments', href: '/local-governments' }
-    ]
-  },
-  { 
-    name: 'Administration', 
-    href: '#',
-    children: [
-      { name: 'Services', href: '/services' },
-      { name: 'News & Updates', href: '/news-and-updates' },
+      { name: 'Latest News', href: '/news-and-updates' },
+      { name: 'Press Releases', href: '/news-and-updates' },
+      { name: 'Announcements', href: '/news-and-updates' },
+      { name: 'Speeches', href: '/news-and-updates' },
       { name: 'Gallery', href: '/gallery' }
     ]
   },
   { 
-    name: 'Contact', 
+    name: 'The Commission', 
     href: '#',
     children: [
-      { name: 'Contact Us', href: '/contact' },
-      { name: 'Complaints & Reports', href: '/complaints' },
-      { name: 'FAQ', href: '/faq' }
+      { name: 'About ESLGSC', href: '/about' },
+      { name: 'Leadership', href: '/about' },
+      { name: 'Departments & Units', href: '/about' }
+    ]
+  },
+  { name: 'LGAs & Centers', href: '/local-governments' },
+  { 
+    name: 'Documents', 
+    href: '#',
+    children: [
+      { name: 'Circulars', href: '/news-and-updates' },
+      { name: 'Public Notices', href: '/news-and-updates' },
+      { name: 'Reports', href: '/news-and-updates' }
+    ]
+  },
+  { 
+    name: 'Public Service', 
+    href: '#',
+    children: [
+      { name: 'Complaints', href: '/complaints' },
+      { name: 'FAQ', href: '/faq' },
+      { name: 'Contact Us', href: '/contact' }
     ]
   }
 ];
@@ -39,7 +51,6 @@ const navigation = [
 const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
 
   useEffect(() => {
@@ -65,10 +76,30 @@ const Header = () => {
       className={clsx(
         'fixed top-0 left-0 right-0 z-40 transition-all duration-300',
         scrolled 
-          ? 'bg-white shadow-md' 
-          : 'bg-white/95 backdrop-blur-sm'
+          ? 'bg-white shadow-lg' 
+          : 'bg-white'
       )}
     >
+      {/* Top Utility Bar */}
+      <div className="bg-gov-navy-700 text-white py-2 hidden md:block">
+        <div className="container-custom flex justify-between items-center text-xs font-medium">
+          <div className="flex items-center space-x-6">
+            <a href="mailto:ebonyistatelgsc@gmail.com" className="flex items-center hover:text-gov-cyan-300 transition-colors">
+              <EnvelopeIcon className="w-4 h-4 mr-2" />
+              ebonyistatelgsc@gmail.com
+            </a>
+            <span className="flex items-center">
+              <PhoneIcon className="w-4 h-4 mr-2" />
+              +234 (0) 803 555 0101
+            </span>
+          </div>
+          <div className="flex items-center space-x-4">
+            <Link to="/login" className="hover:text-gov-cyan-300 transition-colors">
+              Staff Portal
+            </Link>
+          </div>
+        </div>
+      </div>
   <nav role="navigation" aria-label="Primary navigation" className="container-custom py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
@@ -170,13 +201,12 @@ const Header = () => {
 
           {/* Login Button & Mobile Menu Toggle */}
           <div className="flex items-center space-x-4">
-            <Button
-              onClick={() => navigate('/login')}
-              size="sm"
-              className="hidden sm:inline-flex"
+            <Link 
+              to="/login"
+              className="hidden lg:inline-flex text-sm font-medium text-gov-gray-600 hover:text-gov-navy-600 transition-colors"
             >
-              Login
-            </Button>
+              Staff Portal
+            </Link>
             
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -258,16 +288,13 @@ const Header = () => {
                 )}
               </div>
             ))}
-            <Button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                navigate('/login');
-              }}
-              size="sm"
-              className="w-full sm:hidden"
+            <Link
+              to="/login"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block px-4 py-3 text-center text-sm font-semibold text-white bg-gov-navy-600 rounded-md hover:bg-gov-navy-700 transition-colors sm:hidden"
             >
-              Login
-            </Button>
+              Staff Portal
+            </Link>
           </div>
         </div>
       </Transition>

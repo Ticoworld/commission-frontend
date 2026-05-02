@@ -71,7 +71,7 @@ const NewsEditor = () => {
       await submitNewsForApproval(draft.id, { actor: user });
       return draft;
     },
-    onSuccess: (data, variables, context) => {
+    onSuccess: () => {
       // Check if user is SUPER_ADMIN or ADMIN (auto-approved)
       if (user?.role === 'SUPER_ADMIN' || user?.role === 'ADMIN') {
         toast.success('Article published successfully');

@@ -111,7 +111,9 @@ const DcPage = () => {
 
       <section id="centres" className="container-custom space-y-12">
         <div className="max-w-2xl space-y-4">
-          <Badge variant="green">Flagship locations</Badge>
+          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-gov-green-600">
+            Flagship Locations
+          </span>
           <h2 className="heading-lg">Centres engineered for continuous learning and innovation.</h2>
           <p className="text-gov-gray-600">
             Each development centre is built around a strategic theme—governance, innovation, community engagement, or digital service delivery—so that teams can deep-dive into practical skills with measurable impact.
@@ -119,27 +121,30 @@ const DcPage = () => {
         </div>
         <div className="grid gap-8 md:grid-cols-2">
           {centers.map((centre) => (
-            <Card key={centre.name} className="overflow-hidden">
+            <Card key={centre.name} className="overflow-hidden border-t-4 border-gov-navy-600">
               <div className="h-52 w-full overflow-hidden">
                 <img
                   src={centre.image}
                   alt={centre.name}
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover transition-transform hover:scale-105 duration-700"
                   loading="lazy"
                 />
               </div>
               <div className="space-y-5 p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h3 className="text-xl font-semibold text-gov-gray-900">{centre.name}</h3>
-                    <p className="mt-1 flex items-center gap-2 text-sm text-gov-gray-500">
-                      <MapPinIcon className="h-4 w-4" />
+                <div className="space-y-1">
+                  <h3 className="text-xl font-bold text-gov-navy-900">{centre.name}</h3>
+                  <div className="flex items-center gap-4 py-1">
+                    <div className="flex items-center gap-1.5 text-xs text-gov-gray-500 font-medium">
+                      <MapPinIcon className="h-4 w-4 text-gov-blue-500" />
                       {centre.location}
-                    </p>
+                    </div>
+                    <div className="flex items-center gap-1.5 text-xs text-gov-gray-500 font-medium border-l border-gov-gray-200 pl-4">
+                      <UsersIcon className="h-4 w-4 text-gov-blue-500" />
+                      Capacity: {centre.capacity}
+                    </div>
                   </div>
-                  <Badge variant="blue">Capacity: {centre.capacity}</Badge>
                 </div>
-                <p className="leading-relaxed text-gov-gray-600">{centre.focus}</p>
+                <p className="leading-relaxed text-sm text-gov-gray-600">{centre.focus}</p>
                 <div>
                   <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gov-gray-500">Key facilities</p>
                   <ul className="grid gap-2 sm:grid-cols-2">

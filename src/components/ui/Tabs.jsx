@@ -4,12 +4,10 @@ import clsx from 'clsx';
 const Tabs = ({ tabs, children, className }) => {
   return (
     <Tab.Group>
-      <div className="relative">
-        <div className="pointer-events-none absolute inset-y-1 left-1 hidden w-6 rounded-l-lg bg-gradient-to-r from-white to-transparent sm:block" />
-        <div className="pointer-events-none absolute inset-y-1 right-1 hidden w-6 rounded-r-lg bg-gradient-to-l from-white to-transparent sm:block" />
+      <div className="">
         <Tab.List
           className={clsx(
-            'flex gap-1 overflow-x-auto rounded-lg bg-gov-gray-100 p-1 text-sm scrollbar-gov',
+            'flex gap-8 overflow-x-auto border-b border-gov-gray-200 text-sm scrollbar-gov',
             'whitespace-nowrap [scrollbar-color:var(--color-gov-blue-300)_transparent]',
             className
           )}
@@ -19,12 +17,11 @@ const Tabs = ({ tabs, children, className }) => {
               key={tab.value}
               className={({ selected }) =>
                 clsx(
-                  'flex-none rounded-md px-4 py-2.5 font-medium leading-5 transition-all',
-                  'lg:flex-1',
-                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-gov-focus focus-visible:ring-offset-2',
+                  'flex-none px-1 py-4 font-bold uppercase tracking-wider leading-5 transition-all border-b-2 outline-none',
+                  'focus:outline-none focus-visible:ring-2 focus-visible:ring-gov-focus',
                   selected
-                    ? 'bg-white text-gov-blue-700 shadow'
-                    : 'text-gov-gray-700 hover:bg-white/50 hover:text-gov-gray-900'
+                    ? 'border-gov-navy-600 text-gov-navy-900'
+                    : 'border-transparent text-gov-gray-500 hover:text-gov-navy-600 hover:border-gov-gray-300'
                 )
               }
             >

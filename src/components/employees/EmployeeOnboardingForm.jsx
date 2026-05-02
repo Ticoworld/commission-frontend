@@ -1,7 +1,7 @@
 // src/components/employees/EmployeeOnboardingForm.jsx
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createEmployee, updateEmployee } from '../../services/employeeService';
+import { updateEmployee } from '../../services/employeeService';
 import { getLGAs } from '../../services/lgaService';
 import { DEPARTMENTS } from '../../lib/constants';
 import Button from '../ui/Button';
@@ -68,7 +68,7 @@ const EmployeeOnboardingForm = ({ initialValues } = {}) => {
         if (!dateString) return '';
         try {
           return new Date(dateString).toISOString().split('T')[0];
-        } catch (e) {
+        } catch {
           return '';
         }
       };
@@ -170,12 +170,8 @@ const EmployeeOnboardingForm = ({ initialValues } = {}) => {
         formDataToSend.append('profile_picture', profilePicture);
       }
 
-      // Call API: create or update
-      if (initialValues && initialValues.id) {
-        await updateEmployee(initialValues.id, formDataToSend);
-      } else {
-        await createEmployee(formDataToSend);
-      }
+      // Call API: update only
+      await updateEmployee(initialValues.id, formDataToSend);
       
       setSuccess(true);
       setError(null);
@@ -185,8 +181,8 @@ const EmployeeOnboardingForm = ({ initialValues } = {}) => {
         navigate('/dashboard/employees');
       }, 1000);
     } catch (err) {
-      console.error('Error creating employee:', err);
-      setError(err.response?.data?.message || 'Failed to create employee. Please try again.');
+      console.error('Error updating employee:', err);
+      setError(err.response?.data?.message || 'Failed to update employee. Please try again.');
       setSuccess(false);
     } finally {
       setLoading(false);

@@ -16,12 +16,12 @@ const lgas = [
   { name: 'Ezza North', headquarters: 'Ebonyi', population: '158,900', developmentCentres: 3, focus: 'Youth empowerment and civic participation programmes.' },
   { name: 'Ezza South', headquarters: 'Onueke', population: '149,200', developmentCentres: 3, focus: 'Public health outreach and education support.' },
   { name: 'Ikwo', headquarters: 'Onuebonyi Echara', population: '212,400', developmentCentres: 3, focus: 'ICT innovation labs and open governance forums.' },
-  { name: 'Ivo', headquarters: 'Isiaka', population: '148,100', developmentCentres: 2, focus: 'Rural remuneration and workforce housing schemes.' },
+  { name: 'Ivo', headquarters: 'Isiaka', population: '148,100', developmentCentres: 2, focus: 'Primary healthcare infrastructure and workforce excellence.' },
   { name: 'Izzi', headquarters: 'Iboko', population: '209,900', developmentCentres: 3, focus: 'Agricultural cooperatives and irrigation programmes.' },
   { name: 'Afikpo North', headquarters: 'Afikpo', population: '176,500', developmentCentres: 2, focus: 'Tourism development and citizen service kiosks.' },
   { name: 'Afikpo South', headquarters: 'Nguzu Edda', population: '135,200', developmentCentres: 2, focus: 'Coastal resilience and community engagement clinics.' },
   { name: 'Onicha', headquarters: 'Isu', population: '167,400', developmentCentres: 2, focus: 'Women in governance fellowship and SME support.' },
-  { name: 'Ohaozara', headquarters: 'Obiozara', population: '156,300', developmentCentres: 2, focus: 'Pension harmonisation and staff welfare schemes.' },
+  { name: 'Ohaozara', headquarters: 'Obiozara', population: '156,300', developmentCentres: 2, focus: 'Water sanitation projects and administrative excellence.' },
   { name: 'Ishielu', headquarters: 'Ezillo', population: '141,800', developmentCentres: 2, focus: 'Road maintenance brigades and safety audits.' }
 ];
 
@@ -53,8 +53,8 @@ const LocalGovernmentPage = () => {
               <p className="mt-1 text-3xl font-semibold text-gov-blue-700">2.9M+</p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-wide text-gov-gray-500">Staff across LGAs</p>
-              <p className="mt-1 text-3xl font-semibold text-gov-blue-700">12,400</p>
+              <p className="text-xs uppercase tracking-wide text-gov-gray-500">Service reforms</p>
+              <p className="mt-1 text-3xl font-semibold text-gov-blue-700">18</p>
             </div>
             <div>
               <p className="text-xs uppercase tracking-wide text-gov-gray-500">Development centres</p>
@@ -70,7 +70,9 @@ const LocalGovernmentPage = () => {
 
       <section id="directory" className="container-custom space-y-10">
         <div className="max-w-2xl space-y-4">
-          <Badge variant="green">Directory</Badge>
+          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-gov-green-600">
+            Directory
+          </span>
           <h2 className="heading-lg">Snapshot of Ebonyi State Local Government Areas.</h2>
           <p className="text-gov-gray-600">
             Each entry highlights the headquarters, estimated population, number of development centres coordinated by ESLGSC, and the current strategic focus driving service delivery.
@@ -79,18 +81,32 @@ const LocalGovernmentPage = () => {
 
         <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
           {lgas.map((lga) => (
-            <Card key={lga.name} className="space-y-4 p-6">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <h3 className="text-xl font-semibold text-gov-gray-900">{lga.name} LGA</h3>
-                  <p className="mt-1 text-sm text-gov-gray-500">Headquarters: {lga.headquarters}</p>
+            <Card key={lga.name} className="space-y-4 p-6 border-t-4 border-gov-navy-600">
+              <div className="space-y-1">
+                <h3 className="text-xl font-bold text-gov-navy-900">{lga.name} LGA</h3>
+                <div className="flex items-center gap-2 text-sm text-gov-gray-500 font-medium">
+                  <BuildingOffice2Icon className="w-4 h-4" />
+                  Headquarters: {lga.headquarters}
                 </div>
-                <Badge variant="blue">{lga.developmentCentres} D/Centres</Badge>
               </div>
-              <div className="flex items-center gap-3 text-sm text-gov-gray-600">
-                <UsersIcon className="h-5 w-5 text-gov-blue-500" />
-                <span>Population: {lga.population}</span>
+              
+              <div className="grid grid-cols-2 gap-4 py-2 border-y border-gov-gray-100">
+                <div className="space-y-0.5">
+                  <span className="text-[10px] uppercase font-bold text-gov-gray-400 tracking-wider">Population</span>
+                  <div className="flex items-center gap-1.5 text-gov-navy-700 font-semibold">
+                    <UsersIcon className="h-4 w-4 text-gov-blue-500" />
+                    {lga.population}
+                  </div>
+                </div>
+                <div className="space-y-0.5">
+                  <span className="text-[10px] uppercase font-bold text-gov-gray-400 tracking-wider">Dev. Centres</span>
+                  <div className="flex items-center gap-1.5 text-gov-navy-700 font-semibold">
+                    <MapIcon className="h-4 w-4 text-gov-blue-500" />
+                    {lga.developmentCentres} Units
+                  </div>
+                </div>
               </div>
+              
               <p className="text-sm leading-relaxed text-gov-gray-600">{lga.focus}</p>
             </Card>
           ))}

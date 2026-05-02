@@ -1,6 +1,6 @@
 import { useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { PlusIcon, PencilIcon, TrashIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline';
+import { PencilIcon } from '@heroicons/react/24/outline';
 import Card from '../../../components/ui/Card';
 import Table from '../../../components/ui/Table';
 import Button from '../../../components/ui/Button';
@@ -11,20 +11,14 @@ import Input from '../../../components/ui/Input';
 import Select from '../../../components/ui/Select';
 import { formatDate } from '../../../lib/utils';
 import { useRetirement } from '../../../hooks/useRetirement';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import {
-  deleteEmployee,
   getAllEmployees
 } from '../../../services/employeeService';
-import { toast } from 'react-toastify';
-import useAuth from '../../../context/useAuth';
 
 const Employees = () => {
-  const { user } = useAuth();
-  const queryClient = useQueryClient();
-  const [refresh, setRefresh] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchBy, setSearchBy] = useState('surname'); // 'surname' or 'date'
+  const [searchTerm] = useState('');
+  const [searchBy] = useState('surname'); // 'surname' or 'date'
 
   const { data: employees = [], isLoading } = useQuery({
     queryKey: ['employees'],
@@ -53,26 +47,6 @@ const Employees = () => {
     });
   }, [employees, searchTerm, searchBy]);
 
-  const invalidateEmployees = () => {
-    queryClient.invalidateQueries({ queryKey: ['employees'] });
-    queryClient.invalidateQueries({ queryKey: ['retirementAlerts'] });
-  };
-
-  const deleteMutation = useMutation({
-    mutationFn: (id) => deleteEmployee(id),
-    onSuccess: () => {
-      toast.success('Employee removed');
-      invalidateEmployees();
-      setRefresh((r) => !r);
-    },
-    onError: () => toast.error('Unable to delete employee')
-  });
-
-  const handleDelete = (id) => {
-    if (confirm('Are you sure you want to delete this employee?')) {
-      deleteMutation.mutate(id);
-    }
-  };
 
   // Row component for desktop table
   const EmployeeRow = ({ employee }) => {
@@ -117,9 +91,6 @@ const Employees = () => {
             <Link to={`/dashboard/employees/${employee.id}/edit`} title={`Edit ${employee.full_name || employee.name}`} aria-label={`Edit ${employee.full_name || employee.name}`} className="text-gov-blue-600 hover:text-gov-blue-700 p-1">
               <PencilIcon className="w-4 h-4" />
             </Link>
-            <button onClick={() => handleDelete(employee.id)} className="text-red-600 hover:text-red-700 p-1" title={`Delete ${employee.full_name || employee.name}`} aria-label={`Delete ${employee.full_name || employee.name}`} disabled={deleteMutation.isPending}>
-              <TrashIcon className="w-4 h-4" />
-            </button>
           </div>
         </Table.Cell>
       </Table.Row>
@@ -145,7 +116,7 @@ const Employees = () => {
     };
 
     const retirementDate = computeRetirementDate(employee);
-    const retirement = useRetirement(retirementDate);
+    useRetirement(retirementDate);
     const status = retirementDate ? (new Date(retirementDate) < new Date() ? 'Retired' : 'Active') : 'N/A';
 
     return (
@@ -164,9 +135,6 @@ const Employees = () => {
           <Link to={`/dashboard/employees/${employee.id}/edit`} aria-label={`Edit ${employee.full_name || employee.name}`} className="text-gov-blue-600 hover:text-gov-blue-700 p-1">
             <PencilIcon className="w-4 h-4" />
           </Link>
-          <button onClick={() => handleDelete(employee.id)} aria-label={`Delete ${employee.full_name || employee.name}`} className="text-red-600 hover:text-red-700 p-1">
-            <TrashIcon className="w-4 h-4" />
-          </button>
         </div>
       </div>
     );
@@ -181,12 +149,6 @@ const Employees = () => {
             Manage employee records and information
           </p>
         </div>
-        <Link to="/dashboard/employees/new">
-          <Button>
-            <PlusIcon className="w-4 h-4 mr-2" />
-            Add Employee
-          </Button>
-        </Link>
       </div>
 
       <Card>

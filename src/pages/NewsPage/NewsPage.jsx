@@ -70,7 +70,11 @@ const NewsPage = () => {
               />
             </div>
             <div className="p-6 space-y-4">
-              <Badge variant="green">Spotlight</Badge>
+              <div className="flex items-center">
+                <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-gov-navy-900 bg-gov-cyan-100 px-2 py-0.5 rounded-sm border border-gov-cyan-300">
+                  Spotlight
+                </span>
+              </div>
               <h2 className="text-2xl font-semibold text-gov-gray-900">{spotlightArticle.title}</h2>
               <p className="text-gov-gray-600">{spotlightArticle.summary || truncate(spotlightArticle.content || '', 200)}</p>
               <Button 
@@ -90,15 +94,17 @@ const NewsPage = () => {
       <section id="updates" className="container-custom space-y-10">
         <div className="flex flex-wrap gap-3">
           {categories.map((category) => (
-            <Button
+            <button
               key={category.value}
-              variant={selectedCategory === category.value ? 'primary' : 'outline'}
-              size="sm"
-              className="capitalize"
+              className={`px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all border-b-2 ${
+                selectedCategory === category.value 
+                ? 'border-gov-navy-600 text-gov-navy-900' 
+                : 'border-transparent text-gov-gray-500 hover:text-gov-navy-600'
+              }`}
               onClick={() => setSelectedCategory(category.value)}
             >
               {category.label}
-            </Button>
+            </button>
           ))}
         </div>
 
@@ -114,19 +120,21 @@ const NewsPage = () => {
               />
             </div>
           ) : filteredNews.map((article) => (
-            <Card key={article.id} className="flex flex-col overflow-hidden">
+            <Card key={article.id} className="flex flex-col overflow-hidden group">
               <div className="h-48 w-full overflow-hidden">
                 <img
                   src={article.imageUrl || '/images/hero/hero6.jpg'}
                   alt={article.title}
                   loading="lazy"
-                  className="h-full w-full object-cover"
+                  className="h-full w-full object-cover transition-transform group-hover:scale-105 duration-500"
                 />
               </div>
               <div className="flex flex-1 flex-col p-6 space-y-4">
                 <div className="flex items-center justify-between text-sm text-gov-gray-500">
-                  <Badge variant="gray" className="capitalize">{article.category || 'news'}</Badge>
-                  <span>{formatDate(article.publishedAt || article.createdAt)}</span>
+                  <span className="text-[10px] font-bold uppercase tracking-widest text-gov-blue-600 bg-gov-blue-50 px-2 py-0.5 rounded-sm border border-gov-blue-100">
+                    {article.category || 'news'}
+                  </span>
+                  <span className="text-xs">{formatDate(article.publishedAt || article.createdAt)}</span>
                 </div>
                 <h3 className="text-xl font-semibold text-gov-gray-900">{article.title}</h3>
                 <p className="text-sm text-gov-gray-600 flex-1">{truncate(article.summary, 160)}</p>

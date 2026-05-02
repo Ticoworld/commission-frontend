@@ -14,10 +14,10 @@ import {
 } from '@heroicons/react/24/outline';
 
 const stats = [
-  { label: 'Local Government Areas Served', value: '13' },
-  { label: 'Development Centres Coordinated', value: '37' },
-  { label: 'Workforce Supported Statewide', value: '12,400+' },
-  { label: 'Capacity-Building Hours in 2024', value: '18,600+' }
+  { label: 'Local Government Areas', value: '13' },
+  { label: 'Development Centres', value: '37' },
+  { label: 'Verified Service Reforms', value: '18+' },
+  { label: 'Community Project Oversight', value: '120+' }
 ];
 
 const values = [
@@ -52,7 +52,7 @@ const timeline = [
   {
     year: '2005',
     title: 'Unified Service Framework',
-    description: 'Introduced harmonised HR policies, pension structures, and promotion guidelines across all LGAs.'
+    description: 'Introduced harmonised administrative policies and service delivery guidelines across all LGAs.'
   },
   {
     year: '2016',
@@ -72,13 +72,13 @@ const About = () => {
       <PageHero
         eyebrow="About the Commission"
         title="Building an agile, accountable, and people-focused local government service in Ebonyi State."
-        description="The Ebonyi State Local Government Service Commission (ESLGSC) provides leadership, oversight, and professional support to the teams delivering grassroots services across the state. From recruitment and training to welfare, performance, and pensions, we empower every local government worker to serve with excellence."
+        description="The Ebonyi State Local Government Service Commission (ESLGSC) provides leadership, oversight, and professional support to the teams delivering grassroots services across the state. We ensure that local governance is driven by excellence, transparency, and a commitment to community development."
         actions={
           <>
             <Button as="a" href="#mission" size="lg">
               Our Mission &amp; Vision
             </Button>
-            <Button as="a" href="#leadership" variant="outline" size="lg">
+            <Button as="a" href="#leadership" variant="outline" size="lg" className="border-gov-navy-600 text-gov-navy-700">
               Meet the Leadership
             </Button>
           </>
@@ -141,7 +141,9 @@ const About = () => {
       <section className="bg-white py-16">
         <div className="container-custom">
           <div className="max-w-2xl mb-10">
-            <Badge variant="green" className="mb-3">Our Values</Badge>
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-gov-green-600 mb-3 block">
+              Our Values
+            </span>
             <h2 className="heading-lg mb-4">Principles guiding every decision.</h2>
             <p className="text-gov-gray-600">
               ESLGSC’s mandate is delivered through a set of shared values that anchor policy design, service delivery,
@@ -201,7 +203,9 @@ const About = () => {
       <section id="leadership" className="bg-gov-gray-50 py-16">
         <div className="container-custom">
           <div className="max-w-2xl mb-10">
-            <Badge variant="blue" className="mb-3">Leadership</Badge>
+            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-gov-blue-600 mb-3 block">
+              Leadership
+            </span>
             <h2 className="heading-lg mb-4">Guided by experienced public sector leaders.</h2>
             <p className="text-gov-gray-600">
               The commission’s executive team combines decades of governance, HR, and administrative expertise to
@@ -236,7 +240,9 @@ const About = () => {
       {/* Timeline */}
       <section className="container-custom">
         <Card className="p-8">
-          <Badge variant="gray" className="mb-4">Milestones</Badge>
+          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-gov-gray-500 mb-4 block">
+            Milestones
+          </span>
           <h2 className="heading-lg mb-8">Three decades of grassroots service transformation.</h2>
           <div className="space-y-8 border-l border-gov-gray-200 pl-6">
             {timeline.map((event) => (

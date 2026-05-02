@@ -30,24 +30,24 @@ export const AUDIT_STATUS = {
 };
 
 export const SERVICE_CATEGORIES = [
-  { value: 'seminars', label: 'Seminars & Training' },
-  { value: 'grants', label: 'Grants & Funding' },
-  { value: 'programs', label: 'Community Programs' },
-  { value: 'recruitment', label: 'Recruitment Services' },
-  { value: 'pension', label: 'Pension & Benefits' },
-  { value: 'documentation', label: 'Documentation' }
+  { value: 'seminars', label: 'Workshops & Training' },
+  { value: 'grants', label: 'Grants & Community Funding' },
+  { value: 'programs', label: 'Public Governance Programmes' },
+  { value: 'recruitment', label: 'Recruitment & Job Notices' },
+  { value: 'policy', label: 'Policies & Circulars' },
+  { value: 'documentation', label: 'Official Documents' }
 ];
 
 export const DEPARTMENTS = [
-  'Administration',
-  'Finance',
-  'Human Resources',
-  'Information Technology',
-  'Legal',
-  'Operations',
-  'Public Relations',
-  'Audit',
-  'Planning'
+  'Administration & General Services',
+  'Finance & Accounts',
+  'Human Resources Management',
+  'Information & Communication Technology',
+  'Legal Services & Compliance',
+  'Planning, Research & Statistics',
+  'Public Relations & Media',
+  'Internal Audit',
+  'Local Government Oversight'
 ];
 
 export const POSITIONS = [
@@ -144,3 +144,9 @@ export const EXECUTIVES = [
     image: '/images/staffs/arc_augustine_nwechara_nwofoke.jpg'
   }
 ];
+
+export const OFFICIAL_NOTICE_STRIP = null;
+
+export const STATIC_NEWS_FALLBACK = [];
+
+export const OFFICIAL_CIRCULARS = [];

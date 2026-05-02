@@ -20,7 +20,7 @@ const Services = () => {
     { value: 'grants', label: 'Grants & Funding' },
     { value: 'programs', label: 'Community Programs' },
     { value: 'recruitment', label: 'Recruitment' },
-    { value: 'pension', label: 'Pension & Benefits' }
+    { value: 'policy', label: 'Policies & Circulars' }
   ];
 
   const services = [
@@ -75,13 +75,13 @@ const Services = () => {
     {
       category: 'programs',
       icon: UsersIcon,
-      title: 'Rural Remuneration Programme',
-      description: 'Enhancing compensation structures for rural local government workers.',
+      title: 'Local Governance Reform Programme',
+      description: 'Enhancing administrative frameworks for rural local governments.',
       features: [
-        'Competitive salary frameworks',
-        'Housing allowance programs',
-        'Transport subsidies',
-        'Performance-based incentives'
+        'Modern governance frameworks',
+        'Service delivery standards',
+        'LGA performance monitoring',
+        'Citizen engagement protocols'
       ]
     },
     {
@@ -109,15 +109,15 @@ const Services = () => {
       ]
     },
     {
-      category: 'pension',
+      category: 'policy',
       icon: DocumentTextIcon,
-      title: 'Pension & Retirement Services',
-      description: 'Comprehensive retirement planning and pension administration support.',
+      title: 'Official Circulars & Policy Guides',
+      description: 'Public access to official directives and policy implementation guidelines.',
       features: [
-        'Retirement planning workshops',
-        'Pension computation assistance',
-        'Gratuity processing',
-        'Post-retirement welfare programs'
+        'Verified administrative circulars',
+        'Policy implementation guides',
+        'Gazette publication access',
+        'Governance reform documentation'
       ]
     }
   ];

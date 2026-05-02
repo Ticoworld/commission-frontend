@@ -3,6 +3,18 @@
 @theme {
   --font-sans: "Montserrat", "Open Sans", "Lato", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 
+  /* Official Navy */
+  --color-gov-navy-50:  #e6e9f0;
+  --color-gov-navy-100: #ccd3e1;
+  --color-gov-navy-200: #99a7c3;
+  --color-gov-navy-300: #667ba5;
+  --color-gov-navy-400: #334f87;
+  --color-gov-navy-500: #002369;
+  --color-gov-navy-600: #001c54;
+  --color-gov-navy-700: #00153f;
+  --color-gov-navy-800: #000e2a;
+  --color-gov-navy-900: #000715;
+
   /* Blues */
   --color-gov-blue-50:  #f2f7fc;
   --color-gov-blue-100: #e4eef8;
@@ -118,22 +130,26 @@
   }
   
   .badge {
-    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium;
+    @apply inline-flex items-center rounded-sm px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider;
   }
   .badge-blue {
-    @apply bg-gov-blue-100 text-gov-blue-700;
+    @apply bg-gov-navy-50 text-gov-navy-700 border border-gov-navy-100;
   }
   .badge-green {
-    @apply bg-gov-green-100 text-gov-green-700;
+    @apply bg-gov-green-50 text-gov-green-700 border border-gov-green-100;
   }
   .badge-yellow {
-    @apply bg-yellow-100 text-yellow-700;
+    @apply bg-yellow-50 text-yellow-700 border border-yellow-100;
   }
   .badge-red {
-    @apply bg-red-100 text-red-700;
+    @apply bg-red-50 text-red-700 border border-red-100;
   }
   .badge-gray {
-    @apply bg-gov-gray-100 text-gov-gray-700;
+    @apply bg-gov-gray-100 text-gov-gray-700 border border-gov-gray-200;
+  }
+  
+  .section-label {
+    @apply text-[10px] font-bold uppercase tracking-[0.15em] text-gov-blue-600 block mb-2;
   }
   
   .table-head {
@@ -178,19 +194,19 @@
 
 @layer utilities {
   .heading-xl { 
-    @apply text-4xl md:text-5xl font-semibold tracking-tight text-gov-blue-800; 
+    @apply text-4xl md:text-5xl font-bold tracking-tight text-gov-navy-700; 
   }
   .heading-lg { 
-    @apply text-3xl md:text-4xl font-semibold text-gov-blue-800; 
+    @apply text-3xl md:text-4xl font-bold text-gov-navy-700; 
   }
   .heading-md { 
-    @apply text-2xl md:text-3xl font-semibold text-gov-blue-800; 
+    @apply text-2xl md:text-3xl font-bold text-gov-navy-700; 
   }
   .heading-sm { 
-    @apply text-xl md:text-2xl font-semibold text-gov-blue-800; 
+    @apply text-xl md:text-2xl font-bold text-gov-navy-700; 
   }
   .heading-xs { 
-    @apply text-lg md:text-xl font-semibold text-gov-blue-800; 
+    @apply text-lg md:text-xl font-bold text-gov-navy-700; 
   }
   
   .text-balance {

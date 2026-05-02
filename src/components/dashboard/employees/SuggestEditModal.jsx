@@ -40,27 +40,11 @@ const SuggestEditModal = ({
         if (!dateString) return '';
         try {
           return new Date(dateString).toISOString().split('T')[0];
-        } catch (e) {
+        } catch {
           return '';
         }
       };
 
-      // Compute retirement date
-      const computeRetirementDate = (emp) => {
-        const candidates = [];
-        if (emp?.date_of_birth) {
-          const d = new Date(emp.date_of_birth);
-          d.setFullYear(d.getFullYear() + 60);
-          candidates.push(d);
-        }
-        if (emp?.date_of_first_appointment) {
-          const d = new Date(emp.date_of_first_appointment);
-          d.setFullYear(d.getFullYear() + 35);
-          candidates.push(d);
-        }
-        if (candidates.length === 0) return '';
-        return candidates.reduce((a, b) => (a < b ? a : b)).toISOString().split('T')[0];
-      };
 
       reset({
         full_name: employee.full_name || employee.name || '',
