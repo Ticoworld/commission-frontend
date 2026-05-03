@@ -1,11 +1,13 @@
 import { Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
+import clsx from 'clsx';
 import Header from './Header';
 import Breadcrumbs from './Breadcrumbs';
 import Footer from './Footer';
 import Loader from '../ui/Loader';
 
 const PublicLayout = () => {
+  const location = useLocation();
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <a
@@ -19,11 +21,16 @@ const PublicLayout = () => {
         id="main-content"
         role="main"
         tabIndex={-1}
-        className="flex-1 pt-24 sm:pt-28"
+        className={clsx(
+          "flex-1",
+          location.pathname === '/' ? "pt-[72px] md:pt-[104px]" : "pt-24 sm:pt-28"
+        )}
       >
-        <div className="px-6 pt-6">
-          <Breadcrumbs />
-        </div>
+        {location.pathname !== '/' && (
+          <div className="px-6 pt-6">
+            <Breadcrumbs />
+          </div>
+        )}
         <Suspense
           fallback={(
             <div className="flex items-center justify-center py-20">
