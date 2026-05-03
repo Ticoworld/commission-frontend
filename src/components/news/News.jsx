@@ -21,8 +21,8 @@ const News = () => {
               <img src="/images/hero/hero7.jpg" alt="Government official visiting programs" />
               <div className="gold-card-text">
                   <small>09/07/17</small>
-                  <h3>Commission Launches Digital Records Initiative</h3>
-                  <p>The Commission has introduced a new digital system to streamline employee data management, improve record accuracy, and enhance service delivery across all departments...</p>
+                  <h3>Commission Launches Digital Information Portal</h3>
+                  <p>The Commission has introduced a new digital portal to streamline public record access, improve information accuracy, and enhance service transparency across all departments...</p>
                   <Link to="/">read more</Link>
               </div>
               </div>
@@ -30,8 +30,8 @@ const News = () => {
               <img src="/images/gallery/image18.jpg" alt="Training programme session with staff" />
               <div className="gold-card-text">
                   <small>01/09/16</small>
-                  <h3>Training Programme for Local Government Staff Begins</h3>
-                  <p>A capacity-building workshop is underway to equip local government employees with modern administrative skills for more efficient public service delivery...</p>
+                  <h3>Training Programme for Local Government Personnel Begins</h3>
+                  <p>A capacity-building workshop is underway to equip local government personnel with modern administrative skills for more efficient public service delivery...</p>
                   <Link to="/">read more</Link>
               </div>
               </div>

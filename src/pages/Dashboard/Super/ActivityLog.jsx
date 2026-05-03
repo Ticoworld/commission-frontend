@@ -10,8 +10,9 @@ import { getActivityLog } from '../../../services/activityService';
 
 const entityOptions = [
   { label: 'All entities', value: '' },
-  { label: 'Employees', value: 'employee' },
-  { label: 'News', value: 'news' }
+  { label: 'News', value: 'news' },
+  { label: 'Announcements', value: 'announcement' },
+  { label: 'Uploads', value: 'upload' }
 ];
 
 const ActivityLog = () => {

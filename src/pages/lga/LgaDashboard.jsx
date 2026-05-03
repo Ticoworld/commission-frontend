@@ -1,113 +1,56 @@
-import React, { useEffect, useState } from 'react';
-import EmptyState from '../../components/ui/EmptyState';
-import Skeleton from '../../components/ui/Skeleton';
-import api from '../../services/api';
-import { toast } from 'react-toastify';
+import React from 'react';
 import UploadForm from '../../components/uploads/UploadForm';
 import DocumentList from '../../components/uploads/DocumentList';
-import AddEmployeeForm from '../../components/employees/AddEmployeeForm';
 import useAuth from '../../context/useAuth';
 import { useNavigate } from 'react-router-dom';
 
 const LgaDashboard = () => {
-  const [employees, setEmployees] = useState([]);
-  const [loading, setLoading] = useState(false);
   const { user, logout } = useAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
-  const fetchEmployees = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get('/employees/my-lga'); // Scoped endpoint
-      // Backend now returns { data: [...], meta: {...} }
-      setEmployees(res.data?.data || []);
-    } catch (err) {
-      console.error('Error loading LGA employees:', err);
-      toast.error('Failed to load LGA employees');
-      setEmployees([]); // Set empty array on error
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
-
   return (
-    <div className="p-6">
-      <div className="flex justify-end mb-4">
-      <button
-        onClick={handleLogout}
-        className="bg-red-600 text-white px-4 py-2 rounded"
-      >
-        Logout
-      </button>
-      </div>
-
+    <div className="p-6 max-w-4xl mx-auto">
       {/* Header with User Info and Logout */}
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-8 bg-gov-gray-50 p-4 rounded-lg">
         <div>
-          <p className="text-sm">
-            Logged in as: <strong>{user?.name}</strong> &nbsp;
-            <span className="text-gray-600">({user?.email})</span>
+          <p className="text-sm text-gov-gray-600">
+            Authenticated as: <strong className="text-gov-navy-900">{user?.name}</strong> 
+            <span className="ml-2 px-2 py-0.5 bg-gov-blue-100 text-gov-blue-700 text-[10px] font-bold rounded uppercase">
+              {user?.role}
+            </span>
           </p>
+          <p className="text-xs text-gov-gray-500 mt-0.5">{user?.email}</p>
         </div>
         <button
-          onClick={logout}
-          className="text-red-600 hover:underline text-sm"
+          onClick={handleLogout}
+          className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm font-medium transition-colors"
         >
           Logout
         </button>
       </div>
 
-      <h2 className="text-2xl font-semibold mb-6">LGA Dashboard</h2>
+      <div className="space-y-12">
+        <header>
+          <h2 className="text-3xl font-bold text-gov-navy-900">LGA Information Portal</h2>
+          <p className="text-gov-gray-600 mt-2">Manage official documents and circulars for your local government area.</p>
+        </header>
 
-      {/* Upload Section */}
-      <div className="mb-10">
-        <h3 className="text-lg font-semibold mb-2">Upload Document</h3>
-        <UploadForm />
-      </div>
+        {/* Upload Section */}
+        <section className="space-y-4">
+          <h3 className="text-xl font-semibold text-gov-navy-800 border-b pb-2">Upload Official Document</h3>
+          <UploadForm />
+        </section>
 
-      {/* Document List */}
-      <div className="mb-10">
-        <h3 className="text-lg font-semibold mb-2">Your Uploaded Documents</h3>
-        <DocumentList />
-      </div>
-
-      {/* Add Employee */}
-      <div className="mb-10">
-        <h3 className="text-lg font-semibold mb-2">Add Employee</h3>
-        <AddEmployeeForm onEmployeeAdded={fetchEmployees} />
-      </div>
-
-      {/* Employee Table */}
-      <div>
-        <h3 className="text-lg font-semibold mb-2">LGA Employees</h3>
-                    {loading ? (
-                      <Skeleton rows={4} />
-                    ) : employees.length === 0 ? (
-                      <EmptyState title="No employees" description="No employees found for your LGA." />
-                    ) : (
-                      <div className="grid gap-4">
-                        {employees.map((emp) => (
-                          <Card key={emp.id} className="p-4">
-                            <div className="flex items-center justify-between">
-                              <div>
-                                <p className="font-medium">{emp.name}</p>
-                                <p className="text-xs text-gov-gray-500">{emp.position}</p>
-                              </div>
-                              <div className="text-sm text-gov-gray-500">{emp.lga}</div>
-                            </div>
-                          </Card>
-                        ))}
-                      </div>
-                    )}
+        {/* Document List */}
+        <section className="space-y-4">
+          <h3 className="text-xl font-semibold text-gov-navy-800 border-b pb-2">Your Uploaded Records</h3>
+          <DocumentList />
+        </section>
       </div>
     </div>
   );

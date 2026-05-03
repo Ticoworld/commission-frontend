@@ -12,27 +12,6 @@ export const getAuditQueue = async (params = {}) => {
 };
 
 /**
- * Get employee edit suggestions
- * @param {Object} params - Query parameters (submittedById, status, etc.)
- * @returns {Promise} - List of employee edit suggestions
- */
-export const getEmployeeEdits = async (params = {}) => {
-  const response = await api.get('/employee-edits', { params });
-  return response.data?.data ?? response.data;
-};
-
-/**
- * Suggest an employee edit
- * @param {Object} data - { employeeId, changes, reason }
- * @returns {Promise} - Created suggestion
- */
-export const suggestEmployeeEdit = async (data) => {
-  console.log('📤 Sending employee edit suggestion:', JSON.stringify(data, null, 2));
-  const response = await api.post('/employee-edits', data);
-  return response.data;
-};
-
-/**
  * Approve an audit item
  * @param {string} id - Audit item ID
  * @param {Object} data - Approval notes
@@ -51,27 +30,5 @@ export const approveAudit = async (id, data = {}) => {
  */
 export const rejectAudit = async (id, data = {}) => {
   const response = await api.post(`/audit-queue/${id}/reject`, data);
-  return response.data;
-};
-
-/**
- * Approve an employee edit suggestion
- * @param {string} suggestionId - Suggestion ID
- * @param {Object} data - Approval notes
- * @returns {Promise} - Approval result
- */
-export const approveEmployeeEdit = async (suggestionId, data = {}) => {
-  const response = await api.post(`/audit-queue/${suggestionId}/approve`, data);
-  return response.data;
-};
-
-/**
- * Reject an employee edit suggestion
- * @param {string} suggestionId - Suggestion ID
- * @param {Object} data - Rejection notes
- * @returns {Promise} - Rejection result
- */
-export const rejectEmployeeEdit = async (suggestionId, data = {}) => {
-  const response = await api.post(`/audit-queue/${suggestionId}/reject`, data);
   return response.data;
 };

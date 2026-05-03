@@ -12,7 +12,8 @@ import {
   BellAlertIcon,
   DocumentTextIcon,
   Cog6ToothIcon,
-  XMarkIcon
+  XMarkIcon,
+  ChatBubbleLeftRightIcon
 } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 
@@ -37,28 +38,25 @@ const Sidebar = () => {
     const roleSpecificNav = {
       SUPER_ADMIN: [
         { name: 'Users', href: '/dashboard/admin/users', icon: UsersIcon },
-        { name: 'Employees', href: '/dashboard/employees', icon: UsersIcon },
         { name: 'News Moderation', href: '/dashboard/news', icon: NewspaperIcon },
         { name: 'Audit Queue', href: '/dashboard/audit-queue', icon: ClipboardDocumentCheckIcon },
-        { name: 'Retirement Alerts', href: '/dashboard/retirement-alerts', icon: BellAlertIcon },
+        { name: 'Complaints', href: '/dashboard/complaints', icon: ChatBubbleLeftRightIcon },
         { name: 'Activity Log', href: '/dashboard/activity-log', icon: DocumentTextIcon },
         { name: 'Settings', href: '/dashboard/settings', icon: Cog6ToothIcon },
         { name: 'Invite User', href: '/dashboard/admin/invite', icon: UsersIcon }
       ],
       ADMIN: [
-        { name: 'Employees', href: '/dashboard/employees', icon: UsersIcon },
         { name: 'News Moderation', href: '/dashboard/news', icon: NewspaperIcon },
         { name: 'Audit Queue', href: '/dashboard/audit-queue', icon: ClipboardDocumentCheckIcon },
-        { name: 'Retirement Alerts', href: '/dashboard/retirement-alerts', icon: BellAlertIcon }
+        { name: 'Complaints', href: '/dashboard/complaints', icon: ChatBubbleLeftRightIcon },
+        { name: 'Activity Log', href: '/dashboard/activity-log', icon: DocumentTextIcon }
       ],
       MEDIA_ADMIN: [
         { name: 'News Editor', href: '/dashboard/news-editor', icon: NewspaperIcon },
         { name: 'My Drafts', href: '/dashboard/drafts', icon: DocumentTextIcon }
       ],
       AUDIT: [
-        { name: 'Pending Edits', href: '/dashboard/pending-edits', icon: ClipboardDocumentCheckIcon },
-        { name: 'Employee Audit', href: '/dashboard/employee-audit', icon: UsersIcon },
-        { name: 'Retirement Alerts', href: '/dashboard/retirement-alerts', icon: BellAlertIcon }
+        { name: 'Complaints', href: '/dashboard/complaints', icon: ChatBubbleLeftRightIcon }
       ]
     };
 

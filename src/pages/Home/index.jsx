@@ -77,7 +77,7 @@ const HeroSection = () => (
           </h1>
           <p className="text-lg md:text-xl text-gov-gray-300 leading-relaxed max-w-2xl">
             The central authority for administrative excellence, professional discipline, and 
-            unified personnel management across all 13 Local Government Areas in Ebonyi State.
+            unified administrative management across all 13 Local Government Areas in Ebonyi State.
           </p>
         </div>
 
@@ -101,7 +101,7 @@ const QuickAccessPanel = () => {
     { icon: BellIcon, title: 'Public Notices', href: '/news-and-updates', color: 'text-orange-600' },
     { icon: ChatBubbleLeftRightIcon, title: 'Complaints Desk', href: '/complaints', color: 'text-green-600' },
     { icon: MapIcon, title: 'LGA Directory', href: '/local-governments', color: 'text-purple-600' },
-    { icon: IdentificationIcon, title: 'Recruitment', href: '/news-and-updates', color: 'text-red-600' },
+    { icon: AcademicCapIcon, title: 'Advocacy', href: '/about', color: 'text-red-600' },
     { icon: NewspaperIcon, title: 'Press Releases', href: '/news-and-updates', color: 'text-cyan-600' },
   ];
 
@@ -211,7 +211,7 @@ const NewsGrid = () => {
 
 // 5. Official Documents Section (Truth Pass)
 const DocumentArchive = () => (
-  <section className="py-20 bg-gov-gray-50">
+  <section id="documents" className="py-20 bg-gov-gray-50">
     <div className="container-custom">
       <div className="grid lg:grid-cols-[1fr_2fr] gap-16 items-start">
         <div className="space-y-6">

@@ -19,7 +19,7 @@ const Services = () => {
     { value: 'seminars', label: 'Seminars & Training' },
     { value: 'grants', label: 'Grants & Funding' },
     { value: 'programs', label: 'Community Programs' },
-    { value: 'recruitment', label: 'Recruitment' },
+    { value: 'advocacy', label: 'Public Advocacy' },
     { value: 'policy', label: 'Policies & Circulars' }
   ];
 
@@ -27,8 +27,8 @@ const Services = () => {
     {
       category: 'seminars',
       icon: AcademicCapIcon,
-      title: 'Staff Development Training',
-      description: 'Comprehensive training programs designed to enhance the skills and competencies of local government staff.',
+      title: 'Professional Capacity Building',
+      description: 'Comprehensive training programs designed to enhance the administrative skills and competencies of local government personnel.',
       features: [
         'Leadership development workshops',
         'Technical skills enhancement',
@@ -97,15 +97,15 @@ const Services = () => {
       ]
     },
     {
-      category: 'recruitment',
+      category: 'advocacy',
       icon: ClipboardDocumentCheckIcon,
-      title: 'Merit-Based Recruitment',
-      description: 'Transparent and fair recruitment processes for local government positions.',
+      title: 'Public Sector Advocacy',
+      description: 'Promoting excellence and transparency across local government institutions.',
       features: [
-        'Open competitive examinations',
-        'Skills-based assessments',
-        'Equal opportunity employment',
-        'Transparent selection criteria'
+        'Governance ethics workshops',
+        'Citizen engagement initiatives',
+        'Transparency audits',
+        'Public interest advocacy'
       ]
     },
     {
@@ -137,7 +137,7 @@ const Services = () => {
     },
     {
       title: 'Human-centred Delivery',
-      description: 'We prioritise staff welfare, citizen experience, and inclusive access when designing and executing local government services.'
+      description: 'We prioritise professional excellence, citizen experience, and inclusive access when designing and executing local government services.'
     },
     {
       title: 'Data-driven Oversight',
@@ -182,7 +182,7 @@ const Services = () => {
       <PageHero
         eyebrow="Service Catalogue"
         title="Supporting every local government mission"
-        description="From staff development and transparent recruitment to community revitalisation, our programmes keep Ebonyi State’s local governments equipped to serve residents with excellence."
+        description="From administrative development and public advocacy to community revitalisation, our programmes keep Ebonyi State’s local governments equipped to serve residents with excellence."
         actions={
           <Button as={Link} to="/contact" variant="primary" size="lg">
             Talk to our service desk
@@ -246,7 +246,7 @@ const Services = () => {
           <div className="max-w-2xl mx-auto text-center space-y-6">
             <h2 className="heading-lg text-white text-balance">Need tailored support for your LGA?</h2>
             <p className="text-lg text-white/90 leading-relaxed">
-              Our service desk partners with directors of administration, planning officers, and HR leads to co-create implementation plans that match each community’s priorities.
+              Our service desk partners with directors of administration, planning officers, and administrative leads to co-create implementation plans that match each community’s priorities.
             </p>
             <div className="flex justify-center flex-wrap gap-3">
               <Button

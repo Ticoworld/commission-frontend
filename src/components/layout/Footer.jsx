@@ -13,27 +13,27 @@ const Footer = () => {
       title: 'News & Media',
       links: [
         { name: 'Latest News', href: '/news-and-updates' },
-        { name: 'Press Releases', href: '/news-and-updates' },
+        { name: 'Press Releases', href: '/news-and-updates?category=press-releases' },
         { name: 'Photo Gallery', href: '/gallery' },
-        { name: 'Official Speeches', href: '/news-and-updates' }
+        { name: 'Announcements', href: '/news-and-updates?category=announcements' }
       ]
     },
     {
       title: 'The Commission',
       links: [
         { name: 'About ESLGSC', href: '/about' },
-        { name: 'Leadership', href: '/about' },
-        { name: 'Departments & Units', href: '/about' },
-        { name: 'Official Documents', href: '/news-and-updates' }
+        { name: 'Leadership', href: '/about#leadership' },
+        { name: 'Departments', href: '/about#departments' },
+        { name: 'Official Archive', href: '/#documents' }
       ]
     },
     {
-      title: 'Public Service',
+      title: 'Directory',
       links: [
-        { name: 'Complaints & Reports', href: '/complaints' },
-        { name: 'LGA Directory', href: '/local-governments' },
+        { name: 'Local Governments', href: '/local-governments' },
         { name: 'Development Centers', href: '/development-centers' },
-        { name: 'FAQ', href: '/faq' }
+        { name: 'Complaints Desk', href: '/complaints' },
+        { name: 'Frequently Asked Questions', href: '/faq' }
       ]
     }
   ];
@@ -106,8 +106,6 @@ const Footer = () => {
             &copy; {currentYear} Ebonyi State Local Government Service Commission. 
           </p>
           <div className="flex items-center space-x-6">
-            <Link to="/contact" className="hover:text-white">Privacy Policy</Link>
-            <Link to="/contact" className="hover:text-white">Terms of Use</Link>
             <Link to="/login" className="text-gov-cyan-500 font-semibold hover:text-gov-cyan-400">Staff Portal</Link>
           </div>
         </div>

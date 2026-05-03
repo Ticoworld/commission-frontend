@@ -47,18 +47,18 @@ const AuditDashboard = () => {
         <h2 className="text-lg font-semibold text-gov-gray-900 mb-4">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Link 
-            to="/dashboard/pending-edits"
+            to="/dashboard/audit-queue"
             className="flex items-center justify-center p-4 bg-gov-blue-50 rounded-lg hover:bg-gov-blue-100 transition-colors"
           >
             <ClipboardDocumentCheckIcon className="w-6 h-6 text-gov-blue-600 mr-2" />
-            <span className="font-medium">Review Pending Edits</span>
+            <span className="font-medium">Audit Queue</span>
           </Link>
           <Link 
-            to="/dashboard/employee-audit"
+            to="/dashboard/activity-log"
             className="flex items-center justify-center p-4 bg-gov-gray-100 rounded-lg hover:bg-gov-gray-200 transition-colors"
           >
-            <UsersIcon className="w-6 h-6 text-gov-gray-600 mr-2" />
-            <span className="font-medium">Employee Audit Log</span>
+            <ClipboardDocumentCheckIcon className="w-6 h-6 text-gov-gray-600 mr-2" />
+            <span className="font-medium">Activity Log</span>
           </Link>
         </div>
       </Card>

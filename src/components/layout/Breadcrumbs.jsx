@@ -3,14 +3,10 @@ import { ChevronRightIcon, HomeIcon } from '@heroicons/react/24/outline';
 
 const breadcrumbNames = {
   '/dashboard': 'Dashboard',
-  '/dashboard/employees': 'Employees',
   '/dashboard/news': 'News Management',
   '/dashboard/news-editor': 'News Editor',
   '/dashboard/drafts': 'My Drafts',
   '/dashboard/audit-queue': 'Audit Queue',
-  '/dashboard/pending-edits': 'Pending Edits',
-  '/dashboard/employee-audit': 'Employee Audit',
-  '/dashboard/retirement-alerts': 'Retirement Alerts',
   '/dashboard/activity-log': 'Activity Log',
   '/dashboard/settings': 'Settings'
 };

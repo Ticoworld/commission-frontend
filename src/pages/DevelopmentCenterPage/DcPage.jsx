@@ -1,232 +1,211 @@
 import Card from '../../components/ui/Card';
-import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
-import PageHero from '../../components/common/PageHero';
 import {
-  AcademicCapIcon,
-  BuildingOfficeIcon,
-  CpuChipIcon,
   MapPinIcon,
-  UsersIcon
+  AcademicCapIcon,
+  ArrowTopRightOnSquareIcon
 } from '@heroicons/react/24/outline';
 
-const centers = [
+const flagshipCenters = [
   {
-    name: 'Ebonyi State Training School, Abakaliki',
-    focus: 'Leadership, public finance, and ethical governance modules for senior management cadres.',
+    lga: 'Abakaliki',
+    name: 'Ebonyi State Training School',
+    focus: 'Administrative protocols, public finance, and governance modules for local government roles.',
     location: 'Abakaliki Development Centre',
-    capacity: '220 delegates per cohort',
-    facilities: ['Smart lecture theatres', 'Policy simulation lab', 'Residential hostels', 'Resource library'],
+    capacity: 'Administrative coordination point',
+    facilities: ['Classroom suites', 'Resource library', 'Conference rooms'],
     image: '/images/gallery/image2.jpg'
   },
   {
-    name: 'Ivo Community Leadership Hub',
-    focus: 'Grassroots leadership, gender inclusion, and citizen engagement for community officers.',
+    lga: 'Ivo',
+    name: 'Community Leadership Hub',
+    focus: 'Grassroots administration and citizen engagement modules for community coordination.',
     location: 'Ivo Development Centre',
-    capacity: '120 officers per session',
-    facilities: ['Civic dialogue studio', 'Hybrid classrooms', 'Collaboration pods'],
+    capacity: 'Administrative coordination point',
+    facilities: ['Dialogue space', 'Meeting rooms'],
     image: '/images/gallery/image5.jpg'
   },
   {
+    lga: 'Ikwo',
     name: 'Ikwo Digital Innovation Lab',
-    focus: 'Data governance, e-records, automation tools, and ICT service delivery.',
+    focus: 'Data management, electronic records, and ICT service delivery coordination.',
     location: 'Ikwo Development Centre',
-    capacity: '160 officers per quarter',
-    facilities: ['Device testing lab', 'Fiber-backed computer suites', 'Design thinking studio'],
+    capacity: 'Administrative coordination point',
+    facilities: ['ICT suites', 'Technical workspace'],
     image: '/images/gallery/image6.jpg'
   },
   {
+    lga: 'Afikpo South',
     name: 'Afikpo South Service Academy',
-    focus: 'Community development, budgeting, and monitoring & evaluation frameworks.',
+    focus: 'Community development, budgeting, and administrative monitoring frameworks.',
     location: 'Afikpo South Development Centre',
-    capacity: '140 officers per cohort',
-    facilities: ['Mini auditorium', 'Documentation centre', 'Project incubation rooms'],
+    capacity: 'Administrative coordination point',
+    facilities: ['Facilitation rooms', 'Documentation area'],
     image: '/images/gallery/image4.jpg'
-  }
-];
-
-const programmes = [
-  {
-    title: 'Leadership Acceleration Programme',
-    description: 'Three-month blended programme for principal officers focusing on strategy, ethics, and performance management.'
-  },
-  {
-    title: 'Service Delivery Clinics',
-    description: 'Rotational clinics that pair frontline workers with transformation coaches to resolve citizen-facing bottlenecks.'
-  },
-  {
-    title: 'Digital Service Bootcamps',
-    description: 'Hands-on sessions covering records digitisation, analytics dashboards, and workflow automation tools.'
-  },
-  {
-    title: 'Community Cohesion Workshops',
-    description: 'Scenario-based workshops that reinforce conflict resolution, inclusion, and participatory governance.'
   }
 ];
 
 const DcPage = () => {
   return (
-    <div className="space-y-20 pb-16">
-      <PageHero
-        eyebrow="Development Centres"
-        title="Accelerating capacity for modern local government service delivery."
-        description="ESLGSC manages a network of specialised development centres that equip officers with the tools, mindset, and experience required to serve communities effectively."
-        actions={(
-          <>
-            <Button as="a" href="#centres" size="lg">
-              Explore centres
-            </Button>
-            <Button as="a" href="/contact" variant="outline" size="lg">
-              Partner with us
-            </Button>
-          </>
-        )}
-      >
-        <Card className="grid gap-6 bg-white/80 p-6 md:p-8 lg:grid-cols-2">
-          <div className="space-y-4">
-            <p className="text-sm text-gov-gray-600">
-              Every programme blends policy, technology, and practical simulations tailored to Ebonyi State’s development priorities. Officers can customise their learning journey across leadership, digital service, and community engagement tracks.
+    <div className="bg-gov-gray-50/30 min-h-screen pb-20">
+      {/* Masthead */}
+      <header className="bg-gov-navy-900 text-white pt-16 pb-12 border-b-4 border-gov-green-600 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/logo/logo.png')] bg-no-repeat bg-right-top opacity-5 grayscale pointer-events-none translate-x-1/4 -translate-y-1/4 scale-150" />
+        <div className="container-custom relative z-10">
+          <div className="max-w-3xl space-y-4">
+            <span className="inline-block px-3 py-1 bg-gov-green-600 text-white text-[10px] font-bold uppercase tracking-widest rounded-sm">
+              Official Directory
+            </span>
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Development Centers</h1>
+            <p className="text-xl text-white/80 leading-relaxed max-w-2xl">
+              Directory of administrative units supporting grassroots development across Ebonyi State. The Commission coordinates centers across the 13 LGAs.
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-6">
-            <div>
-              <p className="text-xs uppercase tracking-wide text-gov-gray-500">Centres in operation</p>
-              <p className="mt-1 text-3xl font-semibold text-gov-blue-700">12</p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-wide text-gov-gray-500">Training hours (2024)</p>
-              <p className="mt-1 text-3xl font-semibold text-gov-blue-700">6,400+</p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-wide text-gov-gray-500">Disciplines covered</p>
-              <p className="mt-1 text-3xl font-semibold text-gov-blue-700">32</p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-wide text-gov-gray-500">Average satisfaction</p>
-              <p className="mt-1 text-3xl font-semibold text-gov-blue-700">94%</p>
-            </div>
-          </div>
-        </Card>
-      </PageHero>
-
-      <section id="centres" className="container-custom space-y-12">
-        <div className="max-w-2xl space-y-4">
-          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-gov-green-600">
-            Flagship Locations
-          </span>
-          <h2 className="heading-lg">Centres engineered for continuous learning and innovation.</h2>
-          <p className="text-gov-gray-600">
-            Each development centre is built around a strategic theme—governance, innovation, community engagement, or digital service delivery—so that teams can deep-dive into practical skills with measurable impact.
-          </p>
         </div>
-        <div className="grid gap-8 md:grid-cols-2">
-          {centers.map((centre) => (
-            <Card key={centre.name} className="overflow-hidden border-t-4 border-gov-navy-600">
-              <div className="h-52 w-full overflow-hidden">
-                <img
-                  src={centre.image}
-                  alt={centre.name}
-                  className="h-full w-full object-cover transition-transform hover:scale-105 duration-700"
-                  loading="lazy"
-                />
+      </header>
+
+      <div className="container-custom py-12 lg:py-16">
+        <div className="grid lg:grid-cols-[1fr_350px] gap-12 items-start">
+          {/* Main Content */}
+          <div className="space-y-12">
+            <section className="space-y-6">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div className="flex items-center gap-4 flex-1">
+                  <h2 className="text-2xl font-bold text-gov-navy-900 uppercase tracking-tight whitespace-nowrap">Development Center Directory</h2>
+                  <div className="h-px flex-1 bg-gov-gray-200 hidden md:block" />
+                </div>
+                <span className="text-[10px] font-bold text-gov-gray-400 uppercase tracking-widest bg-white px-2 py-1 border border-gov-gray-100">
+                  * Images represent general administrative facilities
+                </span>
               </div>
-              <div className="space-y-5 p-6">
-                <div className="space-y-1">
-                  <h3 className="text-xl font-bold text-gov-navy-900">{centre.name}</h3>
-                  <div className="flex items-center gap-4 py-1">
-                    <div className="flex items-center gap-1.5 text-xs text-gov-gray-500 font-medium">
-                      <MapPinIcon className="h-4 w-4 text-gov-blue-500" />
-                      {centre.location}
+              
+              <div className="grid gap-8">
+                {flagshipCenters.map((centre) => (
+                  <article key={centre.name} className="group bg-white border border-gov-gray-200 overflow-hidden flex flex-col md:flex-row hover:border-gov-blue-300 transition-colors">
+                    <div className="md:w-64 h-48 md:h-auto shrink-0 bg-gov-gray-100">
+                      <img
+                        src={centre.image}
+                        alt="Administrative Facility Illustration"
+                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                        loading="lazy"
+                      />
                     </div>
-                    <div className="flex items-center gap-1.5 text-xs text-gov-gray-500 font-medium border-l border-gov-gray-200 pl-4">
-                      <UsersIcon className="h-4 w-4 text-gov-blue-500" />
-                      Capacity: {centre.capacity}
+                    <div className="p-8 space-y-4 flex-1">
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-bold text-gov-blue-600 uppercase tracking-widest">{centre.lga} LGA Jurisdiction</span>
+                        <h3 className="text-xl font-bold text-gov-navy-900">{centre.name}</h3>
+                      </div>
+                      <p className="text-sm text-gov-gray-600 leading-relaxed max-w-2xl">
+                        {centre.focus}
+                      </p>
+                      <div className="flex flex-wrap gap-4 pt-2">
+                        <div className="flex items-center gap-2 text-xs font-bold text-gov-gray-500 uppercase tracking-widest">
+                          <MapPinIcon className="w-3.5 h-3.5 text-gov-green-600" />
+                          {centre.location}
+                        </div>
+                        <div className="flex items-center gap-2 text-xs font-bold text-gov-gray-500 uppercase tracking-widest">
+                          <AcademicCapIcon className="w-3.5 h-3.5 text-gov-green-600" />
+                          {centre.capacity}
+                        </div>
+                      </div>
+                      <div className="pt-4 flex flex-wrap gap-2">
+                        {centre.facilities.map(f => (
+                          <span key={f} className="px-2 py-1 bg-gov-gray-50 border border-gov-gray-200 text-[10px] font-bold text-gov-gray-500 uppercase tracking-tighter">
+                            {f}
+                          </span>
+                        ))}
+                      </div>
                     </div>
+                  </article>
+                ))}
+              </div>
+            </section>
+
+            {/* Directory Overview */}
+            <section className="bg-white border border-gov-gray-200 p-8 lg:p-12 space-y-10">
+              <div className="max-w-2xl space-y-4">
+                <h2 className="text-2xl font-bold text-gov-navy-900">Administrative Structure</h2>
+                <p className="text-gov-gray-600 leading-relaxed">
+                  Development Centers (DCs) function as the administrative arms of Local Government Areas, ensuring that services and development coordination reach the communities across Ebonyi State.
+                </p>
+              </div>
+
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="p-4 border-l-2 border-gov-navy-900 bg-gov-gray-50">
+                  <h4 className="text-xs font-bold text-gov-navy-900 uppercase tracking-widest mb-1">Ebonyi North Region</h4>
+                  <p className="text-[11px] text-gov-gray-500 font-medium italic">Administrative coordination units.</p>
+                </div>
+                <div className="p-4 border-l-2 border-gov-navy-900 bg-gov-gray-50">
+                  <h4 className="text-xs font-bold text-gov-navy-900 uppercase tracking-widest mb-1">Ebonyi South Cluster</h4>
+                  <p className="text-[11px] text-gov-gray-500 font-medium italic">Administrative coordination units.</p>
+                </div>
+                <div className="p-4 border-l-2 border-gov-navy-900 bg-gov-gray-50">
+                  <h4 className="text-xs font-bold text-gov-navy-900 uppercase tracking-widest mb-1">Ebonyi Central Cluster</h4>
+                  <p className="text-[11px] text-gov-gray-500 font-medium italic">Administrative coordination units.</p>
+                </div>
+              </div>
+
+              <div className="pt-6 border-t border-gov-gray-100">
+                <p className="text-xs text-gov-gray-400 italic">
+                  * Note: This directory lists primary administrative facilities. For a full official list of development centers, contact the Directorate of Local Government Affairs.
+                </p>
+              </div>
+            </section>
+          </div>
+
+          {/* Sidebar */}
+          <aside className="lg:sticky lg:top-8 w-full self-start">
+            <div className="space-y-12">
+            <div className="space-y-6">
+              <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-gov-navy-900 border-b-2 border-gov-navy-900 pb-2">
+                Coordination Areas
+              </h3>
+              <div className="space-y-4">
+                {[
+                  { title: 'Administrative Excellence', type: 'Administrative' },
+                  { title: 'Service Delivery', type: 'Operations' },
+                  { title: 'Information Systems', type: 'ICT' },
+                  { title: 'Community Coordination', type: 'Community' }
+                ].map(p => (
+                  <div key={p.title} className="group p-4 border border-gov-gray-200 bg-white hover:border-gov-blue-600 transition-colors">
+                    <span className="text-[9px] font-bold text-gov-blue-600 uppercase tracking-widest">{p.type} Track</span>
+                    <h4 className="text-sm font-bold text-gov-navy-900 mt-1">{p.title}</h4>
                   </div>
-                </div>
-                <p className="leading-relaxed text-sm text-gov-gray-600">{centre.focus}</p>
-                <div>
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gov-gray-500">Key facilities</p>
-                  <ul className="grid gap-2 sm:grid-cols-2">
-                    {centre.facilities.map((facility) => (
-                      <li key={facility} className="flex items-center gap-2 text-sm text-gov-gray-600">
-                        <span className="inline-flex h-1.5 w-1.5 rounded-full bg-gov-blue-500" />
-                        {facility}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+                ))}
               </div>
+            </div>
+
+            <Card className="bg-gov-navy-900 text-white p-8 space-y-4 rounded-none border-none">
+              <h4 className="text-sm font-bold uppercase tracking-[0.2em] text-gov-green-500">Public Enquiries</h4>
+              <p className="text-xs text-white/70 leading-relaxed font-medium">
+                Enquiries regarding center activities and administrative coordination can be directed to the Commission.
+              </p>
+              <Button as="a" href="mailto:ebonyistatelgsc@gmail.com" className="w-full bg-gov-green-600 hover:bg-gov-green-700 text-white border-none rounded-none text-xs font-bold uppercase tracking-widest">
+                Contact Commission
+              </Button>
             </Card>
-          ))}
-        </div>
-      </section>
 
-      <section className="bg-white py-16">
-        <div className="container-custom grid items-start gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-          <Card className="space-y-6 bg-gradient-to-br from-gov-blue-600 to-gov-blue-800 p-8 text-white">
-            <div className="flex items-center gap-3">
-              <AcademicCapIcon className="h-8 w-8" />
-              <h2 className="text-2xl font-semibold">Learning pathways</h2>
+            <div className="p-6 border border-gov-gray-200 bg-white space-y-4">
+              <h4 className="text-[10px] font-bold text-gov-navy-900 uppercase tracking-widest">External Links</h4>
+              <ul className="space-y-3">
+                <li>
+                  <a href="https://ebonyistate.gov.ng" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between text-xs font-bold text-gov-gray-500 hover:text-gov-blue-600 uppercase tracking-tighter">
+                    State Government Portal
+                    <ArrowTopRightOnSquareIcon className="w-3.5 h-3.5" />
+                  </a>
+                </li>
+                <li>
+                  <a href="/news-and-updates" className="flex items-center justify-between text-xs font-bold text-gov-gray-500 hover:text-gov-blue-600 uppercase tracking-tighter">
+                    Commission Newsroom
+                    <ArrowTopRightOnSquareIcon className="w-3.5 h-3.5" />
+                  </a>
+                </li>
+              </ul>
             </div>
-            <p className="text-white/80">
-              Officers can chart personalised learning journeys—combining leadership, technical, and community engagement modules—aligned with their career level and departmental goals.
-            </p>
-            <div className="grid gap-4 text-sm">
-              <div className="flex items-center gap-3">
-                <UsersIcon className="h-5 w-5" />
-                Cohort-based peer learning circles.
-              </div>
-              <div className="flex items-center gap-3">
-                <CpuChipIcon className="h-5 w-5" />
-                Virtual labs for e-governance simulations.
-              </div>
-              <div className="flex items-center gap-3">
-                <BuildingOfficeIcon className="h-5 w-5" />
-                Residency programmes for executive leadership teams.
-              </div>
             </div>
-            <Button
-              as="a"
-              href="/services"
-              variant="outline"
-              size="lg"
-              className="border-white text-white hover:bg-white/10"
-            >
-              View related services
-            </Button>
-          </Card>
-
-          <div className="space-y-6">
-            <h3 className="heading-md">Programmes delivered every quarter.</h3>
-            <div className="grid gap-6 md:grid-cols-2">
-              {programmes.map((programme) => (
-                <Card key={programme.title} className="p-6">
-                  <h4 className="mb-2 text-lg font-semibold text-gov-gray-900">{programme.title}</h4>
-                  <p className="text-sm leading-relaxed text-gov-gray-600">{programme.description}</p>
-                </Card>
-              ))}
-            </div>
-          </div>
+          </aside>
         </div>
-      </section>
-
-      <section className="bg-gov-gray-900 py-16 text-white">
-        <div className="container-custom space-y-6 text-center">
-          <h2 className="text-3xl font-semibold">Collaborate with the development centres</h2>
-          <p className="mx-auto max-w-3xl text-white/80">
-            We welcome partnerships with ministries, development partners, and training institutions to co-deliver high-impact programmes. Share curriculum ideas, sponsor cohorts, or deploy your facilitators through ESLGSC.
-          </p>
-          <Button
-            as="a"
-            href="mailto:ebonyistatelgsc@gmail.com"
-            size="lg"
-            className="bg-white text-gov-blue-700 hover:bg-gov-gray-100"
-          >
-            ebonyistatelgsc@gmail.com
-          </Button>
-        </div>
-      </section>
+      </div>
     </div>
   );
 };

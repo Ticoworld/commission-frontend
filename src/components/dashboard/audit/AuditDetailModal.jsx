@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from '../../ui/Modal';
 import Badge from '../../ui/Badge';
 import Button from '../../ui/Button';
@@ -13,22 +13,6 @@ const SectionTitle = ({ children }) => (
   </h3>
 );
 
-const DiffRow = ({ label, currentValue, proposedValue }) => (
-  <div className="grid grid-cols-1 md:grid-cols-3 gap-4 py-3 border-b border-gov-gray-100 last:border-0">
-    <div>
-      <p className="text-xs font-medium uppercase text-gov-gray-500">Field</p>
-      <p className="text-sm text-gov-gray-900">{label}</p>
-    </div>
-    <div>
-      <p className="text-xs font-medium uppercase text-gov-gray-500">Current</p>
-      <p className="text-sm text-gov-gray-700 break-words">{currentValue ?? '—'}</p>
-    </div>
-    <div>
-      <p className="text-xs font-medium uppercase text-gov-gray-500">Proposed</p>
-      <p className="text-sm text-gov-blue-700 break-words">{proposedValue ?? '—'}</p>
-    </div>
-  </div>
-);
 
 const AuditDetailModal = ({
   item,
@@ -47,17 +31,6 @@ const AuditDetailModal = ({
     }
   }, [isOpen]);
 
-  const changeSet = useMemo(() => {
-    if (!item || item.entityType !== 'employeeEdit') return [];
-    const { current = {}, proposed = {} } = item.payload || {};
-    return Object.keys(proposed)
-      .filter((key) => proposed[key] !== current[key])
-      .map((key) => ({
-        key,
-        current: current[key],
-        proposed: proposed[key]
-      }));
-  }, [item]);
 
   const handleApprove = () => {
     onApprove?.(notes || undefined);
@@ -106,25 +79,6 @@ const AuditDetailModal = ({
           {submittedInfo}
         </Card>
 
-        {item.entityType === 'employeeEdit' && (
-          <Card className="p-5 space-y-4">
-            <SectionTitle>Requested updates</SectionTitle>
-            {changeSet.length ? (
-              <div className="divide-y divide-gov-gray-100">
-                {changeSet.map((change) => (
-                  <DiffRow
-                    key={change.key}
-                    label={change.key.replace(/([A-Z])/g, ' $1').replace(/^./, (s) => s.toUpperCase())}
-                    currentValue={change.current}
-                    proposedValue={change.proposed}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p className="text-sm text-gov-gray-600">No differences detected.</p>
-            )}
-          </Card>
-        )}
 
         {item.entityType === 'news' && (
           <Card className="p-5 space-y-4">

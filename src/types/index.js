@@ -16,18 +16,7 @@
  * @property {string} [avatar]
  */
 
-/**
- * @typedef {Object} Employee
- * @property {string} id
- * @property {string} name
- * @property {string} email
- * @property {string} position
- * @property {string} department
- * @property {string} employmentDate
- * @property {string} retirementDate
- * @property {string} [phone]
- * @property {string} status
- */
+
 
 /**
  * @typedef {'draft' | 'pending' | 'published' | 'archived'} NewsStatus
@@ -70,16 +59,7 @@
  * @property {string} [notes]
  */
 
-/**
- * @typedef {Object} RetirementAlert
- * @property {string} id
- * @property {string} employeeId
- * @property {string} employeeName
- * @property {string} department
- * @property {string} retirementDate
- * @property {number} daysRemaining
- * @property {'critical' | 'warning' | 'normal'} priority
- */
+
 
 /**
  * @typedef {Object} LGA

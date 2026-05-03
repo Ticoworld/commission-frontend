@@ -66,121 +66,118 @@ const Faq = () => {
   const faqs = useMemo(() => faqData[selectedCategory] || [], [selectedCategory]);
 
   return (
-    <div className="space-y-20 pb-16">
-      <PageHero
-        eyebrow="Support"
-        title="Answers to the most common questions about ESLGSC services and support."
-        description="We keep our knowledge base updated so citizens, staff, and partners can get quick clarification."
-        actions={(
-          <>
-            <Button as="a" href="#faq-list" size="lg">
-              Browse FAQs
-            </Button>
-            <Button as="a" href="mailto:ebonyistatelgsc@gmail.com" variant="outline" size="lg">
-              Email support team
-            </Button>
-          </>
-        )}
-      >
-        <Card className="max-w-xl bg-white/80 p-6 md:p-8">
-          <div className="flex items-start gap-3">
-            <QuestionMarkCircleIcon className="h-10 w-10 text-gov-blue-600" />
-            <div className="space-y-2">
-              <h2 className="text-lg font-semibold text-gov-gray-900">Need personalised help?</h2>
-              <p className="text-sm text-gov-gray-600">
-                Our Servicom desk offers one-on-one support for citizens, staff, and partners Monday to Friday, 8:00 AM – 5:00 PM.
-              </p>
-            </div>
-          </div>
-        </Card>
-      </PageHero>
-
-      <section id="faq-list" className="container-custom space-y-8">
-        <div className="flex flex-wrap gap-3">
-          {categories.map((category) => (
-            <Button
-              key={category.value}
-              variant={selectedCategory === category.value ? 'primary' : 'outline'}
-              size="sm"
-              onClick={() => setSelectedCategory(category.value)}
-              aria-pressed={selectedCategory === category.value}
-            >
-              {category.label}
-            </Button>
-          ))}
-        </div>
-
-        <Card className="p-6 md:p-8">
-          <div className="space-y-4">
-            {faqs.map((item) => (
-              <Disclosure key={item.question}>
-                {({ open }) => (
-                  <div className="border-b border-gov-gray-200 last:border-none">
-                    <Disclosure.Button className="w-full py-4 text-left">
-                      <div className="flex items-center justify-between gap-4">
-                        <span className="font-semibold text-gov-gray-900">{item.question}</span>
-                        <ChevronDownIcon
-                          className={`h-5 w-5 text-gov-gray-500 transition-transform ${open ? 'rotate-180' : ''}`}
-                        />
-                      </div>
-                    </Disclosure.Button>
-                    <Transition
-                      enter="transition duration-200 ease-out"
-                      enterFrom="transform -translate-y-2 opacity-0"
-                      enterTo="transform translate-y-0 opacity-100"
-                      leave="transition duration-150 ease-in"
-                      leaveFrom="transform translate-y-0 opacity-100"
-                      leaveTo="transform -translate-y-1 opacity-0"
-                    >
-                      <Disclosure.Panel className="pb-4 text-sm leading-relaxed text-gov-gray-600">
-                        {item.answer}
-                      </Disclosure.Panel>
-                    </Transition>
-                  </div>
-                )}
-              </Disclosure>
-            ))}
-          </div>
-        </Card>
-      </section>
-
-      <section className="bg-white py-16">
-        <div className="container-custom grid items-center gap-10 lg:grid-cols-[1fr_1fr]">
-          <Card className="space-y-4 bg-gradient-to-br from-gov-blue-600 to-gov-blue-800 p-8 text-white">
-            <div className="flex items-start gap-3">
-              <ChatBubbleLeftRightIcon className="h-10 w-10" />
-              <div>
-                <h2 className="text-2xl font-semibold">Still need clarity?</h2>
-                <p className="mt-1 text-white/80">Book a virtual helpdesk session with our Servicom officers.</p>
-              </div>
-            </div>
-            <Button
-              as="a"
-              href="https://calendly.com"
-              target="_blank"
-              rel="noreferrer"
-              size="lg"
-              className="bg-white text-gov-blue-700 hover:bg-gov-gray-100"
-            >
-              Schedule a call
-            </Button>
-          </Card>
-          <Card className="space-y-4 p-8">
-            <div className="flex items-center gap-3">
-              <ShieldCheckIcon className="h-10 w-10 text-gov-blue-600" />
-              <div>
-                <h2 className="text-2xl font-semibold text-gov-gray-900">Policy Library</h2>
-                <p className="text-sm text-gov-gray-500">Access circulars, guidelines, and templates</p>
-              </div>
-            </div>
-            <p className="text-sm text-gov-gray-600">
-              Visit our documentation portal for downloadable policy documents, circulars, HR templates, and reporting formats.
-              Files are updated quarterly in collaboration with the Ministry of Local Government &amp; Chieftaincy Matters.
+    <div className="bg-gov-gray-50/30 min-h-screen pb-20">
+      {/* Institutional Masthead */}
+      <header className="bg-gov-navy-900 text-white pt-20 pb-16 border-b-4 border-gov-green-600 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/logo/logo.png')] bg-no-repeat bg-right-top opacity-5 grayscale pointer-events-none translate-x-1/4 -translate-y-1/4 scale-150" />
+        <div className="container-custom relative z-10">
+          <div className="max-w-3xl space-y-4">
+            <span className="inline-block px-3 py-1 bg-gov-green-600 text-white text-[10px] font-bold uppercase tracking-widest rounded-sm">
+              Public Support
+            </span>
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Frequently Asked Questions</h1>
+            <p className="text-xl text-white/80 leading-relaxed max-w-2xl">
+              Official clarifications on Commission mandates, local government services, administrative protocols, and public petitions.
             </p>
-            <Button as="a" href="#" variant="outline" size="sm" className="w-fit">
-              Open policy library
-            </Button>
-          </Card>
+          </div>
+        </div>
+      </header>
+
+      {/* Categories & FAQ List */}
+      <section className="container-custom py-16">
+        <div className="grid lg:grid-cols-[1fr_350px] gap-12 items-start">
+          <div className="space-y-10">
+            {/* Category Filter */}
+            <div className="flex flex-wrap gap-2 border-b border-gov-gray-200 pb-6">
+              {categories.map((category) => (
+                <button
+                  key={category.value}
+                  onClick={() => setSelectedCategory(category.value)}
+                  className={`px-4 py-2 text-xs font-bold uppercase tracking-widest transition-all ${
+                    selectedCategory === category.value
+                      ? 'bg-gov-navy-900 text-white shadow-md'
+                      : 'bg-white text-gov-gray-500 border border-gov-gray-200 hover:border-gov-navy-900 hover:text-gov-navy-900'
+                  }`}
+                >
+                  {category.label}
+                </button>
+              ))}
+            </div>
+
+            {/* FAQ Items */}
+            <div className="space-y-4">
+              {faqs.map((item) => (
+                <Disclosure key={item.question}>
+                  {({ open }) => (
+                    <div className="bg-white border border-gov-gray-200 shadow-sm overflow-hidden transition-all hover:border-gov-gray-300">
+                      <Disclosure.Button className="w-full p-6 text-left group">
+                        <div className="flex items-center justify-between gap-4">
+                          <span className={`font-bold transition-colors ${open ? 'text-gov-navy-900' : 'text-gov-gray-700 group-hover:text-gov-navy-900'}`}>
+                            {item.question}
+                          </span>
+                          <div className={`p-1 rounded-full transition-colors ${open ? 'bg-gov-navy-900 text-white' : 'bg-gov-gray-100 text-gov-gray-400 group-hover:bg-gov-navy-50'}`}>
+                            <ChevronDownIcon
+                              className={`h-4 w-4 transition-transform duration-300 ${open ? 'rotate-180' : ''}`}
+                            />
+                          </div>
+                        </div>
+                      </Disclosure.Button>
+                      <Transition
+                        enter="transition duration-200 ease-out"
+                        enterFrom="transform -translate-y-2 opacity-0"
+                        enterTo="transform translate-y-0 opacity-100"
+                        leave="transition duration-150 ease-in"
+                        leaveFrom="transform translate-y-0 opacity-100"
+                        leaveTo="transform -translate-y-1 opacity-0"
+                      >
+                        <Disclosure.Panel className="px-6 pb-6 pt-0">
+                          <div className="h-px bg-gov-gray-100 mb-6" />
+                          <p className="text-sm leading-relaxed text-gov-gray-600 max-w-3xl">
+                            {item.answer}
+                          </p>
+                        </Disclosure.Panel>
+                      </Transition>
+                    </div>
+                  )}
+                </Disclosure>
+              ))}
+            </div>
+          </div>
+
+          {/* Sidebar / CTA */}
+          <aside className="lg:sticky lg:top-8 space-y-8">
+            <div className="bg-gov-navy-900 text-white p-8 space-y-6 relative overflow-hidden">
+              <div className="absolute inset-0 bg-[url('/images/logo/logo.png')] bg-no-repeat bg-right-bottom opacity-10 grayscale scale-125" />
+              <div className="relative z-10 space-y-4">
+                <ChatBubbleLeftRightIcon className="w-10 h-10 text-gov-green-500" />
+                <h3 className="text-xl font-bold">Still need clarity?</h3>
+                <p className="text-xs text-white/70 leading-relaxed">
+                  For specific administrative enquiries not covered in this directory, citizens may contact our central support desk or visit our Abakaliki headquarters.
+                </p>
+                <div className="pt-4 border-t border-white/10 flex flex-col gap-3">
+                  <a href="mailto:ebonyistatelgsc@gmail.com" className="text-sm font-bold text-gov-green-400 hover:underline underline-offset-4">
+                    ebonyistatelgsc@gmail.com
+                  </a>
+                  <p className="text-[10px] font-bold text-white/40 uppercase tracking-widest">
+                    Response time: 48–72 working hours
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-white border border-gov-gray-200 p-8 space-y-6">
+              <ShieldCheckIcon className="w-10 h-10 text-gov-navy-900" />
+              <h3 className="text-sm font-bold uppercase tracking-widest text-gov-navy-900 border-b border-gov-gray-100 pb-2">
+                Policy Library
+              </h3>
+              <p className="text-xs text-gov-gray-600 leading-relaxed">
+                Access official circulars, administrative guidelines, and HR templates from the Commission's digital archive.
+              </p>
+              <Button as="a" href="#" variant="outline" size="sm" className="w-full rounded-none">
+                Access Archive
+              </Button>
+            </div>
+          </aside>
         </div>
       </section>
     </div>

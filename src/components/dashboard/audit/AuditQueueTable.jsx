@@ -8,7 +8,7 @@ import { AUDIT_STATUS } from '../../../lib/constants';
 
 const entityLabels = {
   news: 'News Article',
-  employeeEdit: 'Employee Record'
+  announcement: 'Public Announcement'
 };
 
 const statusVariantMap = {

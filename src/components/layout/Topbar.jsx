@@ -36,13 +36,6 @@ const Topbar = () => {
         link: '/dashboard/audit-queue'
       });
     }
-    if (metrics.criticalAlerts) {
-      items.push({
-        id: 'critical-alerts',
-        message: `${metrics.criticalAlerts} critical retirement alert${metrics.criticalAlerts > 1 ? 's' : ''}`,
-        link: '/dashboard/retirement-alerts'
-      });
-    }
     return items;
   }, [metrics]);
 

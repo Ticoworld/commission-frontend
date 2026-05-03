@@ -10,12 +10,6 @@ export const USER_ROLES = {
   LGA: 'LGA'
 };
 
-export const RETIREMENT_WARNING_DAYS = {
-  CRITICAL: 30,  // 30 days or less
-  WARNING: 90,   // 31-90 days
-  NORMAL: 180    // 91-180 days
-};
-
 export const NEWS_STATUS = {
   DRAFT: 'draft',
   PENDING: 'pending',
@@ -33,7 +27,7 @@ export const SERVICE_CATEGORIES = [
   { value: 'seminars', label: 'Workshops & Training' },
   { value: 'grants', label: 'Grants & Community Funding' },
   { value: 'programs', label: 'Public Governance Programmes' },
-  { value: 'recruitment', label: 'Recruitment & Job Notices' },
+  { value: 'advocacy', label: 'Advocacy & Public Outreach' },
   { value: 'policy', label: 'Policies & Circulars' },
   { value: 'documentation', label: 'Official Documents' }
 ];
@@ -41,25 +35,13 @@ export const SERVICE_CATEGORIES = [
 export const DEPARTMENTS = [
   'Administration & General Services',
   'Finance & Accounts',
-  'Human Resources Management',
+  'Institutional Development',
   'Information & Communication Technology',
   'Legal Services & Compliance',
   'Planning, Research & Statistics',
   'Public Relations & Media',
   'Internal Audit',
   'Local Government Oversight'
-];
-
-export const POSITIONS = [
-  'Director',
-  'Assistant Director',
-  'Chief Officer',
-  'Principal Officer',
-  'Senior Officer',
-  'Officer I',
-  'Officer II',
-  'Assistant Officer',
-  'Support Staff'
 ];
 
 /**

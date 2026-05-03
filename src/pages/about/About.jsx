@@ -1,287 +1,245 @@
+import { Link } from 'react-router-dom';
 import Card from '../../components/ui/Card';
-import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
-import PageHero from '../../components/common/PageHero';
-import { EXECUTIVES } from '../../lib/constants';
+import { EXECUTIVES, DEPARTMENTS } from '../../lib/constants';
 import {
-  AcademicCapIcon,
-  BuildingOffice2Icon,
-  ChartBarIcon,
-  GlobeAltIcon,
+  ChevronRightIcon,
+  ArrowTopRightOnSquareIcon,
+  DocumentTextIcon,
   ShieldCheckIcon,
-  SparklesIcon,
-  UsersIcon
+  ChatBubbleLeftRightIcon,
+  IdentificationIcon
 } from '@heroicons/react/24/outline';
 
-const stats = [
-  { label: 'Local Government Areas', value: '13' },
-  { label: 'Development Centres', value: '37' },
-  { label: 'Verified Service Reforms', value: '18+' },
-  { label: 'Community Project Oversight', value: '120+' }
-];
-
-const values = [
-  {
-    title: 'Service Excellence',
-    description: 'We champion professional standards and responsive public service delivery across every local government secretariat.',
-    icon: SparklesIcon
-  },
-  {
-    title: 'Transparency & Accountability',
-    description: 'Our processes are open, data-backed, and benchmarked against national public-sector reforms.',
-    icon: ShieldCheckIcon
-  },
-  {
-    title: 'People-Centred Governance',
-    description: 'We invest in our workforce and communities, ensuring that policies reflect real local needs.',
-    icon: UsersIcon
-  },
-  {
-    title: 'Innovation & Digital Transformation',
-    description: 'Modern digital tools power recruitment, records, and performance analytics for reliable decision-making.',
-    icon: ChartBarIcon
-  }
-];
-
-const timeline = [
-  {
-    year: '1991',
-    title: 'Commission Inaugurated',
-    description: 'Established following the creation of Ebonyi State to professionalise local government administration.'
-  },
-  {
-    year: '2005',
-    title: 'Unified Service Framework',
-    description: 'Introduced harmonised administrative policies and service delivery guidelines across all LGAs.'
-  },
-  {
-    year: '2016',
-    title: 'Digital HR Migration',
-    description: 'Rolled out biometric verification and an electronic records register covering over 11,000 personnel.'
-  },
-  {
-    year: '2023',
-    title: 'ESLGSC Transformation Agenda',
-    description: 'Launched strategic reforms for leadership development, service automation, and community accountability.'
-  }
-];
-
 const About = () => {
+  // Separate Chairman and Commissioners from other executives
+  const chairman = EXECUTIVES.find(e => e.role.includes('Chairman'));
+  const commissioner1 = EXECUTIVES.find(e => e.role.includes('Commissioner 1'));
+  const otherStaff = EXECUTIVES.filter(e => e !== chairman && e !== commissioner1);
+
   return (
-    <div className="pb-20 space-y-20">
-      <PageHero
-        eyebrow="About the Commission"
-        title="Building an agile, accountable, and people-focused local government service in Ebonyi State."
-        description="The Ebonyi State Local Government Service Commission (ESLGSC) provides leadership, oversight, and professional support to the teams delivering grassroots services across the state. We ensure that local governance is driven by excellence, transparency, and a commitment to community development."
-        actions={
-          <>
-            <Button as="a" href="#mission" size="lg">
-              Our Mission &amp; Vision
-            </Button>
-            <Button as="a" href="#leadership" variant="outline" size="lg" className="border-gov-navy-600 text-gov-navy-700">
-              Meet the Leadership
-            </Button>
-          </>
-        }
-      />
-
-      <section className="container-custom">
-        <Card className="p-8 bg-white/80">
-          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr] items-center">
-            <div>
-              <h2 className="heading-md mb-4">At a Glance</h2>
-              <p className="text-gov-gray-600 leading-relaxed">
-                ESLGSC coordinates policy implementation across 13 local government areas, 37 development centres, and dozens of community-facing initiatives.
-              </p>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              {stats.map((item) => (
-                <div key={item.label} className="rounded-lg border border-gov-gray-200 p-4 text-center">
-                  <div className="text-2xl font-semibold text-gov-blue-700">{item.value}</div>
-                  <p className="mt-1 text-xs font-medium uppercase tracking-wide text-gov-gray-500">
-                    {item.label}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </Card>
-      </section>
-
-      {/* Mission & Vision */}
-      <section id="mission" className="container-custom grid gap-8 lg:grid-cols-2">
-        <Card className="p-8">
-          <div className="flex items-start gap-4">
-            <BuildingOffice2Icon className="w-10 h-10 text-gov-blue-600" />
-            <div>
-              <h2 className="heading-md mb-3">Our Mission</h2>
-              <p className="text-gov-gray-600 leading-relaxed">
-                To nurture a motivated and highly skilled local government workforce that delivers inclusive,
-                people-centred services, drives community development, and upholds the values of accountability,
-                transparency, and responsive governance.
-              </p>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-8">
-          <div className="flex items-start gap-4">
-            <GlobeAltIcon className="w-10 h-10 text-gov-green-600" />
-            <div>
-              <h2 className="heading-md mb-3">Our Vision</h2>
-              <p className="text-gov-gray-600 leading-relaxed">
-                To become a benchmark public service institution recognised for inspiring innovation, ethical leadership,
-                and sustainable development at the grassroots level throughout Ebonyi State.
-              </p>
-            </div>
-          </div>
-        </Card>
-      </section>
-
-      {/* Core Values */}
-      <section className="bg-white py-16">
-        <div className="container-custom">
-          <div className="max-w-2xl mb-10">
-            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-gov-green-600 mb-3 block">
-              Our Values
+    <div className="bg-gov-gray-50/30 min-h-screen pb-20">
+      {/* Institutional Masthead */}
+      <header className="bg-gov-navy-900 text-white pt-16 pb-12 border-b-4 border-gov-green-600 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/logo/logo.png')] bg-no-repeat bg-right-top opacity-5 grayscale pointer-events-none translate-x-1/4 -translate-y-1/4 scale-150" />
+        <div className="container-custom relative z-10">
+          <div className="max-w-3xl space-y-4">
+            <span className="inline-block px-3 py-1 bg-gov-green-600 text-white text-[10px] font-bold uppercase tracking-widest rounded-sm">
+              Official Profile
             </span>
-            <h2 className="heading-lg mb-4">Principles guiding every decision.</h2>
-            <p className="text-gov-gray-600">
-              ESLGSC’s mandate is delivered through a set of shared values that anchor policy design, service delivery,
-              and stakeholder engagement across all departments.
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">About the Commission</h1>
+            <p className="text-xl text-white/80 leading-relaxed max-w-2xl">
+              The Ebonyi State Local Government Service Commission (ESLGSC) is the statutory body responsible for the oversight, regulation, and administrative coordination of the Local Government Service across the state.
             </p>
           </div>
-          <div className="grid gap-8 md:grid-cols-2">
-            {values.map((value) => {
-              const Icon = value.icon;
-              return (
-                <Card key={value.title} className="p-6">
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-lg bg-gov-blue-100 flex items-center justify-center">
-                      <Icon className="w-6 h-6 text-gov-blue-600" />
+        </div>
+      </header>
+
+      <div className="container-custom py-12 lg:py-16">
+        <div className="grid lg:grid-cols-[1fr_350px] gap-12 items-start">
+          {/* Main Content */}
+          <div className="space-y-16">
+            
+            {/* Statutory Mandate */}
+            <section className="space-y-8">
+              <div className="flex items-center gap-4">
+                <h2 className="text-2xl font-bold text-gov-navy-900 uppercase tracking-tight">Statutory Mandate</h2>
+                <div className="h-px flex-1 bg-gov-gray-200" />
+              </div>
+              <div className="prose prose-gov max-w-none">
+                <p className="text-lg text-gov-gray-700 leading-relaxed">
+                  Established under the Ebonyi State Local Government Law, the Commission functions as a centralized regulatory authority. Our mandate is to ensure that local governance is executed with professional integrity, administrative consistency, and strict adherence to public service standards.
+                </p>
+                <div className="grid md:grid-cols-2 gap-8 mt-10">
+                  <div className="space-y-3 p-6 bg-white border border-gov-gray-100">
+                    <h3 className="text-sm font-bold text-gov-navy-900 uppercase tracking-widest flex items-center gap-2">
+                      <ShieldCheckIcon className="w-5 h-5 text-gov-green-600" />
+                      Administrative Oversight
+                    </h3>
+                    <p className="text-sm text-gov-gray-600 leading-relaxed">
+                      Monitoring and regulating service standards across all 13 Local Government Areas to maintain uniformity in grassroots administration.
+                    </p>
+                  </div>
+                  <div className="space-y-3 p-6 bg-white border border-gov-gray-100">
+                    <h3 className="text-sm font-bold text-gov-navy-900 uppercase tracking-widest flex items-center gap-2">
+                      <DocumentTextIcon className="w-5 h-5 text-gov-green-600" />
+                      Policy Coordination
+                    </h3>
+                    <p className="text-sm text-gov-gray-600 leading-relaxed">
+                      Inaugurating and disseminating official circulars, administrative directives, and public notices to guide local service delivery.
+                    </p>
+                  </div>
+                  <div className="space-y-3 p-6 bg-white border border-gov-gray-100">
+                    <h3 className="text-sm font-bold text-gov-navy-900 uppercase tracking-widest flex items-center gap-2">
+                      <ChatBubbleLeftRightIcon className="w-5 h-5 text-gov-green-600" />
+                      Public Communication
+                    </h3>
+                    <p className="text-sm text-gov-gray-600 leading-relaxed">
+                      Facilitating a transparent channel for public enquiries, complaints, and access to official commission newsroom records.
+                    </p>
+                  </div>
+                  <div className="space-y-3 p-6 bg-white border border-gov-gray-100">
+                    <h3 className="text-sm font-bold text-gov-navy-900 uppercase tracking-widest flex items-center gap-2">
+                      <IdentificationIcon className="w-5 h-5 text-gov-green-600" />
+                      Service Verification
+                    </h3>
+                    <p className="text-sm text-gov-gray-600 leading-relaxed">
+                      Maintaining the integrity of the Local Government Service through continuous audits, identity verification, and professional record-keeping.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Leadership Section */}
+            <section id="leadership" className="space-y-10">
+              <div className="flex items-center gap-4">
+                <h2 className="text-2xl font-bold text-gov-navy-900 uppercase tracking-tight">Commission Leadership</h2>
+                <div className="h-px flex-1 bg-gov-gray-200" />
+              </div>
+
+              {/* Chairman Highlight */}
+              {chairman && (
+                <div className="bg-white border border-gov-gray-200 overflow-hidden flex flex-col md:row items-center md:flex-row shadow-sm">
+                  <div className="md:w-72 aspect-[4/5] bg-gov-gray-100 shrink-0">
+                    <img
+                      src={chairman.image}
+                      alt={chairman.name}
+                      className="w-full h-full object-cover grayscale"
+                    />
+                  </div>
+                  <div className="p-8 md:p-12 space-y-6">
+                    <div className="space-y-2">
+                      <span className="text-xs font-bold text-gov-green-600 uppercase tracking-[0.2em]">Executive Chairman</span>
+                      <h3 className="text-3xl font-bold text-gov-navy-900">{chairman.name}</h3>
+                    </div>
+                    <p className="text-gov-gray-600 leading-relaxed italic">
+                      "Our focus remains on building a transparent and accountable local government service that truly serves the grassroots communities of Ebonyi State."
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Commissioner Highlight */}
+              {commissioner1 && (
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="bg-white border border-gov-gray-200 p-6 flex gap-6 items-center">
+                    <div className="w-24 h-24 rounded-full overflow-hidden bg-gov-gray-100 shrink-0 border-2 border-gov-gray-100">
+                      <img src={commissioner1.image} alt={commissioner1.name} className="w-full h-full object-cover grayscale" />
                     </div>
                     <div>
-                      <h3 className="text-xl font-semibold text-gov-gray-900 mb-2">{value.title}</h3>
-                      <p className="text-gov-gray-600 leading-relaxed">{value.description}</p>
+                      <span className="text-[10px] font-bold text-gov-blue-600 uppercase tracking-widest">Commissioner 1</span>
+                      <h4 className="text-lg font-bold text-gov-navy-900">{commissioner1.name}</h4>
                     </div>
                   </div>
-                </Card>
-              );
-            })}
-          </div>
-        </div>
-      </section>
+                  <div className="bg-white border border-gov-gray-200 p-6 flex items-center justify-center text-center">
+                    <p className="text-sm text-gov-gray-400 italic">Additional Commissioner information will be updated following official gazette notifications.</p>
+                  </div>
+                </div>
+              )}
 
-      {/* Strategic Pillars */}
-      <section className="container-custom grid gap-8 lg:grid-cols-[1fr_1fr]">
-        <Card className="p-8">
-          <div className="flex items-start gap-4">
-            <AcademicCapIcon className="w-10 h-10 text-gov-blue-600" />
-            <div>
-              <h3 className="heading-sm mb-3">Talent &amp; Capability Development</h3>
-              <p className="text-gov-gray-600">
-                Continuous training, leadership coaching, and structured career pathways ensure that local government staff
-                can thrive in a modern public service environment.
-              </p>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-8">
-          <div className="flex items-start gap-4">
-            <ShieldCheckIcon className="w-10 h-10 text-gov-green-600" />
-            <div>
-              <h3 className="heading-sm mb-3">Governance &amp; Compliance</h3>
-              <p className="text-gov-gray-600">
-                We drive policy implementation, ethics enforcement, and evidence-based decision-making across the service
-                to sustain trust and citizen satisfaction.
-              </p>
-            </div>
-          </div>
-        </Card>
-      </section>
-
-      {/* Leadership */}
-      <section id="leadership" className="bg-gov-gray-50 py-16">
-        <div className="container-custom">
-          <div className="max-w-2xl mb-10">
-            <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-gov-blue-600 mb-3 block">
-              Leadership
-            </span>
-            <h2 className="heading-lg mb-4">Guided by experienced public sector leaders.</h2>
-            <p className="text-gov-gray-600">
-              The commission’s executive team combines decades of governance, HR, and administrative expertise to
-              deliver results that matter for communities.
-            </p>
-          </div>
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {EXECUTIVES.map((leader) => (
-              <article
-                key={leader.name}
-                className="group relative overflow-hidden rounded-2xl bg-gov-gray-900/5 shadow-sm"
-              >
-                <figure className="relative aspect-[3/4] sm:aspect-[4/5]">
-                  <img
-                    src={leader.image}
-                    alt={`Portrait of ${leader.name}`}
-                    loading="lazy"
-                    decoding="async"
-                    className="h-full w-full object-cover object-top transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4">
-                    <p className="text-base font-semibold text-white">{leader.name}</p>
-                    <p className="text-sm text-white/80">{leader.role}</p>
-                  </figcaption>
-                </figure>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Timeline */}
-      <section className="container-custom">
-        <Card className="p-8">
-          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-gov-gray-500 mb-4 block">
-            Milestones
-          </span>
-          <h2 className="heading-lg mb-8">Three decades of grassroots service transformation.</h2>
-          <div className="space-y-8 border-l border-gov-gray-200 pl-6">
-            {timeline.map((event) => (
-              <div key={event.year} className="relative">
-                <span className="absolute -left-[33px] mt-1 w-3 h-3 rounded-full border-2 border-gov-blue-600 bg-white" />
-                <p className="text-sm font-semibold uppercase tracking-wide text-gov-blue-600">{event.year}</p>
-                <h3 className="text-xl font-semibold text-gov-gray-900 mt-1 mb-2">{event.title}</h3>
-                <p className="text-gov-gray-600">{event.description}</p>
+              {/* Administrative Leads */}
+              <div className="space-y-6">
+                <h3 className="text-sm font-bold text-gov-navy-900 uppercase tracking-widest border-b border-gov-gray-100 pb-2">Administrative & Directorate Leads</h3>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {otherStaff.map(staff => (
+                    <div key={staff.name} className="bg-white border border-gov-gray-100 p-4 hover:border-gov-blue-300 transition-colors">
+                      <h4 className="text-sm font-bold text-gov-navy-900 leading-tight">{staff.name}</h4>
+                      <p className="text-[11px] text-gov-gray-500 mt-1 uppercase tracking-tighter">{staff.role || 'Administrative Lead'}</p>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs text-gov-gray-400 italic">The full directory of administrative leads and directorate heads is maintained within the Commission's internal registry.</p>
               </div>
-            ))}
-          </div>
-        </Card>
-      </section>
+            </section>
 
-      {/* Call to action */}
-      <section className="bg-gov-blue-600 text-white py-16">
-        <div className="container-custom text-center">
-          <h2 className="text-3xl font-semibold mb-4">Partner with ESLGSC</h2>
-          <p className="text-white/80 max-w-3xl mx-auto mb-8">
-            We collaborate with ministries, development partners, civil society organisations, and local communities
-            to co-create responsive governance programmes. Let’s work together to accelerate grassroots development
-            across Ebonyi State.
-          </p>
-          <div className="flex flex-wrap justify-center gap-3">
-            <Button as="a" href="/contact" size="lg" className="bg-white text-gov-blue-700 hover:bg-gov-gray-100">
-              Contact the Commission
-            </Button>
-            <Button
-              as="a"
-              href="/services"
-              variant="outline"
-              size="lg"
-              className="border-white text-white hover:bg-white/10"
-            >
-              Explore Our Programmes
-            </Button>
+            {/* Departments Section */}
+            <section id="departments" className="bg-white border border-gov-gray-200 p-8 lg:p-12 space-y-10">
+              <div className="max-w-2xl space-y-4">
+                <h2 className="text-2xl font-bold text-gov-navy-900 uppercase tracking-tight">Directorates & Departments</h2>
+                <p className="text-gov-gray-600 leading-relaxed">
+                  The Commission is organized into specialized directorates and departments, each managing a critical pillar of the local government service.
+                </p>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-y-4 gap-x-8">
+                {DEPARTMENTS.map(dept => (
+                  <div key={dept} className="flex items-center gap-3 py-3 border-b border-gov-gray-50">
+                    <div className="w-1.5 h-1.5 rounded-full bg-gov-green-600" />
+                    <span className="text-sm font-medium text-gov-gray-700">{dept}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Public Accountability */}
+            <section className="bg-gov-navy-900 text-white p-8 lg:p-16 relative overflow-hidden">
+               <div className="absolute inset-0 bg-[url('/images/hero/hero1.jpg')] bg-cover bg-center opacity-10 grayscale mix-blend-overlay" />
+               <div className="relative z-10 space-y-6">
+                <h2 className="text-3xl font-bold">Public Accountability & Access</h2>
+                <p className="text-white/80 max-w-2xl leading-relaxed">
+                  This portal serves as a digital extension of the Commission's commitment to transparency. By providing centralized access to LGA directories, Development Center locations, and official newsroom updates, we ensure that public information remains accessible to every citizen of Ebonyi State.
+                </p>
+                <div className="flex flex-wrap gap-4 pt-4">
+                  <Link to="/news-and-updates" className="text-sm font-bold text-gov-green-400 hover:text-gov-green-300 flex items-center gap-2">
+                    Access Newsroom <ChevronRightIcon className="w-4 h-4" />
+                  </Link>
+                  <Link to="/local-governments" className="text-sm font-bold text-gov-green-400 hover:text-gov-green-300 flex items-center gap-2">
+                    LGA Directory <ChevronRightIcon className="w-4 h-4" />
+                  </Link>
+                </div>
+               </div>
+            </section>
           </div>
+
+          {/* Sidebar */}
+          <aside className="lg:sticky lg:top-8 w-full self-start">
+            <div className="space-y-10">
+            <div className="p-6 bg-white border border-gov-gray-200 space-y-6">
+              <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-gov-navy-900 border-b border-gov-gray-100 pb-2">
+                Public Records
+              </h3>
+              <ul className="space-y-4">
+                <li>
+                  <Link to="/news-and-updates" className="group block">
+                    <span className="text-[10px] font-bold text-gov-blue-600 uppercase tracking-widest group-hover:underline">Official Newsroom</span>
+                    <p className="text-xs text-gov-gray-500 mt-1">Direct access to press releases and circulars.</p>
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/complaints" className="group block">
+                    <span className="text-[10px] font-bold text-gov-blue-600 uppercase tracking-widest group-hover:underline">Public Petitions</span>
+                    <p className="text-xs text-gov-gray-500 mt-1">Submit formal complaints for Commission review.</p>
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            <div className="p-6 bg-gov-navy-900 text-white space-y-4">
+              <h4 className="text-[10px] font-bold text-gov-green-500 uppercase tracking-widest">Enquiries</h4>
+              <p className="text-xs text-white/70 leading-relaxed font-medium">
+                For administrative enquiries or verification requests, please contact our central office.
+              </p>
+              <a href="mailto:ebonyistatelgsc@gmail.com" className="block text-sm font-bold hover:underline underline-offset-4">
+                ebonyistatelgsc@gmail.com
+              </a>
+            </div>
+
+            <div className="p-6 border border-gov-gray-200 bg-white space-y-4">
+              <h4 className="text-[10px] font-bold text-gov-navy-900 uppercase tracking-widest">External Links</h4>
+              <ul className="space-y-3">
+                <li>
+                  <a href="https://ebonyistate.gov.ng" target="_blank" rel="noopener noreferrer" className="flex items-center justify-between text-xs font-bold text-gov-gray-500 hover:text-gov-blue-600 uppercase tracking-tighter">
+                    State Government Portal
+                    <ArrowTopRightOnSquareIcon className="w-3.5 h-3.5" />
+                  </a>
+                </li>
+              </ul>
+            </div>
+            </div>
+          </aside>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

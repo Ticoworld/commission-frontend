@@ -24,9 +24,7 @@ const AuditQueue = () => {
   const invalidateRelatedQueries = () => {
     queryClient.invalidateQueries({ queryKey: AUDIT_QUEUE_QUERY_KEY });
     queryClient.invalidateQueries({ queryKey: ['news'] });
-    queryClient.invalidateQueries({ queryKey: ['employeeEdits'] });
     queryClient.invalidateQueries({ queryKey: ['activityLog'] });
-    queryClient.invalidateQueries({ queryKey: ['retirementAlerts'] });
     queryClient.invalidateQueries({ queryKey: ['dashboard', 'notifications'] });
   };
 

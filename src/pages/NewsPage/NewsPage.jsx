@@ -1,213 +1,335 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import Card from '../../components/ui/Card';
-import Badge from '../../components/ui/Badge';
 import Button from '../../components/ui/Button';
-import PageHero from '../../components/common/PageHero';
 import EmptyState from '../../components/ui/EmptyState';
 import Skeleton from '../../components/ui/Skeleton';
 import { getPublishedNews } from '../../services/newsService';
 import { formatDate, truncate } from '../../lib/utils';
 import {
-  NewspaperIcon,
-  MegaphoneIcon,
-  ShieldCheckIcon,
-  SparklesIcon
+  CalendarIcon,
+  ChevronRightIcon
 } from '@heroicons/react/24/outline';
 
 const categories = [
   { value: 'all', label: 'All Updates' },
-  { value: 'policy', label: 'Policy & Governance' },
-  { value: 'programmes', label: 'Programmes & Events' },
-  { value: 'community', label: 'Community Impact' },
-  { value: 'careers', label: 'Careers & Opportunities' }
+  { value: 'news', label: 'News' },
+  { value: 'press-releases', label: 'Press Releases' },
+  { value: 'announcements', label: 'Announcements' },
+  { value: 'speeches', label: 'Speeches' },
+  { value: 'notices', label: 'Public Notices' }
 ];
 
 const NewsPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryParam = searchParams.get('category');
+  const [selectedCategory, setSelectedCategory] = useState(categoryParam || 'all');
+
+  // Sync state with search params
+  useEffect(() => {
+    if (categoryParam) {
+      setSelectedCategory(categoryParam);
+    } else {
+      setSelectedCategory('all');
+    }
+  }, [categoryParam]);
+
   const { data: newsArticles = [], isLoading } = useQuery({
     queryKey: ['news', 'public', 'published'],
     queryFn: () => getPublishedNews({ limit: 30 })
   });
 
-  // Use latest published article as spotlight, or null if none exist
   const spotlightArticle = newsArticles.length > 0 ? newsArticles[0] : null;
+  const recentArticles = newsArticles.length > 1 ? newsArticles.slice(1, 4) : [];
 
   const filteredNews = useMemo(() => {
-    if (selectedCategory === 'all') return newsArticles;
-    return (newsArticles || []).filter((article) => article.category === selectedCategory);
+    let articles = newsArticles;
+    if (selectedCategory === 'all') return articles;
+    return (articles || []).filter((article) => article.category === selectedCategory);
   }, [selectedCategory, newsArticles]);
 
-  return (
-    <div className="pb-20 space-y-16">
-      <PageHero
-        eyebrow="Newsroom"
-        title="Official news, announcements, and policy insights from ESLGSC."
-        description="Stay informed about reforms, programmes, vacancies, and service delivery milestones across Ebonyi State’s 13 Local Government Areas. We publish verified updates weekly and provide media-ready resources."
-        actions={
-          <>
-            <Button as="a" href="#updates" size="lg">
-              Browse Latest Updates
-            </Button>
-            <Button as="a" href="mailto:ebonyistatelgsc@gmail.com" variant="outline" size="lg">
-              Media Enquiries
-            </Button>
-          </>
-        }
-      />
+  if (isLoading) {
+    return (
+      <div className="container-custom py-12 space-y-8">
+        <Skeleton rows={2} className="h-20 w-3/4" />
+        <div className="grid gap-8 lg:grid-cols-3">
+          <Skeleton className="h-64" />
+          <Skeleton className="h-64" />
+          <Skeleton className="h-64" />
+        </div>
+      </div>
+    );
+  }
 
-      {/* Spotlight Section - Shows latest published article */}
-      {spotlightArticle && (
-        <section className="container-custom">
-          <Card className="overflow-hidden">
-            <div className="h-60 w-full overflow-hidden">
-              <img
-                src={spotlightArticle.imageUrl || '/images/hero/hero8.jpg'}
-                alt={spotlightArticle.title}
-                loading="lazy"
-                className="h-full w-full object-cover"
-              />
-            </div>
-            <div className="p-6 space-y-4">
-              <div className="flex items-center">
-                <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-gov-navy-900 bg-gov-cyan-100 px-2 py-0.5 rounded-sm border border-gov-cyan-300">
-                  Spotlight
-                </span>
+  if (newsArticles.length === 0) {
+    return (
+      <div className="pb-20">
+        <header className="bg-gov-navy-900 text-white py-16 border-b-4 border-gov-green-600">
+          <div className="container-custom max-w-4xl">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">Newsroom</h1>
+            <p className="text-xl text-white/80 leading-relaxed">
+              Official updates and announcements from the Ebonyi State Local Government Service Commission.
+            </p>
+          </div>
+        </header>
+        <div className="container-custom py-20">
+          <EmptyState
+            title="No public updates yet"
+            description="Official notices and press releases will appear here when published by the Commission."
+            action={<Button as={Link} to="/" size="sm" variant="outline">Return Home</Button>}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="pb-20 bg-gov-gray-50/30">
+      {/* Newsroom Masthead */}
+      <header className="bg-gov-navy-900 text-white pt-16 pb-12 border-b-4 border-gov-green-600 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/images/logo/logo.png')] bg-no-repeat bg-right-top opacity-5 grayscale pointer-events-none translate-x-1/4 -translate-y-1/4 scale-150" />
+        <div className="container-custom relative z-10">
+          <div className="max-w-3xl space-y-4">
+            <span className="inline-block px-3 py-1 bg-gov-green-600 text-white text-[10px] font-bold uppercase tracking-widest rounded-sm">
+              Official Commission Feed
+            </span>
+            <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Newsroom</h1>
+            <p className="text-xl text-white/80 leading-relaxed max-w-2xl">
+              Official announcements, policy insights, and reform updates from ESLGSC. Stay informed about the latest developments in local governance.
+            </p>
+          </div>
+        </div>
+      </header>
+
+      {/* Featured & Recent Section */}
+      {selectedCategory === 'all' && spotlightArticle && (
+        <section className="bg-white border-b border-gov-gray-200 py-12 lg:py-16">
+          <div className="container-custom">
+            <div className="grid gap-12 lg:grid-cols-[1.5fr_1fr]">
+              {/* Featured Story */}
+              <div className="space-y-6">
+                <div className="aspect-[16/9] w-full overflow-hidden rounded-sm bg-gov-navy-50 border border-gov-gray-200">
+                  {spotlightArticle.imageUrl ? (
+                    <img
+                      src={spotlightArticle.imageUrl}
+                      alt={spotlightArticle.title}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="h-full w-full bg-gov-navy-900/5 flex items-center justify-center">
+                      <span className="text-gov-navy-200 font-bold text-xl uppercase tracking-[0.2em]">Official Update</span>
+                    </div>
+                  )}
+                </div>
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <span className="text-xs font-bold uppercase tracking-widest text-gov-green-700">
+                      Latest Release
+                    </span>
+                    <span className="text-xs text-gov-gray-500 font-medium">
+                      {formatDate(spotlightArticle.publishedAt || spotlightArticle.createdAt)}
+                    </span>
+                  </div>
+                  <h2 className="text-3xl md:text-4xl font-bold text-gov-navy-900 hover:text-gov-blue-700 transition-colors">
+                    <Link to={`/news-and-updates/${spotlightArticle.slug || spotlightArticle.id}`}>
+                      {spotlightArticle.title}
+                    </Link>
+                  </h2>
+                  <p className="text-lg text-gov-gray-600 leading-relaxed">
+                    {spotlightArticle.summary || truncate(spotlightArticle.content || '', 180)}
+                  </p>
+                  <Button 
+                    as={Link} 
+                    to={`/news-and-updates/${spotlightArticle.slug || spotlightArticle.id}`} 
+                    variant="primary" 
+                    className="rounded-none px-8"
+                  >
+                    Read Full Release
+                  </Button>
+                </div>
               </div>
-              <h2 className="text-2xl font-semibold text-gov-gray-900">{spotlightArticle.title}</h2>
-              <p className="text-gov-gray-600">{spotlightArticle.summary || truncate(spotlightArticle.content || '', 200)}</p>
-              <Button 
-                as={Link} 
-                to={`/news-and-updates/${spotlightArticle.slug || spotlightArticle.id}`} 
-                variant="outline" 
-                size="sm"
-              >
-                Read Full Article
-              </Button>
+
+              {/* Recent Briefs */}
+              <div className="space-y-8">
+                <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-gov-gray-500 border-b border-gov-gray-200 pb-4">
+                  Recent Releases
+                </h3>
+                <div className="space-y-6">
+                  {recentArticles.map((article) => (
+                    <article key={article.id} className="group grid grid-cols-[100px_1fr] gap-4 items-start">
+                      <div className="aspect-square bg-gov-gray-50 rounded-sm overflow-hidden border border-gov-gray-200">
+                        {article.imageUrl ? (
+                          <img src={article.imageUrl} alt="" className="h-full w-full object-cover grayscale group-hover:grayscale-0 transition-all" />
+                        ) : (
+                          <div className="h-full w-full bg-gov-gray-100 flex items-center justify-center">
+                            <span className="text-[10px] text-gov-gray-300 font-bold uppercase">ESLGSC</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="space-y-1">
+                        <span className="text-[10px] font-bold uppercase text-gov-blue-600">
+                          {article.category || 'Update'}
+                        </span>
+                        <h4 className="font-bold text-gov-navy-900 leading-snug group-hover:text-gov-blue-700 transition-colors">
+                          <Link to={`/news-and-updates/${article.slug || article.id}`}>
+                            {article.title}
+                          </Link>
+                        </h4>
+                        <p className="text-xs text-gov-gray-500">
+                          {formatDate(article.publishedAt || article.createdAt)}
+                        </p>
+                      </div>
+                    </article>
+                  ))}
+                  {recentArticles.length === 0 && (
+                    <p className="text-sm text-gov-gray-400 italic">No other recent updates.</p>
+                  )}
+                </div>
+                
+                <Card className="bg-gov-gray-50 border-gov-gray-200 p-6 rounded-none shadow-none">
+                  <h4 className="text-sm font-bold text-gov-navy-900 mb-2 uppercase tracking-wide">Media Enquiries</h4>
+                  <p className="text-xs text-gov-gray-600 leading-relaxed mb-4">
+                    Official statements and interview requests for ESLGSC leadership can be directed to the Press Office.
+                  </p>
+                  <a href="mailto:ebonyistatelgsc@gmail.com" className="text-sm font-bold text-gov-blue-600 hover:underline">
+                    ebonyistatelgsc@gmail.com
+                  </a>
+                </Card>
+              </div>
             </div>
-          </Card>
+          </div>
         </section>
       )}
 
-      {/* Filters */}
-      <section id="updates" className="container-custom space-y-10">
-        <div className="flex flex-wrap gap-3">
-          {categories.map((category) => (
-            <button
-              key={category.value}
-              className={`px-4 py-2 text-xs font-bold uppercase tracking-wider transition-all border-b-2 ${
-                selectedCategory === category.value 
-                ? 'border-gov-navy-600 text-gov-navy-900' 
-                : 'border-transparent text-gov-gray-500 hover:text-gov-navy-600'
-              }`}
-              onClick={() => setSelectedCategory(category.value)}
-            >
-              {category.label}
-            </button>
-          ))}
+      {/* Filter Navigation */}
+      <nav className="bg-gov-navy-900 text-white sticky top-0 z-20 shadow-lg">
+        <div className="container-custom">
+          <div className="flex flex-wrap items-center">
+            {categories.map((category) => (
+              <button
+                key={category.value}
+                className={`px-6 py-4 text-xs font-bold uppercase tracking-wider transition-all border-b-4 ${
+                  selectedCategory === category.value 
+                  ? 'border-gov-green-600 bg-white/5 text-white' 
+                  : 'border-transparent text-white/60 hover:text-white hover:bg-white/5'
+                }`}
+                onClick={() => {
+                  setSelectedCategory(category.value);
+                  if (category.value === 'all') {
+                    searchParams.delete('category');
+                  } else {
+                    searchParams.set('category', category.value);
+                  }
+                  setSearchParams(searchParams);
+                }}
+              >
+                {category.label}
+              </button>
+            ))}
+          </div>
         </div>
+      </nav>
 
-        <div className="grid gap-8 lg:grid-cols-3">
-          {isLoading ? (
-            <div className="col-span-3"><Skeleton rows={6} /></div>
-          ) : filteredNews.length === 0 ? (
-            <div className="col-span-3">
-              <EmptyState
-                title="No news found"
-                description="There are no articles matching your filters right now. Check back later or select a different category."
-                action={<Button as={Link} to="/news-and-updates" size="sm">Browse all</Button>}
-              />
-            </div>
-          ) : filteredNews.map((article) => (
-            <Card key={article.id} className="flex flex-col overflow-hidden group">
-              <div className="h-48 w-full overflow-hidden">
-                <img
-                  src={article.imageUrl || '/images/hero/hero6.jpg'}
-                  alt={article.title}
-                  loading="lazy"
-                  className="h-full w-full object-cover transition-transform group-hover:scale-105 duration-500"
-                />
-              </div>
-              <div className="flex flex-1 flex-col p-6 space-y-4">
-                <div className="flex items-center justify-between text-sm text-gov-gray-500">
-                  <span className="text-[10px] font-bold uppercase tracking-widest text-gov-blue-600 bg-gov-blue-50 px-2 py-0.5 rounded-sm border border-gov-blue-100">
-                    {article.category || 'news'}
-                  </span>
-                  <span className="text-xs">{formatDate(article.publishedAt || article.createdAt)}</span>
+      {/* News Feed */}
+      <section id="updates" className="container-custom py-16">
+        {filteredNews.length === 0 ? (
+          <div className="max-w-md mx-auto text-center py-12">
+            <h3 className="text-xl font-bold text-gov-navy-900 uppercase tracking-tight">No updates found</h3>
+            <p className="text-gov-gray-500 mt-2 mb-6 leading-relaxed">We haven't published any releases under the "{categories.find(c => c.value === selectedCategory)?.label}" category yet.</p>
+            <Button onClick={() => setSelectedCategory('all')} variant="outline" size="sm" className="rounded-none">
+              View All Updates
+            </Button>
+          </div>
+        ) : (
+          <div className="grid gap-x-8 gap-y-12 md:grid-cols-2 lg:grid-cols-3">
+            {filteredNews.map((article) => (
+              <article key={article.id} className="group flex flex-col space-y-4">
+                <Link to={`/news-and-updates/${article.slug || article.id}`} className="block aspect-[3/2] overflow-hidden bg-gov-gray-100 border border-gov-gray-200">
+                  {article.imageUrl ? (
+                    <img
+                      src={article.imageUrl}
+                      alt=""
+                      loading="lazy"
+                      className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  ) : (
+                    <div className="h-full w-full bg-gov-navy-900/5 flex items-center justify-center">
+                      <span className="text-gov-navy-200/40 font-bold uppercase tracking-widest text-xs">ESLGSC Release</span>
+                    </div>
+                  )}
+                </Link>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-gov-green-700 bg-gov-green-50 px-2 py-0.5 border border-gov-green-100">
+                      {article.category || 'News'}
+                    </span>
+                    <div className="flex items-center gap-1.5 text-gov-gray-400">
+                      <CalendarIcon className="w-3 h-3" />
+                      <span className="text-[10px] font-bold uppercase tracking-widest">
+                        {formatDate(article.publishedAt || article.createdAt)}
+                      </span>
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold text-gov-navy-900 group-hover:text-gov-blue-700 transition-colors leading-snug">
+                    <Link to={`/news-and-updates/${article.slug || article.id}`}>
+                      {article.title}
+                    </Link>
+                  </h3>
+                  <p className="text-sm text-gov-gray-600 line-clamp-3 leading-relaxed">
+                    {article.summary || truncate(article.content || '', 140)}
+                  </p>
+                  <Link 
+                    to={`/news-and-updates/${article.slug || article.id}`}
+                    className="inline-flex items-center text-xs font-bold text-gov-blue-600 hover:text-gov-navy-900 uppercase tracking-widest transition-colors"
+                  >
+                    Read Release
+                    <ChevronRightIcon className="ml-1 w-3 h-3" />
+                  </Link>
                 </div>
-                <h3 className="text-xl font-semibold text-gov-gray-900">{article.title}</h3>
-                <p className="text-sm text-gov-gray-600 flex-1">{truncate(article.summary, 160)}</p>
-                <Button as={Link} to={`/news-and-updates/${article.slug || article.id}`} variant="outline" size="sm" className="self-start">
-                  Read More
-                </Button>
-              </div>
-            </Card>
-          ))}
-        </div>
+              </article>
+            ))}
+          </div>
+        )}
       </section>
 
-      {/* Media resources */}
-      <section className="bg-white py-16">
-        <div className="container-custom grid gap-10 lg:grid-cols-[1fr_1fr]">
-          <Card className="p-8 space-y-6">
-            <div className="flex items-center gap-3">
-              <NewspaperIcon className="w-10 h-10 text-gov-blue-600" />
-              <div>
-                <h2 className="text-2xl font-semibold text-gov-gray-900">Downloadable Resources</h2>
-                <p className="text-sm text-gov-gray-500">Briefs, fact sheets, and highlights</p>
+      {/* Official Media Block */}
+      <section className="bg-gov-navy-900 text-white py-20">
+        <div className="container-custom">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <div className="space-y-6">
+              <div className="inline-block border-l-4 border-gov-green-600 pl-4">
+                <h2 className="text-3xl font-bold uppercase tracking-tight">Official Communications</h2>
+                <p className="text-sm text-gov-green-500 font-bold uppercase tracking-[0.2em] mt-1">Press Desk & Public Information</p>
+              </div>
+              <p className="text-lg text-white/70 leading-relaxed">
+                The ESLGSC Communications Office is the official source for all commission-related statements, policy briefings, and public announcements. We ensure that citizens and partners receive accurate, timely information.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <Button as="a" href="mailto:ebonyistatelgsc@gmail.com" variant="primary" className="rounded-none bg-gov-green-600 hover:bg-gov-green-700 border-none">
+                  Contact Press Office
+                </Button>
+                <Button as="a" href="https://ebonyistate.gov.ng" target="_blank" variant="outline" className="rounded-none border-white/20 text-white hover:bg-white/5">
+                  State Government News
+                </Button>
               </div>
             </div>
-            <ul className="space-y-3 text-sm text-gov-gray-600">
-              <li className="flex items-center gap-2">
-                <SparklesIcon className="w-5 h-5 text-gov-blue-500" />
-                Quarterly service delivery scorecards (PDF)
-              </li>
-              <li className="flex items-center gap-2">
-                <SparklesIcon className="w-5 h-5 text-gov-blue-500" />
-                Media briefs on ongoing reforms (DOCX)
-              </li>
-              <li className="flex items-center gap-2">
-                <SparklesIcon className="w-5 h-5 text-gov-blue-500" />
-                Photo gallery asset pack (ZIP)
-              </li>
-            </ul>
-            <Button as="a" href="#" size="sm" className="w-fit">
-              Request Download Links
-            </Button>
-          </Card>
-
-          <Card className="p-8 space-y-6 bg-gradient-to-br from-gov-blue-600 to-gov-blue-800 text-white">
-            <div className="flex items-center gap-3">
-              <MegaphoneIcon className="w-10 h-10" />
-              <div>
-                <h2 className="text-2xl font-semibold">Press Desk</h2>
-                <p className="text-sm text-white/80">Verified statements &amp; interviews</p>
-              </div>
+            
+            <div className="grid gap-6 sm:grid-cols-2">
+              <Card className="bg-white/5 border-white/10 p-8 rounded-none shadow-none">
+                <h4 className="font-bold mb-3 uppercase tracking-widest text-gov-green-500 text-xs">Public Enquiries</h4>
+                <p className="text-sm text-white/60 leading-relaxed font-medium italic border-l border-white/20 pl-4">
+                  "Direct information regarding commission programmes and community service delivery."
+                </p>
+              </Card>
+              <Card className="bg-white/5 border-white/10 p-8 rounded-none shadow-none">
+                <h4 className="font-bold mb-3 uppercase tracking-widest text-gov-green-500 text-xs">Policy Updates</h4>
+                <p className="text-sm text-white/60 leading-relaxed font-medium italic border-l border-white/20 pl-4">
+                  "Verified access to administrative circulars, reforms, and institutional documentation."
+                </p>
+              </Card>
             </div>
-            <p className="text-white/80">
-              Journalists, development partners, and civic groups can schedule interviews with ESLGSC spokespersons
-              to discuss reforms, service metrics, and community partnerships.
-            </p>
-            <div className="space-y-2 text-sm">
-              <div className="flex items-center gap-2">
-                <ShieldCheckIcon className="w-5 h-5" />
-                Verified information and on-record quotes.
-              </div>
-              <div className="flex items-center gap-2">
-                <ShieldCheckIcon className="w-5 h-5" />
-                Support for fact-checking and data requests.
-              </div>
-            </div>
-            <Button
-              as="a"
-              href="mailto:ebonyistatelgsc@gmail.com"
-              size="lg"
-              className="bg-white text-gov-blue-700 hover:bg-gov-gray-100"
-            >
-              ebonyistatelgsc@gmail.com
-            </Button>
-          </Card>
+          </div>
         </div>
       </section>
     </div>

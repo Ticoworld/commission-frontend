@@ -16,11 +16,11 @@ import ImageUpload from './ImageUpload';
 import { NEWS_STATUS } from '../../../lib/constants';
 
 const categories = [
-  'Policy & Governance',
-  'Programmes & Events',
-  'Community Impact',
-  'Careers & Opportunities',
-  'Service Delivery'
+  { value: 'news', label: 'News Update' },
+  { value: 'press-releases', label: 'Press Release' },
+  { value: 'announcements', label: 'Announcement' },
+  { value: 'speeches', label: 'Official Speech' },
+  { value: 'notices', label: 'Public Notice' }
 ];
 
 const defaultValues = {
@@ -28,7 +28,7 @@ const defaultValues = {
   title: '',
   summary: '',
   content: '',
-  category: categories[0],
+  category: categories[0].value,
   tags: '',
   imageUrl: ''
 };
@@ -258,9 +258,9 @@ const NewsEditorForm = ({
                 {...register('category', { required: 'Category is required' })}
                 error={errors.category?.message}
               >
-                {categories.map((category) => (
-                  <option key={category} value={category}>
-                    {category}
+                {categories.map((cat) => (
+                  <option key={cat.value} value={cat.value}>
+                    {cat.label}
                   </option>
                 ))}
               </Select>

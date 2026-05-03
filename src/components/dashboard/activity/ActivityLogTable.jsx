@@ -6,8 +6,9 @@ import Skeleton from '../../ui/Skeleton';
 import { formatDate } from '../../../lib/utils';
 
 const entityVariant = {
-  employee: 'blue',
   news: 'green',
+  announcement: 'blue',
+  upload: 'purple',
   audit: 'yellow'
 };
 

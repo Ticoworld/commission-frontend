@@ -26,17 +26,14 @@ const ResetPassword = lazy(() => import('../pages/auth/ResetPassword'));
 
 // Dashboard Pages (lazy loaded)
 const Dashboard = lazy(() => import('../pages/Dashboard'));
-const Employees = lazy(() => import('../pages/Dashboard/Super/Employees'));
 const AuditQueue = lazy(() => import('../pages/Dashboard/Super/AuditQueue'));
 const NewsModeration = lazy(() => import('../pages/Dashboard/Super/NewsModeration'));
-const RetirementAlerts = lazy(() => import('../pages/Dashboard/Super/RetirementAlerts'));
+const Complaints = lazy(() => import('../pages/Dashboard/Super/Complaints'));
 const ActivityLog = lazy(() => import('../pages/Dashboard/Super/ActivityLog'));
 const NewsEditor = lazy(() => import('../pages/Dashboard/Media/NewsEditor'));
 const Drafts = lazy(() => import('../pages/Dashboard/Media/Drafts'));
-const PendingEdits = lazy(() => import('../pages/Dashboard/Audit/PendingEdits'));
 const InviteUser = lazy(() => import('../pages/admin/InviteUser'));
 const UserManagement = lazy(() => import('../pages/admin/UserManagement'));
-const EditEmployeePage = lazy(() => import('../pages/EditEmployeePage'));
 
 const LoadingFallback = () => (
   <div className="flex items-center justify-center min-h-screen">
@@ -100,22 +97,6 @@ const AppRouter = () => {
           } 
         />
         <Route 
-          path="employees" 
-          element={
-            <Suspense fallback={<LoadingFallback />}>
-              <Employees />
-            </Suspense>
-          } 
-        />
-        <Route
-          path="employees/:id/edit"
-          element={
-            <Suspense fallback={<LoadingFallback />}>
-              <EditEmployeePage />
-            </Suspense>
-          }
-        />
-        <Route 
           path="news" 
           element={
             <Suspense fallback={<LoadingFallback />}>
@@ -132,10 +113,10 @@ const AppRouter = () => {
           } 
         />
         <Route 
-          path="retirement-alerts" 
+          path="complaints" 
           element={
             <Suspense fallback={<LoadingFallback />}>
-              <RetirementAlerts />
+              <Complaints />
             </Suspense>
           } 
         />
@@ -181,14 +162,6 @@ const AppRouter = () => {
           element={
             <Suspense fallback={<LoadingFallback />}>
               <Drafts />
-            </Suspense>
-          } 
-        />
-        <Route 
-          path="pending-edits" 
-          element={
-            <Suspense fallback={<LoadingFallback />}>
-              <PendingEdits />
             </Suspense>
           } 
         />

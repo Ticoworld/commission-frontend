@@ -9,39 +9,45 @@ const navigation = [
   { name: 'Home', href: '/' },
   { 
     name: 'Newsroom', 
-    href: '#',
+    href: '/news-and-updates',
     children: [
       { name: 'Latest News', href: '/news-and-updates' },
-      { name: 'Press Releases', href: '/news-and-updates' },
-      { name: 'Announcements', href: '/news-and-updates' },
-      { name: 'Speeches', href: '/news-and-updates' },
+      { name: 'Press Releases', href: '/news-and-updates?category=press-releases' },
+      { name: 'Announcements', href: '/news-and-updates?category=announcements' },
+      { name: 'Speeches', href: '/news-and-updates?category=speeches' },
       { name: 'Gallery', href: '/gallery' }
     ]
   },
   { 
     name: 'The Commission', 
-    href: '#',
+    href: '/about',
     children: [
       { name: 'About ESLGSC', href: '/about' },
-      { name: 'Leadership', href: '/about' },
-      { name: 'Departments & Units', href: '/about' }
+      { name: 'Leadership', href: '/about#leadership' },
+      { name: 'Departments', href: '/about#departments' }
     ]
   },
-  { name: 'LGAs & Centers', href: '/local-governments' },
+  { 
+    name: 'Directory', 
+    href: '/local-governments',
+    children: [
+      { name: 'Local Governments', href: '/local-governments' },
+      { name: 'Development Centers', href: '/development-centers' }
+    ]
+  },
   { 
     name: 'Documents', 
-    href: '#',
+    href: '/#documents',
     children: [
-      { name: 'Circulars', href: '/news-and-updates' },
-      { name: 'Public Notices', href: '/news-and-updates' },
-      { name: 'Reports', href: '/news-and-updates' }
+      { name: 'Official Circulars', href: '/news-and-updates?category=notices' },
+      { name: 'Document Archive', href: '/#documents' }
     ]
   },
   { 
-    name: 'Public Service', 
-    href: '#',
+    name: 'Support', 
+    href: '/complaints',
     children: [
-      { name: 'Complaints', href: '/complaints' },
+      { name: 'Complaints Desk', href: '/complaints' },
       { name: 'FAQ', href: '/faq' },
       { name: 'Contact Us', href: '/contact' }
     ]
@@ -110,7 +116,7 @@ const Header = () => {
               className="h-10 w-10 object-contain"
             />
             <div className="hidden sm:block">
-              <div className="text-lg font-bold text-gov-blue-800 leading-tight">
+              <div className="text-lg font-bold text-gov-navy-900 leading-tight">
                 ESLGSC
               </div>
               <div className="text-xs text-gov-gray-600">
@@ -133,8 +139,8 @@ const Header = () => {
               className={clsx(
                         'px-4 py-2 text-sm font-medium rounded-md transition-colors inline-flex items-center space-x-1',
                         childIsActive
-                          ? 'text-gov-blue-700 bg-gov-gray-50'
-                          : 'text-gov-gray-700 hover:text-gov-blue-700 hover:bg-gov-gray-50'
+                          ? 'text-white bg-gov-navy-900 shadow-sm'
+                          : 'text-gov-gray-700 hover:text-gov-navy-700 hover:bg-gov-gray-50'
                       )}
                     >
                       <span>{item.name}</span>
@@ -162,7 +168,7 @@ const Header = () => {
                                   className={clsx(
                                     'block px-4 py-2 text-sm transition-colors',
                                     active || isCurrent
-                                      ? 'bg-gov-gray-50 text-gov-blue-700'
+                                      ? 'bg-gov-navy-900 text-white shadow-sm'
                                       : 'text-gov-gray-700'
                                   )}
                                 >
@@ -189,8 +195,8 @@ const Header = () => {
                   className={clsx(
                     'px-4 py-2 text-sm font-medium rounded-md transition-colors',
                     isCurrent
-                      ? 'text-gov-blue-700 bg-gov-gray-50'
-                      : 'text-gov-gray-700 hover:text-gov-blue-700 hover:bg-gov-gray-50'
+                      ? 'text-white bg-gov-navy-900 shadow-sm'
+                      : 'text-gov-gray-700 hover:text-gov-navy-700 hover:bg-gov-gray-50'
                   )}
                 >
                   {item.name}
@@ -199,15 +205,7 @@ const Header = () => {
             })}
           </div>
 
-          {/* Login Button & Mobile Menu Toggle */}
           <div className="flex items-center space-x-4">
-            <Link 
-              to="/login"
-              className="hidden lg:inline-flex text-sm font-medium text-gov-gray-600 hover:text-gov-navy-600 transition-colors"
-            >
-              Staff Portal
-            </Link>
-            
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
@@ -259,8 +257,8 @@ const Header = () => {
                                 className={clsx(
                                   'block px-4 py-2 text-sm rounded-md transition-colors',
                                   location.pathname.startsWith(child.href)
-                                    ? 'bg-gov-gray-50 text-gov-blue-700'
-                                    : 'text-gov-gray-600 hover:text-gov-blue-700 hover:bg-gov-gray-50'
+                                    ? 'bg-gov-navy-900 text-white'
+                                    : 'text-gov-gray-600 hover:text-gov-navy-700 hover:bg-gov-gray-50'
                                 )}
                               >
                                 {child.name}
@@ -279,7 +277,7 @@ const Header = () => {
                     className={clsx(
                       'block px-4 py-2 text-sm font-medium rounded-md transition-colors',
                       location.pathname === item.href
-                        ? 'bg-gov-gray-50 text-gov-blue-700'
+                        ? 'bg-gov-navy-900 text-white shadow-sm'
                         : 'text-gov-gray-700 hover:bg-gov-gray-50'
                     )}
                   >
@@ -291,7 +289,7 @@ const Header = () => {
             <Link
               to="/login"
               onClick={() => setMobileMenuOpen(false)}
-              className="block px-4 py-3 text-center text-sm font-semibold text-white bg-gov-navy-600 rounded-md hover:bg-gov-navy-700 transition-colors sm:hidden"
+              className="block px-4 py-3 text-center text-sm font-semibold text-white bg-gov-navy-600 rounded-md hover:bg-gov-navy-700 transition-colors md:hidden"
             >
               Staff Portal
             </Link>
