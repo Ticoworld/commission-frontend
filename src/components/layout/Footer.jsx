@@ -23,12 +23,11 @@ const Footer = () => {
       links: [
         { name: 'About ESLGSC', href: '/about' },
         { name: 'Leadership', href: '/about#leadership' },
-        { name: 'Departments', href: '/about#departments' },
-        { name: 'Official Archive', href: '/#documents' }
+        { name: 'Departments', href: '/about#departments' }
       ]
     },
     {
-      title: 'Directory',
+      title: 'LGAs & Public Service',
       links: [
         { name: 'Local Governments', href: '/local-governments' },
         { name: 'Development Centers', href: '/development-centers' },

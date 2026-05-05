@@ -14,7 +14,6 @@ const navigation = [
       { name: 'Latest News', href: '/news-and-updates' },
       { name: 'Press Releases', href: '/news-and-updates?category=press-releases' },
       { name: 'Announcements', href: '/news-and-updates?category=announcements' },
-      { name: 'Speeches', href: '/news-and-updates?category=speeches' },
       { name: 'Gallery', href: '/gallery' }
     ]
   },
@@ -28,7 +27,7 @@ const navigation = [
     ]
   },
   { 
-    name: 'Directory', 
+    name: 'LGAs & Centers', 
     href: '/local-governments',
     children: [
       { name: 'Local Governments', href: '/local-governments' },
@@ -36,15 +35,7 @@ const navigation = [
     ]
   },
   { 
-    name: 'Documents', 
-    href: '/#documents',
-    children: [
-      { name: 'Official Circulars', href: '/news-and-updates?category=notices' },
-      { name: 'Document Archive', href: '/#documents' }
-    ]
-  },
-  { 
-    name: 'Support', 
+    name: 'Public Service', 
     href: '/complaints',
     children: [
       { name: 'Complaints Desk', href: '/complaints' },
@@ -286,13 +277,15 @@ const Header = () => {
                 )}
               </div>
             ))}
-            <Link
-              to="/login"
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-4 py-3 text-center text-sm font-semibold text-white bg-gov-navy-600 rounded-md hover:bg-gov-navy-700 transition-colors md:hidden"
-            >
-              Staff Portal
-            </Link>
+            <div className="pt-4 mt-4 border-t border-gov-gray-100 md:hidden">
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block px-4 py-3 text-center text-sm font-semibold text-white bg-gov-navy-600 rounded-md hover:bg-gov-navy-700 transition-colors"
+              >
+                Staff Portal
+              </Link>
+            </div>
           </div>
         </div>
       </Transition>

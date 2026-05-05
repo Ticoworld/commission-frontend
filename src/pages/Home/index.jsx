@@ -55,13 +55,13 @@ const OfficialNoticeBar = () => {
 // 2. News-Led Hero Section (Neutralized)
 const HeroSection = () => (
   <section className="relative bg-gov-navy-900 text-white overflow-hidden">
-    <div className="absolute inset-0 opacity-10">
+    <div className="absolute inset-0 opacity-40">
       <img 
         src="/images/hero/hero1.jpg" 
         alt="ESLGSC Complex" 
         className="w-full h-full object-cover"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-gov-navy-900 via-gov-navy-900/60 to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-gov-navy-900/80 via-gov-navy-900/20 to-transparent" />
     </div>
 
     <div className="relative container-custom py-20 md:py-32">
@@ -369,7 +369,11 @@ const Home = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="aspect-square rounded-xl overflow-hidden bg-gov-gray-100">
-                <img src={`/images/gallery/image${i}.jpg`} alt={`Gallery ${i}`} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" />
+                <img 
+                  src={`/images/gallery/image${i}.jpg`} 
+                  alt={`Gallery ${i}`} 
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" 
+                />
               </div>
             ))}
           </div>
